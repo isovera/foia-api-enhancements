@@ -77,7 +77,6 @@
                 "type:npm-asset"
             ],
             "drush/Commands/{$name}": [
-                "type:drupal-drush",
                 "type:drupal-drush"
             ]
         },
