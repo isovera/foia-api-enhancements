@@ -15,6 +15,21 @@ name: Content
 description: 'An index of all content in your site.'
 read_only: false
 field_settings:
+  label:
+    label: Label
+    property_path: aggregated_field
+    type: text
+    configuration:
+      type: first
+      fields:
+        - 'entity:node/title'
+  node_grants:
+    label: 'Node access information'
+    property_path: search_api_node_grants
+    type: string
+    indexed_locked: true
+    type_locked: true
+    hidden: true
   rendered:
     label: Rendered
     property_path: rendered_item
@@ -27,14 +42,6 @@ field_settings:
           page: default
           landing_page: full
           agency_component: default
-  label:
-    label: Label
-    property_path: aggregated_field
-    type: text
-    configuration:
-      type: first
-      fields:
-        - 'entity:node/title'
   status:
     label: null
     datasource_id: 'entity:node'
@@ -49,13 +56,6 @@ field_settings:
     type: integer
     indexed_locked: true
     type_locked: true
-  node_grants:
-    label: 'Node access information'
-    property_path: search_api_node_grants
-    type: string
-    indexed_locked: true
-    type_locked: true
-    hidden: true
 datasource_settings:
   'entity:node':
     bundles:
