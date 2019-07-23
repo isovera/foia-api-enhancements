@@ -72,24 +72,24 @@ processor_settings:
       preprocess_query: -10
   html_filter:
     fields:
-      - rendered
       - label
+      - rendered
     title: true
     alt: true
     tags:
+      b: 2
       h1: 5
       h2: 3
       h3: 2
       strong: 2
-      b: 2
     weights:
       preprocess_index: -10
       preprocess_query: -9
     all_fields: false
   ignorecase:
     fields:
-      - rendered
       - label
+      - rendered
     weights:
       preprocess_index: -9
       preprocess_query: -8
@@ -97,8 +97,8 @@ processor_settings:
   rendered_item: {  }
   stopwords:
     fields:
-      - rendered
       - label
+      - rendered
     stopwords:
       - a
       - an
@@ -141,8 +141,8 @@ processor_settings:
     all_fields: false
   tokenizer:
     fields:
-      - rendered
       - label
+      - rendered
     spaces: ''
     overlap_cjk: 1
     minimum_word_size: '3'
@@ -152,8 +152,8 @@ processor_settings:
     all_fields: false
   transliteration:
     fields:
-      - rendered
       - label
+      - rendered
     weights:
       preprocess_index: -4
       preprocess_query: -3
