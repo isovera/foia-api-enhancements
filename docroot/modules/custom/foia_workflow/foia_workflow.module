@@ -29,6 +29,10 @@ function foia_workflow_node_access(NodeInterface $node, $op, AccountProxy $accou
     'update') {
     return AccessResult::forbidden();
   }
+  // Agency Managers cannot update or delete Annual Reports once submitted.
+  if ($is_report_type && $is_agency_manager && $workflow_state == 'submitted_to_oip' && in_array($op, ['update', 'delete'])) {
+    return AccessResult::forbidden();
+  }
   // Agency Managers can update Annual Reports within their agency.
   if ($is_report_type && $is_agency_manager && $is_same_agency_as_author && in_array($op, ['update', 'delete'])) {
     return AccessResult::allowed();
