@@ -40,6 +40,7 @@ foia_migrate: 0.0.0
 foia_personnel: 0.0.0
 foia_request: 0.0.0
 foia_ui: 0.0.0
+foia_upload_xml: 0.0.0
 foia_users: 0.0.0
 foia_webform: 0.0.0
 help: 8.4.5
