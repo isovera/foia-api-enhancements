@@ -321,7 +321,6 @@ dependencies:
     - content_moderation
     - datetime
     - field_group
-    - file
     - paragraphs
     - text
 third_party_settings:
@@ -4093,13 +4092,6 @@ content:
       default_paragraph_type: ''
     third_party_settings: {  }
     region: content
-  field_report_files:
-    weight: 158
-    settings:
-      progress_indicator: throbber
-    third_party_settings: {  }
-    type: file_generic
-    region: content
   field_req_viiia:
     type: entity_reference_paragraphs
     weight: 45
@@ -4176,6 +4168,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_report_files: true
   path: true
   promote: true
   status: true
