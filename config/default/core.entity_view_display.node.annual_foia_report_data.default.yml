@@ -309,6 +309,7 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_proc_req_viic1
     - field.field.node.annual_foia_report_data.field_proc_req_viic2
     - field.field.node.annual_foia_report_data.field_proc_req_viic3
+    - field.field.node.annual_foia_report_data.field_report_files
     - field.field.node.annual_foia_report_data.field_req_viiia
     - field.field.node.annual_foia_report_data.field_req_viiib
     - field.field.node.annual_foia_report_data.field_statute_iv
@@ -318,6 +319,7 @@ dependencies:
   module:
     - datetime
     - entity_reference_revisions
+    - file
     - panelizer
     - text
     - user
@@ -2845,6 +2847,14 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    region: content
+  field_report_files:
+    weight: 319
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
     region: content
   field_req_viiia:
     type: entity_reference_revisions_entity_view
