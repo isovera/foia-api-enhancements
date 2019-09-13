@@ -536,6 +536,17 @@
         }
       });
 
+      // IX. Agency Overall Total Number of "Full-Time FOIA Staff"
+      $( "#edit-field-overall-ix-total-staff-0-value").rules( "add", {
+        greaterThanZero: {
+          depends: function() {
+            return $("#edit-field-overall-vb1-total-0-value").val();
+          }
+        },
+        messages: {
+          greaterThanZero: "Should be greater than zero, if requests were processed in V.B.(1).",
+        }
+      });
     }
   };
 
