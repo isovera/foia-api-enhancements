@@ -109,7 +109,16 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_case_citation: field_case_citation
+  field_case_citation_trunc:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_case_citation
+    -
+      plugin: substr
+      source: field_case_citation
+      length: 255
+  field_case_citation: field_case_citation_trunc
   field_statute: field_statute
   field_total_num_relied_by_agency:
     -
