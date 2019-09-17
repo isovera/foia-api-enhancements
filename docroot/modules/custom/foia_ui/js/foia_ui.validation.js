@@ -564,15 +564,18 @@
       });
 
       // IX. Agency Overall Total Number of "Full-Time FOIA Staff"
-      $( "#edit-field-overall-ix-total-staff-0-value").rules( "add", {
-        greaterThanZero: {
-          depends: function() {
-            return $("#edit-field-overall-vb1-total-0-value").val();
+      // IX. Agency Overall Processing Costs
+      $( "#edit-field-overall-ix-total-staff-0-value, #edit-field-overall-ix-total-costs-0-value").each(function() {
+        $(this).rules( "add", {
+          greaterThanZero: {
+            depends: function() {
+              return Number($("#edit-field-overall-vb1-total-0-value").val()) > 0;
+            }
+          },
+          messages: {
+            greaterThanZero: "Should be greater than zero, if requests were processed in V.B.(1).",
           }
-        },
-        messages: {
-          greaterThanZero: "Should be greater than zero, if requests were processed in V.B.(1).",
-        }
+        });
       });
     }
   };
