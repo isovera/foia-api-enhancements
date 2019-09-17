@@ -26,6 +26,23 @@
         return value > 0;
     }, "Please enter a value greater than zero." );
 
+      // ifGreaterThanZeroComp
+      jQuery.validator.addMethod("ifGreaterThanZeroComp", function(value, element, params) {
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        for (var i = 0; i < params.length; i++){
+          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            var target = Number($( params[i] ).val());
+          }
+        }
+        if (target > 0 ) {
+          return this.optional(element) || value > 0;
+        }
+        else {
+          return  this.optional(element) || true;
+        }
+      }, "Must be greater than or equal to a field.");
+
       // equalSumComp
       jQuery.validator.addMethod("equalSumComp", function(value, element, params) {
         var sum = 0;
@@ -533,6 +550,14 @@
         messages: {
           betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
           notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
+      // IX. Total Number of "Full-Time FOIA Staff"
+      $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_total_staff']").rules( "add", {
+        ifGreaterThanZeroComp: $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
+        messages: {
+          ifGreaterThanZeroComp: "If requests were processed in V.B.(1), the total number of full-time FOIA staff must be greater than 0",
         }
       });
 
