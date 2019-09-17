@@ -554,11 +554,13 @@
       });
 
       // IX. Total Number of "Full-Time FOIA Staff"
-      $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_total_staff']").rules( "add", {
-        ifGreaterThanZeroComp: $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
-        messages: {
-          ifGreaterThanZeroComp: "If requests were processed in V.B.(1), the total number of full-time FOIA staff must be greater than 0",
-        }
+      $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_total_staff']").each(function() {
+        $(this).rules( "add", {
+          ifGreaterThanZeroComp: $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
+          messages: {
+            ifGreaterThanZeroComp: "If requests were processed in V.B.(1), the total number of full-time FOIA staff must be greater than 0",
+          }
+        });
       });
 
       // IX. Agency Overall Total Number of "Full-Time FOIA Staff"
