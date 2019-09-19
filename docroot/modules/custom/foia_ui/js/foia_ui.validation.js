@@ -157,6 +157,18 @@
         }
       }, "Must be greater than or equal to a field.");
 
+      jQuery.validator.addMethod("greaterThanEqualSumComp", function(value, element, params) {
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var sum = 0;
+        for (var i = 0; i < params.length; i++) {
+          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            sum += Number($( params[i] ).val());
+          }
+        }
+        return this.optional(element) || value >= sum;
+      }, "Must be greater than or equal to sum of the fields.");
+
       // betweenMinMaxComp
       jQuery.validator.addMethod("betweenMinMaxComp", function(value, element, params) {
         var valuesArray = [];
@@ -262,8 +274,12 @@
       $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function() {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
+          greaterThanEqualSumComp: $( "input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
+            .add( "input[name*='field_proc_req_viic2']").filter("input[name*='field_total']")
+            .add( "input[name*='field_proc_req_viic3']").filter("input[name*='field_total']"),
           messages: {
-            equalToComp: "Must match corresponding agency V.B.(1) Total"
+            equalToComp: "Must match corresponding agency V.B.(1) Total",
+            greaterThanEqualSumComp: "Must be greater than or equal to sum of the fields."
           }
         });
       });
