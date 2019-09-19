@@ -208,6 +208,42 @@
         return this.optional(element) || !(value == average);
       }, "Must not be equal to the average.");
 
+      // vb1matchDispositionComp: hard-coded for V.B.(1)
+      jQuery.validator.addMethod("vb1matchDispositionComp", function(value, element, params) {
+        var allReqProcessedYr = $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']");
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var reqProcessedYr = null;
+        var sumVIICTotals = 0;
+
+        for (var i = 0; i < allReqProcessedYr.length; i++){
+          var paramAgencyComponent = $(allReqProcessedYr[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            var reqProcessedYr = Number($( allReqProcessedYr[i] ).val());
+          }
+        }
+
+        for (var i = 0; i < params.length; i++){
+          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            sumVIICTotals += Number($( params[i] ).val());
+          }
+        }
+
+        var impReqOthReason = Number($(element).parent().parent().parent().find("input[name*='field_imp_req_oth_reason']").val());
+        if (reqProcessedYr == sumVIICTotals) {
+          if (value == 0 && impReqOthReason == 0) {
+            return true;
+          }
+          else {
+            return false;
+          }
+        }
+        else {
+          return true;
+        }
+
+      }, "Must not be equal to the average.");
+
       /**
        * Form validation call
        */
@@ -290,6 +326,18 @@
         messages: {
           equalTo: "Must match V.B.(1) Agency Overall Total"
         }
+      });
+
+      // V.B.(1) Records Not Reasonably Described
+      $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_rec_not_desc']").each(function() {
+        $(this).rules( "add", {
+          vb1matchDispositionComp: $( "input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
+          .add( "input[name*='field_proc_req_viic2']").filter("input[name*='field_total']")
+          .add( "input[name*='field_proc_req_viic3']").filter("input[name*='field_total']"),
+          messages: {
+            vb1matchDispositionComp: "Should be zero if V.A. Number of Requests Processed in Fiscal Year matches sum of Total of VII.C.1, 2, and 3."
+          }
+        });
       });
 
       // V.B.(1) Agency Overall Number of Full Denials Based on Exemptions
