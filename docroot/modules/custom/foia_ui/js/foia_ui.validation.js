@@ -781,6 +781,16 @@
         });
       });
 
+      // XII.C. FOIA Requests and Administrative Appeals
+      $("input[name*='field_foia_xiic']").filter("input[name*='field_num_days_1']").each(function() {
+        $(this).rules( "add", {
+          ifGreaterThanZeroComp: $("input[name*='field_foia_xiib']").filter("input[name*='field_pend_end_yr']"),
+          messages: {
+            ifGreaterThanZeroComp: "If there are consultations pending at end of year for XII.B, there must be entries in this section for that component.",
+          }
+        });
+      });
+
       // For the next 9 rules, each is comparing the value to the one lower
       // than it ( i.e., field 10 is less than field 9, field 9 is less than
       // field 8, etc).
