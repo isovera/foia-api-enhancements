@@ -99,6 +99,22 @@
         return this.optional(element) || value <= sum;
       }, "Must equal less than equal a sum of other fields.");
 
+      // lessThanEqualSumComp
+      jQuery.validator.addMethod("lessThanEqualSumComp", function(value, element, params) {
+        value = convertNAtoZero(value);
+        var sum = 0;
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        for (var i = 0; i < params.length; i++){
+          for (var j = 0; j < params[i].length; j++){
+            var paramAgencyComponent = $(params[i][j]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+            if (paramAgencyComponent == elementAgencyComponent) {
+              sum += Number(convertNAtoZero($( params[i][j] ).val()));
+            }
+          }
+        }
+        return this.optional(element) || value <= sum;
+      }, "Must be less than or equal to a field.");
+
       // equalToComp
       jQuery.validator.addMethod("equalToComp", function(value, element, params) {
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
@@ -790,6 +806,20 @@
           },
           messages: {
             greaterThanZero: "Should be greater than zero, if requests were processed in V.B.(1).",
+          }
+        });
+      });
+
+      // XII.A. Number of Backlogged Requests as of End of Fiscal Year
+      $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_req_end_yr']").each(function() {
+        $(this).rules( "add", {
+          lessThanEqualSumComp: [
+            $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_sim_pend']"),
+            $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_comp_pend']"),
+            $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_exp_pend']"),
+          ],
+          messages: {
+            lessThanEqualSumComp: "Must be equal to or less than the corresponding sum total of Simple, Complex, and Expedited pending requests from VII.D."
           }
         });
       });
