@@ -781,6 +781,18 @@
         });
       });
 
+      // XII.A. Agency Overall Number of Backlogged Requests as of End of Fiscal Year
+      $( "#edit-field-overall-xiia-back-req-end-0-value").rules( "add", {
+        lessThanEqualSum: [
+          "#edit-field-overall-viid-sim-pend-0-value",
+          "#edit-field-overall-viid-comp-pend-0-value",
+          "#edit-field-overall-viid-exp-pend-0-value",
+        ],
+        messages: {
+          lessThanEqualSum: "Must be equal to or less than the sum total of overall Simple, Complex, and Expidited pending requests from VII.D."
+        }
+      });
+
       // For the next 9 rules, each is comparing the value to the one lower
       // than it ( i.e., field 10 is less than field 9, field 9 is less than
       // field 8, etc).
