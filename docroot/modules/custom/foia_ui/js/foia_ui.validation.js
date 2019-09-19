@@ -793,6 +793,14 @@
         }
       });
 
+      // XII.A. Agency Overall Number of Backlogged Appeals as of End of Fiscal Year
+      $( "#edit-field-overall-xiia-back-app-end-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-overall-via-app-pend-endyr-0-value",
+        messages: {
+          lessThanEqualToNA: "Must be equal to or less than VI.A.(1). Agency Overall Number of Appeals Pending as of End of Fiscal Year",
+        }
+      });
+
       // For the next 9 rules, each is comparing the value to the one lower
       // than it ( i.e., field 10 is less than field 9, field 9 is less than
       // field 8, etc).
