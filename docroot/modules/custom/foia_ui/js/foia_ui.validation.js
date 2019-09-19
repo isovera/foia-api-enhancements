@@ -20,6 +20,18 @@
       });
 
       /**
+       * Treat "N/A" or "n/a" values as zero
+       */
+      function convertNAtoZero(value) {
+        if ( String(value).toLowerCase() == "n/a" ) {
+         return Number(0);
+        }
+        else {
+          return value;
+        }
+      }
+
+      /**
        * Custom validation methods
        */
       // lessThanEqualTo
@@ -101,11 +113,12 @@
 
       // lessThanEqualComp
       jQuery.validator.addMethod("lessThanEqualComp", function(value, element, params) {
+        value = convertNAtoZero(value);
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
         for (var i = 0; i < params.length; i++){
           var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
           if (paramAgencyComponent == elementAgencyComponent) {
-            var target = Number($( params[i] ).val());
+            var target = Number(convertNAtoZero($( params[i] ).val()));
             return this.optional(element) || value <= target;
           }
         }
@@ -781,6 +794,16 @@
         });
       });
 
+      // XII.A. Number of Backlogged Appeals as of End of Fiscal Year
+      $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_app_end_yr']").each(function() {
+        $(this).rules( "add", {
+          lessThanEqualComp: $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']"),
+          messages: {
+            lessThanEqualComp: "Must be equal to or less than VI.A.(1). corresponding Number of Appeals Pending as of End of Fiscal Year"
+          }
+        });
+      });
+
       // XII.A. Agency Overall Number of Backlogged Requests as of End of Fiscal Year
       $( "#edit-field-overall-xiia-back-req-end-0-value").rules( "add", {
         lessThanEqualSum: [
@@ -789,7 +812,7 @@
           "#edit-field-overall-viid-exp-pend-0-value",
         ],
         messages: {
-          lessThanEqualSum: "Must be equal to or less than the sum total of overall Simple, Complex, and Expidited pending requests from VII.D."
+          lessThanEqualSum: "Must be equal to or less than the sum total of overall Simple, Complex, and Expedited pending requests from VII.D."
         }
       });
 
