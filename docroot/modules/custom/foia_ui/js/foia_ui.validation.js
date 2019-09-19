@@ -279,7 +279,7 @@
             .add( "input[name*='field_proc_req_viic3']").filter("input[name*='field_total']"),
           messages: {
             equalToComp: "Must match corresponding agency V.B.(1) Total",
-            greaterThanEqualSumComp: "Must be greater than or equal to sum of the fields."
+            greaterThanEqualSumComp: "Must be greater than or equal to sum of all of the Totals of VII.C.1, 2, and 3 for the corresponding agency/component"
           }
         });
       });
