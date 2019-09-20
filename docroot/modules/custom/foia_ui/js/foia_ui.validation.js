@@ -213,6 +213,7 @@
         var allReqProcessedYr = $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']");
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
         var reqProcessedYr = null;
+        var otherField = null;
         var sumVIICTotals = 0;
 
         for (var i = 0; i < allReqProcessedYr.length; i++){
@@ -222,16 +223,22 @@
           }
         }
 
-        for (var i = 0; i < params.length; i++){
-          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        for (var i = 0; i < params.viicn.length; i++){
+          var paramAgencyComponent = $(params.viicn[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
           if (paramAgencyComponent == elementAgencyComponent) {
-            sumVIICTotals += Number($( params[i] ).val());
+            sumVIICTotals += Number($( params.viicn[i] ).val());
           }
         }
 
-        var impReqOthReason = Number($(element).parent().parent().parent().find("input[name*='field_imp_req_oth_reason']").val());
+        for (var i = 0; i < params.otherField.length; i++){
+          var paramAgencyComponent = $(params.otherField[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            otherField = Number($( params.otherField[i] ).val());
+          }
+        }
+
         if (reqProcessedYr == sumVIICTotals) {
-          if (value == 0 && impReqOthReason == 0) {
+          if (value == 0 && otherField == 0) {
             return true;
           }
           else {
@@ -331,9 +338,12 @@
       // V.B.(1) Records Not Reasonably Described
       $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_rec_not_desc']").each(function() {
         $(this).rules( "add", {
-          vb1matchDispositionComp: $( "input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
-          .add( "input[name*='field_proc_req_viic2']").filter("input[name*='field_total']")
-          .add( "input[name*='field_proc_req_viic3']").filter("input[name*='field_total']"),
+          vb1matchDispositionComp: {
+            viicn: $( "input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
+              .add( "input[name*='field_proc_req_viic2']").filter("input[name*='field_total']")
+              .add( "input[name*='field_proc_req_viic3']").filter("input[name*='field_total']"),
+            otherField: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_imp_req_oth_reason']"),
+          },
           messages: {
             vb1matchDispositionComp: "Should be zero if V.A. Number of Requests Processed in Fiscal Year matches sum of Total of VII.C.1, 2, and 3."
           }
