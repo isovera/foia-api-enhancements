@@ -1058,6 +1058,17 @@
         }
       });
 
+      // XII.D.(2). Number of Backlogged Requests as of End of the Fiscal Year from Current Annual Report
+      $( "input[name*='field_foia_xiid2']").filter("input[name*='field_back_cur_yr']").each(function() {
+        $(this).rules( "add", {
+          equalToComp: $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_app_end_yr']"),
+          messages: {
+            equalToComp: "Must match XII.A. Number of Backlogged Requests as of End of Fiscal Year",
+
+          }
+        });
+      });
+
       // XII.D.(2). Agency Overall Number of Backlogged Requests as of End of the Fiscal Year from Current Annual Report
       $( "#edit-field-overall-xiid2-back-cur-yr-0-value").rules( "add", {
         equalTo: "#edit-field-overall-xiia-back-req-end-0-value",
