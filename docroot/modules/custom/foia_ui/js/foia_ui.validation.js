@@ -237,17 +237,8 @@
           }
         }
 
-        if (reqProcessedYr == sumVIICTotals) {
-          if (value == 0 && otherField == 0) {
-            return true;
-          }
-          else {
-            return false;
-          }
-        }
-        else {
-          return true;
-        }
+        // reqProcessedYr == sumVIICTotals - Improper Request for Other - Records Not Reasonably Described
+        return (reqProcessedYr == sumVIICTotals - Number(value) - otherField);
 
       }, "Must not be equal to the average.");
 
@@ -345,7 +336,7 @@
             otherField: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_imp_req_oth_reason']"),
           },
           messages: {
-            vb1matchDispositionComp: "Should be zero if V.A. Number of Requests Processed in Fiscal Year matches sum of Total of VII.C.1, 2, and 3."
+            vb1matchDispositionComp: "Records Not Reasonably Described should equal V.A. Number of Requests Processed in Fiscal Year - sum of Total of VII.C.1, 2, and 3. - Improper FOIA Request for Other Reason"
           }
         });
       });
