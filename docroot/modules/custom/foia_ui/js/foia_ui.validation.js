@@ -341,6 +341,21 @@
         });
       });
 
+      // V.B.(1) Improper FOIA Request for Other Reason
+      $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_imp_req_oth_reason']").each(function() {
+        $(this).rules( "add", {
+          vb1matchDispositionComp: {
+            viicn: $( "input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
+              .add( "input[name*='field_proc_req_viic2']").filter("input[name*='field_total']")
+              .add( "input[name*='field_proc_req_viic3']").filter("input[name*='field_total']"),
+            otherField: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_rec_not_desc']"),
+          },
+          messages: {
+            vb1matchDispositionComp: "Improper FOIA Request for Other Reason should equal V.A. Number of Requests Processed in Fiscal Year - sum of Total of VII.C.1, 2, and 3. - Improper FOIA Request for Other Reason"
+          }
+        });
+      });
+
       // V.B.(1) Agency Overall Number of Full Denials Based on Exemptions
       $( "#edit-field-overall-vb1-full-denials-e-0-value").rules( "add", {
         lessThanEqualSum: [
