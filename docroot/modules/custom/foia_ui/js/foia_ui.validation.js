@@ -1058,6 +1058,22 @@
         }
       });
 
+
+      // XII.E.(1). Agency Overall Number Received During Fiscal Year from Current Annual Report
+      $( "#edit-field-overall-xiie1-received-cur-0-value").rules( "add", {
+        equalTo: "#edit-field-overall-via-app-recd-yr-0-value",
+        messages: {
+          equalTo: "Must match VI.A.(1). Agency Overall Number of Requests Received in Fiscal Year",
+        }
+      });
+
+      // XII.E.(1). Agency Overall Number Processed During Fiscal Year from Current Annual Report
+      $( "#edit-field-overall-xiie1-proc-cur-yr-0-value").rules( "add", {
+        equalTo: "#edit-field-overall-via-app-proc-yr-0-value",
+        messages: {
+          equalTo: "Must match VI.A.(1). Agency Overall Number of Requests Processed in Fiscal Year",
+        }
+      });
     }
   };
 
