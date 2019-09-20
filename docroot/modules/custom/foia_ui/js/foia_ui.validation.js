@@ -20,6 +20,18 @@
       });
 
       /**
+       * Treat "N/A" or "n/a" values as zero
+       */
+      function convertNAtoZero(value) {
+        if ( String(value).toLowerCase() == "n/a" ) {
+         return Number(0);
+        }
+        else {
+          return value;
+        }
+      }
+
+      /**
        * Custom validation methods
        */
       // lessThanEqualTo
@@ -51,6 +63,11 @@
        $.validator.addMethod( "greaterThanZero", function( value, element, param ) {
         return value > 0;
       }, "Please enter a value greater than zero." );
+
+      // notNegative
+      $.validator.addMethod( "notNegative", function( value, element, param ) {
+        return value >= 0;
+      }, "Please enter zero or a positive number." );
 
       // ifGreaterThanZeroComp
       jQuery.validator.addMethod("ifGreaterThanZeroComp", function(value, element, params) {
@@ -87,6 +104,22 @@
         return this.optional(element) || value <= sum;
       }, "Must equal less than equal a sum of other fields.");
 
+      // lessThanEqualSumComp
+      jQuery.validator.addMethod("lessThanEqualSumComp", function(value, element, params) {
+        value = convertNAtoZero(value);
+        var sum = 0;
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        for (var i = 0; i < params.length; i++){
+          for (var j = 0; j < params[i].length; j++){
+            var paramAgencyComponent = $(params[i][j]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+            if (paramAgencyComponent == elementAgencyComponent) {
+              sum += Number(convertNAtoZero($( params[i][j] ).val()));
+            }
+          }
+        }
+        return this.optional(element) || value <= sum;
+      }, "Must be less than or equal to a field.");
+
       // equalToComp
       jQuery.validator.addMethod("equalToComp", function(value, element, params) {
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
@@ -101,11 +134,12 @@
 
       // lessThanEqualComp
       jQuery.validator.addMethod("lessThanEqualComp", function(value, element, params) {
+        value = convertNAtoZero(value);
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
         for (var i = 0; i < params.length; i++){
           var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
           if (paramAgencyComponent == elementAgencyComponent) {
-            var target = Number($( params[i] ).val());
+            var target = Number(convertNAtoZero($( params[i] ).val()));
             return this.optional(element) || value <= target;
           }
         }
@@ -282,6 +316,15 @@
         }
       });
 
+      // V.B. (2) (Component) Number of Times "Other" Reason Was Relied Upon
+      $( "#edit-field-foia-requests-vb2-0-subform-field-foia-req-vb2-info-0-subform-field-num-relied-upon-0-value").rules( "add", {
+        notNegative: true,
+        messages: {
+          notNegative: "Must be a zero or a positive number."
+        }
+      });
+
+
       // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year
       $( "#edit-field-overall-via-app-proc-yr-0-value").rules( "add", {
         equalTo: "#edit-field-overall-vib-total-0-value",
@@ -435,6 +478,83 @@
       // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2d
       $( "#edit-field-overall-vic5-num-day-2-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-1-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
+        }
+      });
+
+      // VI.C. (5) - Agency Components
+      // For the next 9 rules, each is comparing the value to the one lower
+      // than it ( i.e., field 10 is less than field 9, field 9 is less than
+      // field 8, etc).  Unlike the above group, this is for the agency
+      // component part of the form.
+      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 10th
+      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-10-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-9-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
+        }
+      });
+
+      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 9th
+      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-9-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-8-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
+        }
+      });
+
+      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 8th
+      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-8-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-7-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
+        }
+      });
+
+      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 7th
+      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-7-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-6-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
+        }
+      });
+
+      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 6th
+      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-6-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-5-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
+        }
+      });
+
+      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 5th
+      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-5-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-4-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
+        }
+      });
+
+      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 4th
+      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-4-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-3-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"3d\"."
+        }
+      });
+
+      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 3d
+      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-3-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-2-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"2d\"."
+        }
+      });
+
+      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2d
+      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-2-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-1-0-value",
         messages: {
           lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
         }
@@ -781,6 +901,7 @@
         });
       });
 
+
       // XII.C. FOIA Requests and Administrative Appeals
       $("input[name*='field_foia_xiic']").filter("input[name*='field_num_days_1']").each(function() {
         $(this).rules( "add", {
@@ -789,6 +910,50 @@
             ifGreaterThanZeroComp: "If there are consultations pending at end of year for XII.B, there must be entries in this section for that component.",
           }
         });
+      });
+
+      // XII.A. Number of Backlogged Requests as of End of Fiscal Year
+      $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_req_end_yr']").each(function() {
+        $(this).rules( "add", {
+          lessThanEqualSumComp: [
+            $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_sim_pend']"),
+            $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_comp_pend']"),
+            $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_exp_pend']"),
+          ],
+          messages: {
+            lessThanEqualSumComp: "Must be equal to or less than the corresponding sum total of Simple, Complex, and Expedited pending requests from VII.D."
+          }
+        });
+      });
+
+      // XII.A. Number of Backlogged Appeals as of End of Fiscal Year
+      $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_app_end_yr']").each(function() {
+        $(this).rules( "add", {
+          lessThanEqualComp: $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']"),
+          messages: {
+            lessThanEqualComp: "Must be equal to or less than VI.A.(1). corresponding Number of Appeals Pending as of End of Fiscal Year"
+          }
+        });
+      });
+
+      // XII.A. Agency Overall Number of Backlogged Requests as of End of Fiscal Year
+      $( "#edit-field-overall-xiia-back-req-end-0-value").rules( "add", {
+        lessThanEqualSum: [
+          "#edit-field-overall-viid-sim-pend-0-value",
+          "#edit-field-overall-viid-comp-pend-0-value",
+          "#edit-field-overall-viid-exp-pend-0-value",
+        ],
+        messages: {
+          lessThanEqualSum: "Must be equal to or less than the sum total of overall Simple, Complex, and Expedited pending requests from VII.D."
+        }
+      });
+
+      // XII.A. Agency Overall Number of Backlogged Appeals as of End of Fiscal Year
+      $( "#edit-field-overall-xiia-back-app-end-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-overall-via-app-pend-endyr-0-value",
+        messages: {
+          lessThanEqualToNA: "Must be equal to or less than VI.A.(1). Agency Overall Number of Appeals Pending as of End of Fiscal Year",
+        }
       });
 
       // For the next 9 rules, each is comparing the value to the one lower
@@ -866,6 +1031,81 @@
         }
       });
 
+      // For the next 9 rules, each is comparing the value to the one lower
+      // than it ( i.e., field 10 is less than field 9, field 9 is less than
+      // field 8, etc).  This is the agency component part of the form.
+      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 10th
+      $( "#edit-field-foia-xiic-0-subform-field-num-days-10-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-9-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
+        }
+      });
+
+      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 9th
+      $( "#edit-field-foia-xiic-0-subform-field-num-days-9-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-8-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
+        }
+      });
+
+      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 8th
+      $( "#edit-field-foia-xiic-0-subform-field-num-days-8-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-7-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
+        }
+      });
+
+      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 7th
+      $( "#edit-field-foia-xiic-0-subform-field-num-days-7-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-6-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
+        }
+      });
+
+      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 6th
+      $( "#edit-field-foia-xiic-0-subform-field-num-days-6-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-5-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
+        }
+      });
+
+      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 5th
+      $( "#edit-field-foia-xiic-0-subform-field-num-days-5-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-4-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
+        }
+      });
+
+      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 4th
+      $( "#edit-field-foia-xiic-0-subform-field-num-days-4-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-3-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"3d\"."
+        }
+      });
+
+      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 3d
+      $( "#edit-field-foia-xiic-0-subform-field-num-days-3-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-2-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"2d\"."
+        }
+      });
+
+      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 2d
+      $( "#edit-field-foia-xiic-0-subform-field-num-days-2-0-value").rules( "add", {
+        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-1-0-value",
+        messages: {
+          lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
+        }
+      });
+
       // XII.D.(1). Number Received During Fiscal Year from Current Annual Report
       $( "input[name*='field_foia_xiid1']").filter("input[name*='field_received_cur_yr']").each(function() {
         $(this).rules( "add", {
@@ -902,6 +1142,24 @@
         }
       });
 
+      // XII.D.(2). Number of Backlogged Requests as of End of the Fiscal Year from Current Annual Report
+      $( "input[name*='field_foia_xiid2']").filter("input[name*='field_back_cur_yr']").each(function() {
+        $(this).rules( "add", {
+          equalToComp: $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_app_end_yr']"),
+          messages: {
+            equalToComp: "Must match XII.A. Number of Backlogged Requests as of End of Fiscal Year",
+
+          }
+        });
+      });
+
+      // XII.D.(2). Agency Overall Number of Backlogged Requests as of End of the Fiscal Year from Current Annual Report
+      $( "#edit-field-overall-xiid2-back-cur-yr-0-value").rules( "add", {
+        equalTo: "#edit-field-overall-xiia-back-req-end-0-value",
+        messages: {
+          equalTo: "Must match XII.A. Agency Overall Number of Backlogged Requests as of End of Fiscal Year",
+        }
+      });
     }
   };
 
