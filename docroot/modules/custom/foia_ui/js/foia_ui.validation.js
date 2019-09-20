@@ -336,7 +336,7 @@
             otherField: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_imp_req_oth_reason']"),
           },
           messages: {
-            vb1matchDispositionComp: "Records Not Reasonably Described should equal V.A. Number of Requests Processed in Fiscal Year - sum of Total of VII.C.1, 2, and 3. - Improper FOIA Request for Other Reason"
+            vb1matchDispositionComp: "Should equal V.A. Requests Processed less sum of Total of VII.C.1, 2, and 3. less Improper FOIA Request for Other Reason"
           }
         });
       });
@@ -351,7 +351,7 @@
             otherField: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_rec_not_desc']"),
           },
           messages: {
-            vb1matchDispositionComp: "Improper FOIA Request for Other Reason should equal V.A. Number of Requests Processed in Fiscal Year - sum of Total of VII.C.1, 2, and 3. - Improper FOIA Request for Other Reason"
+            vb1matchDispositionComp: "Should equal V.A. Requests Processed less sum of Total of VII.C.1, 2, and 3. less Records Not Reasonably Described"
           }
         });
       });
