@@ -304,7 +304,14 @@
       /**
        * Validation rules
        */
-      // V.A. FOIA Requests
+      // Require all Annual Report fields.
+      $(".form-text, .form-textarea, .form-select, .form-number, .form-date").not('#edit-revision-log-0-value').each(function() {
+        $(this).rules( "add", {
+        required: true,
+        });
+      });
+
+       // V.A. FOIA Requests
       $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function() {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
