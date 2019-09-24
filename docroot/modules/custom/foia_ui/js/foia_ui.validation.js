@@ -559,19 +559,19 @@
       $( "#edit-field-overall-vic5-num-day-4-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-3-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"3d\"."
+          lessThanEqualToNA: "This should be less than the number of days for \"3rd\"."
         }
       });
 
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 3d
+      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 3rd
       $( "#edit-field-overall-vic5-num-day-3-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-2-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"2d\"."
+          lessThanEqualToNA: "This should be less than the number of days for \"2nd\"."
         }
       });
 
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2d
+      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2nd
       $( "#edit-field-overall-vic5-num-day-2-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-1-0-value",
         messages: {
@@ -636,23 +636,23 @@
       $( "#edit-field-admin-app-vic5-0-subform-field-num-days-4-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-3-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"3d\"."
+          lessThanEqualToNA: "This should be less than the number of days for \"3rd\"."
         }
       });
 
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 3d
+      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 3rd
       $( "#edit-field-admin-app-vic5-0-subform-field-num-days-3-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-2-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"2d\"."
+          lessThanEqualToNA: "This should be less than the number of days for \"2nd\"."
         }
       });
 
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2d
+      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2nd
       $( "#edit-field-admin-app-vic5-0-subform-field-num-days-2-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-1-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
+          lessThanEqualToNA: "This should be less than the number of days for \"Oldest\"."
         }
       });
 
