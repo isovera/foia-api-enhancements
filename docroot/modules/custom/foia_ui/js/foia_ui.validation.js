@@ -20,14 +20,16 @@
       });
 
       /**
-       * Treat "N/A" or "n/a" values as zero
+       * Treat "N/A", "n/a", and "<1" values as zero
        */
-      function convertNAtoZero(value) {
-        if ( String(value).toLowerCase() == "n/a" ) {
-         return Number(0);
-        }
-        else {
-          return value;
+      function convertSpecialToZero(value) {
+        switch (String(value).toLowerCase()) {
+          case "n/a":
+          case "<1":
+            return Number(0);
+            break;
+          default:
+            return value;
         }
       }
 
@@ -42,14 +44,8 @@
 
       // lessThanEqualToNA
       $.validator.addMethod( "lessThanEqualToNA", function( value, element, param ) {
-        var target = $( param ).val();
-        // Treat N/A like 0.
-        if ( String(value).toLowerCase() == "n/a" ) {
-          value = Number(0);
-        }
-        if ( String(target).toLowerCase() == "n/a" ) {
-          target = Number(0);
-        }
+        var target = convertSpecialToZero($( param ).val());
+        value = convertSpecialToZero(value);
         return value <= Number(target);
     }, "Please enter a lesser value." );
 
@@ -106,14 +102,14 @@
 
       // lessThanEqualSumComp
       jQuery.validator.addMethod("lessThanEqualSumComp", function(value, element, params) {
-        value = convertNAtoZero(value);
+        value = convertSpecialToZero(value);
         var sum = 0;
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
         for (var i = 0; i < params.length; i++){
           for (var j = 0; j < params[i].length; j++){
             var paramAgencyComponent = $(params[i][j]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
             if (paramAgencyComponent == elementAgencyComponent) {
-              sum += Number(convertNAtoZero($( params[i][j] ).val()));
+              sum += Number(convertSpecialToZero($( params[i][j] ).val()));
             }
           }
         }
@@ -134,12 +130,12 @@
 
       // lessThanEqualComp
       jQuery.validator.addMethod("lessThanEqualComp", function(value, element, params) {
-        value = convertNAtoZero(value);
+        value = convertSpecialToZero(value);
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
         for (var i = 0; i < params.length; i++){
           var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
           if (paramAgencyComponent == elementAgencyComponent) {
-            var target = Number(convertNAtoZero($( params[i] ).val()));
+            var target = Number(convertSpecialToZero($( params[i] ).val()));
             return this.optional(element) || value <= target;
           }
         }
