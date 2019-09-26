@@ -1304,6 +1304,8 @@ source:
       type: string
   constants:
     base_title: 'Annual FOIA Report for'
+    # This is overridden by Drupal\FoiaUploadXmlBatchImport::sourceOverrides().
+    user_id: 1
 process:
   type:
     plugin: default_value
@@ -1323,9 +1325,7 @@ process:
       - report_year
       - constants/base_title
       - agency
-  uid:
-    plugin: default_value
-    default_value: 1
+  uid: constants/user_id
   status:
     plugin: default_value
     default_value: false
@@ -1336,9 +1336,7 @@ process:
   sticky:
     plugin: default_value
     default_value: false
-  revision_uid:
-    plugin: default_value
-    default_value: 1
+  revision_uid: constants/user_id
   revision_log:
     plugin: default_value
     default_value: 'Import from NIEM-XML data'
