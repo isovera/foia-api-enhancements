@@ -1968,7 +1968,7 @@ process:
   field_overall_viic1_301_400_days: field_overall_viic1_301_400_days
   field_overall_viic1_400_up_days: field_overall_viic1_400_up_days
   field_overall_viic1_total: field_overall_viic1_total
-  field_footnotes_vic1: footnotes_vic1
+  field_footnotes_viic1: footnotes_viic1
   # Section VII.C. (2)
   field_proc_req_viic2:
     -
@@ -2013,7 +2013,7 @@ process:
   field_overall_viic2_301_400_days: field_overall_viic2_301_400_days
   field_overall_viic2_400_up_days: field_overall_viic2_400_up_days
   field_overall_viic2_total: field_overall_viic2_total
-  field_footnotes_vic2: footnotes_vic2
+  field_footnotes_viic2: footnotes_viic2
   # Section VII.C. (3)
   field_proc_req_viic3:
     -

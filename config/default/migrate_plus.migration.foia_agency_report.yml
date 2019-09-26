@@ -1911,6 +1911,7 @@ process:
   field_overall_viic1_301_400_days: field_overall_viic1_301_400_days
   field_overall_viic1_400_up_days: field_overall_viic1_400_up_days
   field_overall_viic1_total: field_overall_viic1_total
+  field_footnotes_viic1: footnotes_viic1
   field_proc_req_viic2:
     -
       plugin: foia_array_pad
@@ -1954,6 +1955,7 @@ process:
   field_overall_viic2_301_400_days: field_overall_viic2_301_400_days
   field_overall_viic2_400_up_days: field_overall_viic2_400_up_days
   field_overall_viic2_total: field_overall_viic2_total
+  field_footnotes_viic2: footnotes_viic2
   field_proc_req_viic3:
     -
       plugin: foia_array_pad
