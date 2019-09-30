@@ -1196,7 +1196,7 @@
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_received_yr']"),
           messages: {
-            equalToComp: "Must match V.A.(1). Number of Requests Received in Fiscal Year for corresponding agency/component"
+            equalToComp: "Must match V.A. Number of Requests Received in Fiscal Year for corresponding agency/component"
           }
         });
       });
@@ -1206,7 +1206,7 @@
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']"),
           messages: {
-            equalToComp: "Must match V.A.(1). Number of Requests Processed in Fiscal Year for corresponding agency/component"
+            equalToComp: "Must match V.A. Number of Requests Processed in Fiscal Year for corresponding agency/component"
           }
         });
       });
@@ -1215,7 +1215,7 @@
       $( "#edit-field-overall-xiid1-received-cur-0-value").rules( "add", {
         equalTo: "#edit-field-overall-req-received-yr-0-value",
         messages: {
-          equalTo: "Must match V.A.(1). Agency Overall Number of Requests Received in Fiscal Year",
+          equalTo: "Must match V.A. Agency Overall Number of Requests Received in Fiscal Year",
         }
       });
 
@@ -1223,7 +1223,7 @@
       $( "#edit-field-overall-xiid1-proc-cur-yr-0-value").rules( "add", {
         equalTo: "#edit-field-overall-req-processed-yr-0-value",
         messages: {
-          equalTo: "Must match V.A.(1). Agency Overall Number of Requests Processed in Fiscal Year",
+          equalTo: "Must match V.A. Agency Overall Number of Requests Processed in Fiscal Year",
         }
       });
 
@@ -1232,7 +1232,7 @@
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_received_yr']"),
           messages: {
-            equalToComp: "Must match V.A.(1). Number of Requests Received in Fiscal Year for corresponding agency/component"
+            equalToComp: "Must match V.A. Number of Requests Received in Fiscal Year for corresponding agency/component"
           }
         });
       });
@@ -1242,7 +1242,7 @@
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_processed_yr']"),
           messages: {
-            equalToComp: "Must match V.A.(1). Number of Requests Processed in Fiscal Year for corresponding agency/component"
+            equalToComp: "Must match V.A. Number of Requests Processed in Fiscal Year for corresponding agency/component"
           }
         });
       });
