@@ -1281,6 +1281,16 @@
         }
       });
 
+      // XII.E.(2). Number Processed During Fiscal Year from Current Annual Report
+      $( "input[name*='field_foia_xiie2']").filter("input[name*='field_back_cur_yr']").each(function() {
+        $(this).rules( "add", {
+          equalToComp: $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_req_end_yr']"),
+          messages: {
+            equalToComp: "Must match XII.A. Number of Backlogged Appeals as of End of Fiscal Year for corresponding agency/component"
+          }
+        });
+      });
+
       // XII.E.(2). Agency Overall Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report
       $( "#edit-field-overall-xiie2-back-cur-yr-0-value").rules( "add", {
         equalTo: "#edit-field-overall-xiia-back-app-end-0-value",
