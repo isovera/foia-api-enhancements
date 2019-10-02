@@ -4,10 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.admin_app_vic4.field_agency_component
-    - field.field.paragraph.admin_app_vic4.field_avg_num_days
-    - field.field.paragraph.admin_app_vic4.field_high_num_days
-    - field.field.paragraph.admin_app_vic4.field_low_num_days
-    - field.field.paragraph.admin_app_vic4.field_med_num_days
     - paragraphs.paragraphs_type.admin_app_vic4
 id: paragraph.admin_app_vic4.default
 targetEntityType: paragraph
@@ -21,50 +17,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-    region: content
-  field_avg_num_days:
-    weight: 2
-    label: above
-    settings:
-      thousand_separator: ''
-      decimal_separator: .
-      scale: 2
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_decimal
-    region: content
-  field_high_num_days:
-    weight: 4
-    label: above
-    settings:
-      thousand_separator: ''
-      decimal_separator: .
-      scale: 2
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_decimal
-    region: content
-  field_low_num_days:
-    weight: 3
-    label: above
-    settings:
-      thousand_separator: ''
-      decimal_separator: .
-      scale: 2
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_decimal
-    region: content
-  field_med_num_days:
-    weight: 1
-    label: above
-    settings:
-      thousand_separator: ''
-      decimal_separator: .
-      scale: 2
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_decimal
     region: content
 hidden:
   search_api_excerpt: true
