@@ -134,10 +134,6 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_overall_vic2_req_in_lit
     - field.field.node.annual_foia_report_data.field_overall_vic2_req_withdrawn
     - field.field.node.annual_foia_report_data.field_overall_vic3_total
-    - field.field.node.annual_foia_report_data.field_overall_vic4_avg_num_days
-    - field.field.node.annual_foia_report_data.field_overall_vic4_high_num_days
-    - field.field.node.annual_foia_report_data.field_overall_vic4_low_num_days
-    - field.field.node.annual_foia_report_data.field_overall_vic4_med_num_days
     - field.field.node.annual_foia_report_data.field_overall_vic5_date_1
     - field.field.node.annual_foia_report_data.field_overall_vic5_date_10
     - field.field.node.annual_foia_report_data.field_overall_vic5_date_2
@@ -1459,50 +1455,6 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     type: number_integer
-    region: content
-  field_overall_vic4_avg_num_days:
-    weight: 117
-    label: above
-    settings:
-      thousand_separator: ''
-      decimal_separator: .
-      scale: 2
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_decimal
-    region: content
-  field_overall_vic4_high_num_days:
-    weight: 120
-    label: above
-    settings:
-      thousand_separator: ''
-      decimal_separator: .
-      scale: 2
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_decimal
-    region: content
-  field_overall_vic4_low_num_days:
-    weight: 119
-    label: above
-    settings:
-      thousand_separator: ''
-      decimal_separator: .
-      scale: 2
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_decimal
-    region: content
-  field_overall_vic4_med_num_days:
-    weight: 116
-    label: above
-    settings:
-      thousand_separator: ''
-      decimal_separator: .
-      scale: 2
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_decimal
     region: content
   field_overall_vic5_date_1:
     weight: 139
