@@ -25,7 +25,8 @@
        */
       // lessThanEqualTo
       $.validator.addMethod( "lessThanEqualTo", function( value, element, param ) {
-        var target = $( param );
+        var target = convertSpecialToZero($( param ).val());
+        value = convertSpecialToZero(value);
         return value <= Number(target.val());
       }, "Please enter a lesser value." );
 
@@ -38,12 +39,14 @@
 
        // greaterThanEqualTo
       $.validator.addMethod( "greaterThanEqualTo", function( value, element, param ) {
-        var target = $( param );
+        var target = convertSpecialToZero($( param ));
+        value = convertSpecialToZero(value);
         return value >= Number(target.val());
       }, "Please enter a greater value." );
 
        // greaterThanZero
        $.validator.addMethod( "greaterThanZero", function( value, element, param ) {
+        value = convertSpecialToZero(value);
         return value > 0;
       }, "Please enter a value greater than zero." );
 
@@ -154,9 +157,10 @@
 
       // betweenMinMaxComp
       jQuery.validator.addMethod("betweenMinMaxComp", function(value, element, params) {
+        value = convertSpecialToZero(value);
         var valuesArray = [];
         for (var i = 0; i < params.length; i++){
-          valuesArray.push(Number($( params[i] ).val()));
+          valuesArray.push(convertSpecialToZero(Number($( params[i] ).val())));
         }
         var min = Math.min.apply(null, valuesArray);
         var max = Math.max.apply(null, valuesArray);
