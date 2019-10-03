@@ -2931,7 +2931,7 @@ content:
     type: number
     region: content
   field_overall_vic4_avg_num_days:
-    weight: 163
+    weight: 25
     settings:
       size: 60
       placeholder: ''
@@ -2939,7 +2939,7 @@ content:
     type: text_textfield
     region: content
   field_overall_vic4_high_num_days:
-    weight: 165
+    weight: 27
     settings:
       size: 60
       placeholder: ''
@@ -2947,7 +2947,7 @@ content:
     type: text_textfield
     region: content
   field_overall_vic4_low_num_days:
-    weight: 166
+    weight: 26
     settings:
       size: 60
       placeholder: ''
@@ -2955,7 +2955,7 @@ content:
     type: text_textfield
     region: content
   field_overall_vic4_med_num_days:
-    weight: 162
+    weight: 24
     settings:
       size: 60
       placeholder: ''
