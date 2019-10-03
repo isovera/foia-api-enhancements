@@ -1,0 +1,24 @@
+uuid: cf001313-f544-428d-aad9-c27026114112
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - node
+    - text
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: node.field_overall_vic4_avg_num_days
+field_name: field_overall_vic4_avg_num_days
+entity_type: node
+type: text
+settings:
+  max_length: 255
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

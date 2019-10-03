@@ -1,0 +1,27 @@
+uuid: 1b926bd3-fb79-46c9-841a-a8525b35b50d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_vic4_low_num_days
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+    - text
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.annual_foia_report_data.field_overall_vic4_low_num_days
+field_name: field_overall_vic4_low_num_days
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Lowest Number of Days'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

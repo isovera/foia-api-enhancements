@@ -1,0 +1,27 @@
+uuid: c6be97d5-10c5-48ff-83aa-d43714ba99e4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_vic4_high_num_days
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+    - text
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.annual_foia_report_data.field_overall_vic4_high_num_days
+field_name: field_overall_vic4_high_num_days
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Highest Number of Days'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text
