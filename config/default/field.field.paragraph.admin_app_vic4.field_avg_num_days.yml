@@ -1,0 +1,27 @@
+uuid: 2d090065-45b7-492a-8f09-b0bed85e37ca
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_avg_num_days
+    - paragraphs.paragraphs_type.admin_app_vic4
+  module:
+    - foia_autocalc
+    - text
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.admin_app_vic4.field_avg_num_days
+field_name: field_avg_num_days
+entity_type: paragraph
+bundle: admin_app_vic4
+label: 'Average Number of Days'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

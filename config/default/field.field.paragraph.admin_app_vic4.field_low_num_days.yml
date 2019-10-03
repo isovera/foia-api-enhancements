@@ -1,0 +1,27 @@
+uuid: 2e0a3ea4-c445-41c6-8840-e672a8109efb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_low_num_days
+    - paragraphs.paragraphs_type.admin_app_vic4
+  module:
+    - foia_autocalc
+    - text
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.admin_app_vic4.field_low_num_days
+field_name: field_low_num_days
+entity_type: paragraph
+bundle: admin_app_vic4
+label: 'Lowest Number of Days'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

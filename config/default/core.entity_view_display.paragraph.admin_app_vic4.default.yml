@@ -4,7 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.admin_app_vic4.field_agency_component
+    - field.field.paragraph.admin_app_vic4.field_avg_num_days
+    - field.field.paragraph.admin_app_vic4.field_high_num_days
+    - field.field.paragraph.admin_app_vic4.field_low_num_days
+    - field.field.paragraph.admin_app_vic4.field_med_num_days
     - paragraphs.paragraphs_type.admin_app_vic4
+  module:
+    - text
 id: paragraph.admin_app_vic4.default
 targetEntityType: paragraph
 bundle: admin_app_vic4
@@ -17,6 +23,34 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_avg_num_days:
+    weight: 7
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_high_num_days:
+    weight: 10
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_low_num_days:
+    weight: 9
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_med_num_days:
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
 hidden:
   search_api_excerpt: true
