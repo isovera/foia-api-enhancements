@@ -662,73 +662,73 @@
       // component part of the form.
       // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 10th
       $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_10']").rules( "add", {
-          lessThanEqualToNA: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_9']"),
+          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_9']"),
           messages: {
-              lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
+            lessThanEqualComp: "This should be less than the number of days for \"9th\"."
           }
       });
 
       // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 9th
       $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_9']").rules( "add", {
-          lessThanEqualToNA: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_8']"),
+          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_8']"),
           messages: {
-              lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
+            lessThanEqualComp: "This should be less than the number of days for \"8th\"."
           }
       });
 
       // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 8th
       $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_8']").rules( "add", {
-          lessThanEqualToNA: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_7']"),
+          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_7']"),
           messages: {
-              lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
+            lessThanEqualComp: "This should be less than the number of days for \"7th\"."
           }
       });
 
       // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 7th
       $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_7']").rules( "add", {
-          lessThanEqualToNA: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_6']"),
+          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_6']"),
           messages: {
-              lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
+              lessThanEqualComp: "This should be less than the number of days for \"6th\"."
           }
       });
 
       // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 6th
       $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_6']").rules( "add", {
-          lessThanEqualToNA: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_5']"),
+          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_5']"),
           messages: {
-              lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
+              lessThanEqualComp: "This should be less than the number of days for \"5th\"."
           }
       });
 
       // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 5th
       $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_5']").rules( "add", {
-          lessThanEqualToNA: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_4']"),
+          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_4']"),
           messages: {
-              lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
+              lessThanEqualComp: "This should be less than the number of days for \"4th\"."
           }
       });
 
       // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 4th
       $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_4']").rules( "add", {
-          lessThanEqualToNA: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_3']"),
+          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_3']"),
           messages: {
-              lessThanEqualToNA: "This should be less than the number of days for \"3rd\"."
+              lessThanEqualComp: "This should be less than the number of days for \"3rd\"."
           }
       });
 
       // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 3rd
       $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_3']").rules( "add", {
-          lessThanEqualToNA: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_2']"),
+          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_2']"),
           messages: {
-              lessThanEqualToNA: "This should be less than the number of days for \"2nd\"."
+              lessThanEqualComp: "This should be less than the number of days for \"2nd\"."
           }
       });
 
       // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2nd
       $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_2']").rules( "add", {
-          lessThanEqualToNA: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_1']"),
+          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_1']"),
           messages: {
-              lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
+              lessThanEqualComp: "This should be less than the number of days for \"Overall\"."
           }
       });
 
