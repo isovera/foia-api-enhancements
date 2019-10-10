@@ -21,6 +21,25 @@
       }
 
       /**
+       * Get ordinal number with suffix
+       */
+      function ordinalNumber(value) {
+        switch (value) {
+          case 1:
+            return value + "st";
+            break;
+          case 2:
+            return value + "nd"
+            break;
+          case 3:
+            return value + "rd"
+            break;
+          default:
+            return value + "th"
+        }
+      }
+
+      /**
        * Checks that a date is in the format of YYYY-MM-DD
        *
        * @param dateString
@@ -161,25 +180,11 @@
         }
       }, "Must be less than or equal to a field.");
 
-      // lessThanEqualMultiComp
-      // initElementId is the id for the given field/element on the initial paragraph
-      // example initElementId: #edit-field-foia-xiic-0-subform-field-num-days-4-0-value
-      jQuery.validator.addMethod("lessThanEqualMultiComp", function(value, initElementId, params) {
+      // lessThanEqualOlderComp
+      jQuery.validator.addMethod("lessThanEqualOlderComp", function(value, element, params) {
           value = convertSpecialToZero(value);
-          findIndex = element.indexOf('-subform-');
-          elementEnd = element.substr(findIndex);
-          elementStart = element.substr(0,findIndex);
-          findIndex = lastIndexOf(elementStart)+1;
-          elementIndex = elementStart.substring(findIndex).valueof();
-          elementStart = elementStart.substring(0,findIndex);
-          var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
-          for (var i = 0; i < params.length; i++){
-              var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
-              if (paramAgencyComponent == elementAgencyComponent) {
-                  var target = Number(convertSpecialToZero($( params[i] ).val()));
-                  return this.optional(element) || value <= target;
-              }
-          }
+          var target = $(element).parents('.paragraphs-subform').find("input[name*='" + params + "']").val();
+          return this.optional(element) || value <= target;
       }, "Must be less than or equal to a field.");
 
       // greaterThanEqualComp
@@ -682,76 +687,15 @@
       // field 8, etc).  Unlike the above group, this is for the agency
       // component part of the form.
       // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 10th
-      $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_10']").rules( "add", {
-          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_9']"),
+      for (var i = 2; i <= 10; i++){
+        priorOrdinal = ordinalNumber(i - 1);
+        $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_" + i + "']").rules( "add", {
+          lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
           messages: {
-            lessThanEqualComp: "This should be less than the number of days for \"9th\"."
+            lessThanEqualOlderComp: "This should be less than the number of days for <em>" + priorOrdinal + "</em>."
           }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 9th
-      $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_9']").rules( "add", {
-          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_8']"),
-          messages: {
-            lessThanEqualComp: "This should be less than the number of days for \"8th\"."
-          }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 8th
-      $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_8']").rules( "add", {
-          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_7']"),
-          messages: {
-            lessThanEqualComp: "This should be less than the number of days for \"7th\"."
-          }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 7th
-      $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_7']").rules( "add", {
-          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_6']"),
-          messages: {
-              lessThanEqualComp: "This should be less than the number of days for \"6th\"."
-          }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 6th
-      $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_6']").rules( "add", {
-          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_5']"),
-          messages: {
-              lessThanEqualComp: "This should be less than the number of days for \"5th\"."
-          }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 5th
-      $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_5']").rules( "add", {
-          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_4']"),
-          messages: {
-              lessThanEqualComp: "This should be less than the number of days for \"4th\"."
-          }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 4th
-      $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_4']").rules( "add", {
-          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_3']"),
-          messages: {
-              lessThanEqualComp: "This should be less than the number of days for \"3rd\"."
-          }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 3rd
-      $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_3']").rules( "add", {
-          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_2']"),
-          messages: {
-              lessThanEqualComp: "This should be less than the number of days for \"2nd\"."
-          }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2nd
-      $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_2']").rules( "add", {
-          lessThanEqualComp: $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_1']"),
-          messages: {
-              lessThanEqualComp: "This should be less than the number of days for \"Overall\"."
-          }
-      });
+        });
+      }
 
       // VII.A. Simple - Agency Overall Median Number of Days
       $( "#edit-field-overall-viia-sim-med-0-value").rules( "add", {
