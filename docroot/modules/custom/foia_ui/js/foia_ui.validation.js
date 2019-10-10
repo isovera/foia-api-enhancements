@@ -689,11 +689,13 @@
       // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 10th
       for (var i = 2; i <= 10; i++){
         priorOrdinal = ordinalNumber(i - 1);
-        $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_" + i + "']").rules( "add", {
-          lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
-          messages: {
-            lessThanEqualOlderComp: "This should be less than the number of days for <em>" + priorOrdinal + "</em>."
-          }
+        $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_" + i + "']").each(function() {
+          $(this).rules( "add", {
+            lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
+            messages: {
+              lessThanEqualOlderComp: "This should be less than the number of days for <em>" + priorOrdinal + "</em>."
+            }
+          });
         });
       }
 
