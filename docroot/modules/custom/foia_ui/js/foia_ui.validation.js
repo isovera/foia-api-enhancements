@@ -161,6 +161,27 @@
         }
       }, "Must be less than or equal to a field.");
 
+      // lessThanEqualMultiComp
+      // initElementId is the id for the given field/element on the initial paragraph
+      // example initElementId: #edit-field-foia-xiic-0-subform-field-num-days-4-0-value
+      jQuery.validator.addMethod("lessThanEqualMultiComp", function(value, initElementId, params) {
+          value = convertSpecialToZero(value);
+          findIndex = element.indexOf('-subform-');
+          elementEnd = element.substr(findIndex);
+          elementStart = element.substr(0,findIndex);
+          findIndex = lastIndexOf(elementStart)+1;
+          elementIndex = elementStart.substring(findIndex).valueof();
+          elementStart = elementStart.substring(0,findIndex);
+          var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          for (var i = 0; i < params.length; i++){
+              var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+              if (paramAgencyComponent == elementAgencyComponent) {
+                  var target = Number(convertSpecialToZero($( params[i] ).val()));
+                  return this.optional(element) || value <= target;
+              }
+          }
+      }, "Must be less than or equal to a field.");
+
       // greaterThanEqualComp
       jQuery.validator.addMethod("greaterThanEqualComp", function(value, element, params) {
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
