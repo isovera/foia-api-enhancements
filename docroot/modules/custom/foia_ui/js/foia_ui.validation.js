@@ -681,12 +681,9 @@
         }
       });
 
-      // VI.C. (5) - Agency Components
-      // For the next 9 rules, each is comparing the value to the one lower
-      // than it ( i.e., field 10 is less than field 9, field 9 is less than
-      // field 8, etc).  Unlike the above group, this is for the agency
-      // component part of the form.
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 10th
+      // VI.C. (5) - ADMINISTRATIVE APPEALS - Oldest Days component/ 2nd-10th
+      // For each Agency/Component, iterate over 2nd to 10th Oldest days
+      // comparing the value to the one before it, e.g. value of 9th <= 10th.
       for (var i = 2; i <= 10; i++){
         priorOrdinal = ordinalNumber(i - 1);
         $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_" + i + "']").each(function() {
