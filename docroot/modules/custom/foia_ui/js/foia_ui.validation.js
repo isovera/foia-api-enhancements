@@ -1167,80 +1167,20 @@
         }
       });
 
-      // For the next 9 rules, each is comparing the value to the one lower
-      // than it ( i.e., field 10 is less than field 9, field 9 is less than
-      // field 8, etc).  This is the agency component part of the form.
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 10th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-10-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-9-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 9th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-9-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-8-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 8th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-8-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-7-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 7th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-7-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-6-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 6th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-6-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-5-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 5th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-5-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-4-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 4th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-4-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-3-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"3d\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 3d
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-3-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-2-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"2d\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 2d
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-2-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-1-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
-        }
-      });
+      // XII.C. FOIA Requests and Administrative Appeals - Oldest Days component/ 2nd-10th
+      // For each Agency/Component, iterate over 2nd to 10th Oldest days
+      // comparing the value to the one before it, e.g. value of 9th <= 8th.
+      for (var i = 2; i <= 10; i++){
+        priorOrdinal = ordinalNumber(i - 1);
+        $("input[name*='field_foia_xiic']").filter("input[name*='field_num_days_" + i + "']").each(function() {
+          $(this).rules( "add", {
+            lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
+            messages: {
+              lessThanEqualOlderComp: "This should be less than the number of days for <em>" + priorOrdinal + "</em>."
+            }
+          });
+        });
+      }
 
       // XII.D.(1). Number Received During Fiscal Year from Current Annual Report
       $( "input[name*='field_foia_xiid1']").filter("input[name*='field_received_cur_yr']").each(function() {
