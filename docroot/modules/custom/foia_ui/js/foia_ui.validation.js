@@ -182,9 +182,9 @@
 
       // lessThanEqualOlderComp
       jQuery.validator.addMethod("lessThanEqualOlderComp", function(value, element, params) {
-          value = convertSpecialToZero(value);
-          var target = $(element).parents('.paragraphs-subform').find("input[name*='" + params + "']").val();
-          return this.optional(element) || value <= target;
+        value = Number(convertSpecialToZero(value));
+        var target = Number($(element).parents('.paragraphs-subform').find("input[name*='" + params + "']").val());
+        return this.optional(element) || value <= target;
       }, "Must be less than or equal to a field.");
 
       // greaterThanEqualComp
