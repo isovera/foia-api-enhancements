@@ -21,12 +21,12 @@
       }
 
       /**
-       * Get ordinal number with suffix
+       * Return Oldest Days ordinal number with suffix
        */
-      function ordinalNumber(value) {
+      function oldestOrdinal(value) {
         switch (value) {
           case 1:
-            return value + "st";
+            return "Oldest";
             break;
           case 2:
             return value + "nd"
@@ -685,7 +685,7 @@
       // For each Agency/Component, iterate over 2nd to 10th Oldest days
       // comparing the value to the one before it, e.g. value of 9th <= 8th.
       for (var i = 2; i <= 10; i++){
-        priorOrdinal = ordinalNumber(i - 1);
+        priorOrdinal = oldestOrdinal(i - 1);
         $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_" + i + "']").each(function() {
           $(this).rules( "add", {
             lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
@@ -1170,7 +1170,7 @@
       // For each Agency/Component, iterate over 2nd to 10th Oldest days
       // comparing the value to the one before it, e.g. value of 9th <= 8th.
       for (var i = 2; i <= 10; i++){
-        priorOrdinal = ordinalNumber(i - 1);
+        priorOrdinal = oldestOrdinal(i - 1);
         $("input[name*='field_foia_xiic']").filter("input[name*='field_num_days_" + i + "']").each(function() {
           $(this).rules( "add", {
             lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
