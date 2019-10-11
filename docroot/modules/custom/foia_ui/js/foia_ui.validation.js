@@ -981,6 +981,21 @@
         }
       });
 
+      // VII.E. PENDING REQUESTS - Oldest Days component/ 2nd-10th
+      // For each Agency/Component, iterate over 2nd to 10th Oldest days
+      // comparing the value to the one before it, e.g. value of 9th <= 8th.
+      for (var i = 2; i <= 10; i++){
+        priorOrdinal = oldestOrdinal(i - 1);
+        $("input[name*='field_admin_app_viie']").filter("input[name*='field_num_days_" + i + "']").each(function() {
+          $(this).rules( "add", {
+            lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
+            messages: {
+              lessThanEqualOlderComp: "This should be less than the number of days for <em>" + priorOrdinal + "</em>."
+            }
+          });
+        });
+      }
+
       // VIII.A. Agency Overall Median Number of Days to Adjudicate
       $( "#edit-field-overall-viiia-med-days-jud-0-value").rules( "add", {
         betweenMinMaxComp: $("input[name*='field_req_viiia']").filter("input[name*='field_med_days_jud']"),
