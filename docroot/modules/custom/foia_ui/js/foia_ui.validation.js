@@ -683,7 +683,7 @@
 
       // VI.C. (5) - ADMINISTRATIVE APPEALS - Oldest Days component/ 2nd-10th
       // For each Agency/Component, iterate over 2nd to 10th Oldest days
-      // comparing the value to the one before it, e.g. value of 9th <= 10th.
+      // comparing the value to the one before it, e.g. value of 9th <= 8th.
       for (var i = 2; i <= 10; i++){
         priorOrdinal = ordinalNumber(i - 1);
         $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_" + i + "']").each(function() {
