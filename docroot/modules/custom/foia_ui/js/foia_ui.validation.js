@@ -1037,17 +1037,6 @@
         });
       });
 
-
-      // XII.C. FOIA Requests and Administrative Appeals
-      $("input[name*='field_foia_xiic']").filter("input[name*='field_num_days_1']").each(function() {
-        $(this).rules( "add", {
-          ifGreaterThanZeroComp: $("input[name*='field_foia_xiib']").filter("input[name*='field_pend_end_yr']"),
-          messages: {
-            ifGreaterThanZeroComp: "If there are consultations pending at end of year for XII.B, there must be entries in this section for that component.",
-          }
-        });
-      });
-
       // XII.A. Number of Backlogged Requests as of End of Fiscal Year
       $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_req_end_yr']").each(function() {
         $(this).rules( "add", {
@@ -1090,6 +1079,16 @@
         messages: {
           lessThanEqualToNA: "Must be equal to or less than VI.A.(1). Agency Overall Number of Appeals Pending as of End of Fiscal Year",
         }
+      });
+
+      // XII.C. FOIA Requests and Administrative Appeals
+      $("input[name*='field_foia_xiic']").filter("input[name*='field_num_days_1']").each(function() {
+        $(this).rules( "add", {
+          ifGreaterThanZeroComp: $("input[name*='field_foia_xiib']").filter("input[name*='field_pend_end_yr']"),
+          messages: {
+            ifGreaterThanZeroComp: "If there are consultations pending at end of year for XII.B, there must be entries in this section for that component.",
+          }
+        });
       });
 
       // For the next 9 rules, each is comparing the value to the one lower
