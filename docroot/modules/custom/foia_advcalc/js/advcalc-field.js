@@ -2,6 +2,23 @@
   Drupal.behaviors.advcalc_field = {
     attach: function attach() {
 
+    /**
+     * Converts value to number and "N/A", "n/a", and "<1" values to 0.
+     *
+     * @param value
+     * @returns {number}
+     */
+    function specialNumber(value) {
+      switch (String(value).toLowerCase()) {
+        case "n/a":
+        case "<1":
+          return Number(0);
+          break;
+        default:
+          return Number(value);
+        }
+      }
+
       // Fields from sections IX and X to calculate overall_x_perc_costs.
       $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value").change(function() {
         var overall_x_total_fees = Number($("#edit-field-overall-x-total-fees-0-value").val());
@@ -44,6 +61,24 @@
           $('#edit-field-overall-via-app-pend-endyr-0-value').val(overall_app_pend_end_yr);
         });
 
+      });
+
+    // Fields from section VI.C.(4) to calculate Lowest Number of Days.
+    var vic4low = $('input[id^="edit-field-admin-app-vic4').filter("input[name*='field_low_num_days']");
+    vic4low.each(function() {
+      $(this).change(function() {
+        vic4lowest = null;
+        vic4low.each(function () {
+          value = $(this).val();
+          if (vic4lowest == null && value !== null && value !== '') {
+              vic4lowest = specialNumber(value);
+            }
+            else if(value != undefined && value != '' && specialNumber(value) < specialNumber(vic4lowest)) {
+                vic4lowest = specialNumber(value);
+            }
+          });
+          $('#edit-field-overall-vic4-low-num-days-0-value').val(vic4lowest);
+        });
       });
 
       // Section V A automatically calculate field_req_pend_end_yr.
