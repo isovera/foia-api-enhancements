@@ -81,6 +81,24 @@
         });
       });
 
+    // Fields from section VI.C.(4) to calculate Highest Number of Days.
+    var vic4high = $('input[id^="edit-field-admin-app-vic4').filter("input[name*='field_high_num_days']");
+    vic4high.each(function() {
+      $(this).change(function() {
+        vic4highest = null;
+        vic4high.each(function () {
+          value = $(this).val();
+          if (vic4highest == null && value !== null && value !== '') {
+              vic4highest = specialNumber(value);
+            }
+            else if(value != undefined && value != '' && specialNumber(value) > specialNumber(vic4highest)) {
+                vic4highest = specialNumber(value);
+            }
+          });
+          $('#edit-field-overall-vic4-high-num-days-0-value').val(vic4highest);
+        });
+      });
+
       // Section V A automatically calculate field_req_pend_end_yr.
       // req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
       var via = $('input[id^="edit-field-foia-requests-va"]');
