@@ -20,7 +20,7 @@
       }
 
       /**
-       * Calculates overall min/max for a given component.
+       * Calculates overall value for a given component.
        *
        * @param {string} componentId
        *    The node edit paragraph component HTML fragment ID.
@@ -29,16 +29,17 @@
        * @param {string} overallFieldID
        *    The calculated overall field HTML fragment ID.
        * @param {string} operator
-       *    The comparison operation to be performed, "<" or ">".
+       *    The operation to be performed, "<", ">", or "+".
        */
-      function calcMinMax(componentId, componentFieldName, overallFieldID, operator) {
+      function calcOverall(componentId, componentFieldName, overallFieldID, operator) {
         var ops = {
           '<': function(a, b) { return a < b },
           '>': function(a, b) { return a > b },
+          '+': function(a, b) { return a + b },
         }
         var fields = $("input[id^='" + componentId + "']").filter("input[name*='" + componentFieldName + "']");
         fields.each(function() {
-          $(this).once('advCalcFieldMinMax').on('change', {overallFieldID: overallFieldID, operator: operator}, function(event) {
+          $(this).once('advCalcOverall').on('change', {overallFieldID: overallFieldID, operator: operator}, function(event) {
             var output = null;
             fields.each(function () {
               value = $(this).val();
@@ -98,19 +99,19 @@
       });
 
       // Fields from section VI.C.(4) to calculate Lowest Number of Days.
-      calcMinMax('edit-field-admin-app-vic4', 'field_low_num_days', 'edit-field-overall-vic4-low-num-days-0-value', '<');
+      calcOverall('edit-field-admin-app-vic4', 'field_low_num_days', 'edit-field-overall-vic4-low-num-days-0-value', '<');
       // Fields from section VI.C.(4) to calculate Highest Number of Days.
-      calcMinMax('edit-field-admin-app-vic4', 'field_high_num_days', 'edit-field-overall-vic4-high-num-days-0-value', '>');
+      calcOverall('edit-field-admin-app-vic4', 'field_high_num_days', 'edit-field-overall-vic4-high-num-days-0-value', '>');
 
       // Fields from section VII.A. to calculate Lowest Number of Days.
-      calcMinMax('edit-field-proc-req-viia', 'field_sim_low', 'edit-field-overall-viia-sim-low-0-value', '<');
+      calcOverall('edit-field-proc-req-viia', 'field_sim_low', 'edit-field-overall-viia-sim-low-0-value', '<');
       // Fields from section VII.A. to calculate Highest Number of Days.
-      calcMinMax('edit-field-proc-req-viia', 'field_sim_high', 'edit-field-overall-viia-sim-high-0-value', '>');
+      calcOverall('edit-field-proc-req-viia', 'field_sim_high', 'edit-field-overall-viia-sim-high-0-value', '>');
 
       // Fields from section VII.B. to calculate Lowest Number of Days.
-      calcMinMax('edit-field-proc-req-viib', 'field_sim_low', 'edit-field-overall-viib-sim-low-0-value', '<');
+      calcOverall('edit-field-proc-req-viib', 'field_sim_low', 'edit-field-overall-viib-sim-low-0-value', '<');
       // Fields from section VII.B. to calculate Highest Number of Days.
-      calcMinMax('edit-field-proc-req-viib', 'field_sim_high', 'edit-field-overall-viib-sim-high-0-value', '>');
+      calcOverall('edit-field-proc-req-viib', 'field_sim_high', 'edit-field-overall-viib-sim-high-0-value', '>');
 
       // Section V A automatically calculate field_req_pend_end_yr.
       // req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
