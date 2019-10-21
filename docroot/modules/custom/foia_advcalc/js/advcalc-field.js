@@ -113,6 +113,9 @@
       // Fields from section VII.B. to calculate Highest Number of Days.
       calcOverall('edit-field-proc-req-viib', 'field_sim_high', 'edit-field-overall-viib-sim-high-0-value', '>');
 
+      // Fields from section VIII.A. to calculate Overall Number Adjudicated Within Ten Calendar Days.
+      calcOverall('edit-field-req-viiia', 'field_num_jud_w10', 'edit-field-overall-viiia-num-jud-w10-0-value', '+');
+
       // Section V A automatically calculate field_req_pend_end_yr.
       // req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
       var via = $('input[id^="edit-field-foia-requests-va"]');
