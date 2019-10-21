@@ -68,8 +68,7 @@
       // Fields from section VI A to calculate app_pend_start_yr.
       var via = $('input[id^="edit-field-admin-app-via"]');
       via.change(function() {
-        var via_count = $("table[id^='field-admin-app-via-values'] tbody" +
-          " tr");
+        var via_count = $("table[id^='field-admin-app-via-values'] tbody" + " tr");
         var via_vals = [];
 
         for (var i = 0; i < via_count.length; i++) {
