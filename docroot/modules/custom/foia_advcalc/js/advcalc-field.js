@@ -19,6 +19,41 @@
         }
       }
 
+      /**
+       * Calculates overall min/max for a given component.
+       *
+       * @param {string} componentId
+       *    The node edit paragraph component HTML fragment ID.
+       * @param {string} componentFieldName
+       *    The paragraph component field machine name.
+       * @param {string} overallFieldID
+       *    The calculated overall field HTML fragment ID.
+       * @param {string} operator
+       *    The comparison operation to be performed, "<" or ">".
+       */
+      function calcMinMax(componentId, componentFieldName, overallFieldID, operator) {
+        var ops = {
+          '<': function(a, b) { return a < b },
+          '>': function(a, b) { return a > b },
+        }
+        var fields = $("input[id^='" + componentId + "']").filter("input[name*='" + componentFieldName + "']");
+        fields.each(function() {
+          $(this).once('advCalcFieldMinMax').on('change', {overallFieldID: overallFieldID, operator: operator}, function(event) {
+            var output = null;
+            fields.each(function () {
+              value = $(this).val();
+              if (output == null && value !== null && value !== '') {
+                output = specialNumber(value);
+              }
+              else if(value != undefined && value != '' && ops[event.data.operator](specialNumber(value), specialNumber(output))) {
+                output = specialNumber(value);
+              }
+            });
+            $('#' + event.data.overallFieldID).val(output);
+          });
+        });
+      }
+
       // Fields from sections IX and X to calculate overall_x_perc_costs.
       $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value").change(function() {
         var overall_x_total_fees = Number($("#edit-field-overall-x-total-fees-0-value").val());
@@ -63,41 +98,11 @@
 
       });
 
-    // Fields from section VI.C.(4) to calculate Lowest Number of Days.
-    var vic4low = $("input[id^='edit-field-admin-app-vic4']").filter("input[name*='field_low_num_days']");
-    vic4low.each(function() {
-      $(this).change(function() {
-        var vic4lowest = null;
-        vic4low.each(function () {
-          value = $(this).val();
-          if (vic4lowest == null && value !== null && value !== '') {
-              vic4lowest = specialNumber(value);
-            }
-            else if(value != undefined && value != '' && specialNumber(value) < specialNumber(vic4lowest)) {
-                vic4lowest = specialNumber(value);
-            }
-          });
-          $('#edit-field-overall-vic4-low-num-days-0-value').val(vic4lowest);
-        });
-      });
+      // Fields from section VI.C.(4) to calculate Lowest Number of Days.
+      calcMinMax('edit-field-admin-app-vic4', 'field_low_num_days', 'edit-field-overall-vic4-low-num-days-0-value', '<');
 
-    // Fields from section VI.C.(4) to calculate Highest Number of Days.
-    var vic4high = $("input[id^='edit-field-admin-app-vic4']").filter("input[name*='field_high_num_days']");
-    vic4high.each(function() {
-      $(this).change(function() {
-        var vic4highest = null;
-        vic4high.each(function () {
-          value = $(this).val();
-          if (vic4highest == null && value !== null && value !== '') {
-              vic4highest = specialNumber(value);
-            }
-            else if(value != undefined && value != '' && specialNumber(value) > specialNumber(vic4highest)) {
-                vic4highest = specialNumber(value);
-            }
-          });
-          $('#edit-field-overall-vic4-high-num-days-0-value').val(vic4highest);
-        });
-      });
+      // Fields from section VI.C.(4) to calculate Highest Number of Days.
+      calcMinMax('edit-field-admin-app-vic4', 'field_high_num_days', 'edit-field-overall-vic4-high-num-days-0-value', '>');
 
       // Section V A automatically calculate field_req_pend_end_yr.
       // req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
