@@ -64,10 +64,10 @@
       });
 
     // Fields from section VI.C.(4) to calculate Lowest Number of Days.
-    var vic4low = $('input[id^="edit-field-admin-app-vic4').filter("input[name*='field_low_num_days']");
+    var vic4low = $("input[id^='edit-field-admin-app-vic4']").filter("input[name*='field_low_num_days']");
     vic4low.each(function() {
       $(this).change(function() {
-        vic4lowest = null;
+        var vic4lowest = null;
         vic4low.each(function () {
           value = $(this).val();
           if (vic4lowest == null && value !== null && value !== '') {
@@ -82,10 +82,10 @@
       });
 
     // Fields from section VI.C.(4) to calculate Highest Number of Days.
-    var vic4high = $('input[id^="edit-field-admin-app-vic4').filter("input[name*='field_high_num_days']");
+    var vic4high = $("input[id^='edit-field-admin-app-vic4']").filter("input[name*='field_high_num_days']");
     vic4high.each(function() {
       $(this).change(function() {
-        vic4highest = null;
+        var vic4highest = null;
         vic4high.each(function () {
           value = $(this).val();
           if (vic4highest == null && value !== null && value !== '') {
