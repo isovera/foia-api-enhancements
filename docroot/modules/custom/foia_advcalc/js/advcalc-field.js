@@ -100,9 +100,13 @@
 
       // Fields from section VI.C.(4) to calculate Lowest Number of Days.
       calcMinMax('edit-field-admin-app-vic4', 'field_low_num_days', 'edit-field-overall-vic4-low-num-days-0-value', '<');
-
       // Fields from section VI.C.(4) to calculate Highest Number of Days.
       calcMinMax('edit-field-admin-app-vic4', 'field_high_num_days', 'edit-field-overall-vic4-high-num-days-0-value', '>');
+
+      // Fields from section VII.A. to calculate Lowest Number of Days.
+      calcMinMax('edit-field-proc-req-viia', 'field_sim_low', 'edit-field-overall-viia-sim-low-0-value', '<');
+      // Fields from section VII.A. to calculate Highest Number of Days.
+      calcMinMax('edit-field-proc-req-viia', 'field_sim_high', 'edit-field-overall-viia-sim-high-0-value', '>');
 
       // Section V A automatically calculate field_req_pend_end_yr.
       // req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
