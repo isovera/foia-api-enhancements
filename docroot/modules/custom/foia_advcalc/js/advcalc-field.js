@@ -69,7 +69,13 @@
                 }
               }
             });
-            $('#' + event.data.overallFieldID).val(output);
+            // Clear overall value if output is "NaN"
+            if(output !== output) {
+              $('#' + event.data.overallFieldID).val('');
+            }
+            else {
+              $('#' + event.data.overallFieldID).val(output);
+            }
           });
         });
       }
