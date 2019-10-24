@@ -2,20 +2,37 @@
   Drupal.behaviors.advcalc_field = {
     attach: function attach() {
 
-    /**
-     * Converts value to number and "N/A", "n/a", and "<1" values to 0.
-     *
-     * @param value
-     * @returns {number}
-     */
-    function specialNumber(value) {
-      switch (String(value).toLowerCase()) {
-        case "n/a":
-        case "<1":
-          return Number(0);
-          break;
-        default:
-          return Number(value);
+      /**
+       * Converts value to number and "N/A", "n/a", and "<1" values to 0.
+       *
+       * @param value
+       * @returns {number}
+       */
+      function specialNumber(value) {
+        switch (String(value).toLowerCase()) {
+          case "n/a":
+            return Number(0);
+            break;
+          case "<1":
+            return Number(0.1);
+            break;
+          default:
+            return Number(value);
+        }
+      }
+
+     /**
+       * Converts number back to "<1" if between 0 and 1.
+       *
+       * @param {number}
+       * @returns {value}
+       */
+      function displayLessThan(number) {
+        if (number > 0 && number < 1) {
+          return "<1";
+        }
+        else {
+          return number;
         }
       }
 
@@ -44,10 +61,10 @@
             fields.each(function () {
               value = $(this).val();
               if (output == null && value !== null && value !== '') {
-                output = specialNumber(value);
+                output = displayLessThan(specialNumber(value));
               }
               else if(value != undefined && value != '' && ops[event.data.operator](specialNumber(value), specialNumber(output))) {
-                output = specialNumber(value);
+                output = displayLessThan(specialNumber(value));
               }
             });
             $('#' + event.data.overallFieldID).val(output);
