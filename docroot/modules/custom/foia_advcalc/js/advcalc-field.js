@@ -60,11 +60,13 @@
             var output = null;
             fields.each(function () {
               value = $(this).val();
-              if (output == null && value !== null && value !== '') {
-                output = displayLessThan(specialNumber(value));
-              }
-              else if(value != undefined && value != '' && ops[event.data.operator](specialNumber(value), specialNumber(output))) {
-                output = displayLessThan(specialNumber(value));
+              if(value != '' && String(value).toLowerCase() != 'n/a') {
+                if (output == null && value !== null) {
+                  output = displayLessThan(specialNumber(value));
+                }
+                else if(value != undefined && ops[event.data.operator](specialNumber(value), specialNumber(output))) {
+                  output = displayLessThan(specialNumber(value));
+                }
               }
             });
             $('#' + event.data.overallFieldID).val(output);
