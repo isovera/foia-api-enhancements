@@ -210,7 +210,7 @@
       //FOIA Personnel and Costs IX. proc_costs / Fees X. total_fees  = Fees X. perc_costs
       // If section IX proc_costs field changes.
       $( "input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']").each(function() {
-        $(this).once('advCalcIXPercCosts').change(function() {
+        $(this).once('advCalcIXProcCosts').change(function() {
           var proc_costs_agency_val = getAgencyComponent($(this));
 
           if(proc_costs_agency_val != '_none') {
