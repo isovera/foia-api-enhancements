@@ -100,14 +100,8 @@ function foia_annual_data_report_create_node(array $form, FormStateInterface
 
   $response = new AjaxResponse();
 
-  // Set a temporary title, in case they have not.
-  $report_title = $form_state->getValue('title')[0]['value'] ?
-  $form_state->getValue('title')[0]['value'] :
-  'Agency Report ' . date('Y-m-d');
-
   $node = \Drupal::entityTypeManager()->getStorage('node')->create([
     'type' => 'annual_foia_report_data',
-    'title' => $report_title,
     'field_agency' => $form_state->getValue('field_agency'),
   ]);
   $node->save();

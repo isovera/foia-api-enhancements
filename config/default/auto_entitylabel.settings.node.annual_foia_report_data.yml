@@ -1,0 +1,6 @@
+status: 2
+pattern: '[node:field_agency:entity:field_agency_abbreviation] - [current-date:html_year] - Annual FOIA Report'
+escape: false
+dependencies:
+  config:
+    - node.type.annual_foia_report_data
