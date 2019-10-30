@@ -2,6 +2,7 @@
   Drupal.behaviors.autocalcFields = {
     attach: function attach() {
       var autocalcSettings = drupalSettings.foiaAutocalc.autocalcSettings;
+      // Bind event listeners for autocalculation.
       Object.keys(autocalcSettings).forEach(function(fieldName, fieldIndex) {
         var fieldSettings = autocalcSettings[fieldName];
         fieldSettings.forEach(function(fieldSetting) {
@@ -10,6 +11,22 @@
             $(this).once(fieldSelector + '_' + fieldIndex + '_' + index).on('change', function() {
               calculateField(fieldName, fieldSettings);
             });
+          });
+        });
+      });
+      // Perform calculations on form load.
+      $(document).ready(function() {
+        Object.keys(autocalcSettings).forEach(function(fieldName, fieldIndex) {
+          var fieldSettings = autocalcSettings[fieldName];
+          fieldSettings.forEach(function(fieldSetting) {
+            var fieldSelector = convertToFieldSelector(fieldSetting);
+            var fieldInputValue = $(convertToFieldSelector(fieldName + ' input').val());
+            if (!fieldInputValue) {
+              debugger;
+              $(fieldSelector + ' input').each(function(index) {
+                calculateField(fieldName, fieldSettings);
+              });
+            }
           });
         });
       });
