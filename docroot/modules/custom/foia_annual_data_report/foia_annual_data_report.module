@@ -18,6 +18,7 @@ use Drupal\Core\Ajax\RedirectCommand;
 function foia_annual_data_report_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Add the AJAX save callbacks.
   foia_annual_data_report_ajax_existing_node($form);
+  foia_annual_data_report_set_default_report_year($form);
 
   // Force a submit function to increase memory limit before core's submit.
   foreach (array_keys($form['actions']) as $action) {
