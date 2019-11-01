@@ -5,9 +5,7 @@ namespace Drupal\foia_upload_xml;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\migrate_tools\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
-use Drupal\migrate\Plugin\MigrationPluginManager;
 
 /**
  * Class FoiaUploadXmlBatchImport.
@@ -28,9 +26,9 @@ class FoiaUploadXmlBatchImport {
   /**
    * The migration plugin manager.
    *
-   * @var Drupal\migrate\Plugin\MigrationPluginManager
+   * @var \Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor
    */
-  protected $migrationPluginManager;
+  protected $migrationsProcessor;
 
   /**
    * The current user object.
@@ -44,14 +42,14 @@ class FoiaUploadXmlBatchImport {
    *
    * @param Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
-   * @param Drupal\migrate\Plugin\MigrationPluginManager $migration_plugin_manager
-   *   The migration plugin manager.
+   * @param \Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor $foiaUploadXmlMigrationsProcessor
+   *   A class to configure and process report migrations.
    * @param Drupal\Core\Session\AccountInterface $user
    *   The user to be used as the owner of the imported node.
    */
-  public function __construct(MessengerInterface $messenger, MigrationPluginManager $migration_plugin_manager, AccountInterface $user) {
+  public function __construct(MessengerInterface $messenger, FoiaUploadXmlMigrationsProcessor $foiaUploadXmlMigrationsProcessor, AccountInterface $user) {
     $this->messenger = $messenger;
-    $this->migrationPluginManager = $migration_plugin_manager;
+    $this->migrationsProcessor = $foiaUploadXmlMigrationsProcessor;
     $this->user = $user;
   }
 
@@ -69,12 +67,11 @@ class FoiaUploadXmlBatchImport {
     $this->messenger->addStatus($migration_list_item . ' in progress.');
     $context['sandbox']['current_migration'] = $migration_list_item;
 
-    $migration = $this->migrationPluginManager->createInstance(
-      $migration_list_item,
-      $this->sourceOverrides());
-    $migration->getIdMap()->prepareUpdate();
-    $executable = new MigrateExecutable($migration, new MigrateMessage());
-    $executable->import();
+    // This assumes that source url has already been configured in
+    // AgencyUploadXmlForm::getBatchOperations().
+    $this->migrationsProcessor
+      ->setMessenger(new MigrateMessage())
+      ->process($migration_list_item, $this->sourceOverrides());
 
     $strings = ['@item' => $migration_list_item];
     $context['message'] = $this->t('@item processed.', $strings);
