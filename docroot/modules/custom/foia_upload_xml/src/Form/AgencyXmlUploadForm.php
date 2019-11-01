@@ -2,13 +2,15 @@
 
 namespace Drupal\foia_upload_xml\Form;
 
+use Drupal\file\FileInterface;
+use Drupal\user\UserInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\foia_upload_xml\ReportUploadValidator;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\user\Entity\User;
-use Drupal\migrate_plus\Entity\Migration;
 
 /**
  * Class AgencyXmlUploadForm.
@@ -98,14 +100,6 @@ class AgencyXmlUploadForm extends FormBase {
     // form is actually being submitted.
     $element = $form_state->getTriggeringElement();
     if ($element['#id'] == 'edit-submit') {
-      // Attempt to get a lock, tell them to try again if we can't.
-      $lock = \Drupal::service('lock.persistent');
-      // This is released in foia_upload_xml_execute_migration_finished().
-      if (!$lock->acquire('foia_upload_xml', 3600)) {
-        $form_state->setErrorByName('submit',
-          $this->t("Another Agency's import is running; please re-submit in a few minutes."));
-      }
-
       // Don't allow processing a report upload if the reporting agency has
       // an existing report in the current calendar year whose workflow
       // state indicates that it has been submitted or cleared.
@@ -114,49 +108,61 @@ class AgencyXmlUploadForm extends FormBase {
         $this->reportValidator->validate($file, $form_state);
       }
     }
-
-    if (!empty($form_state->getErrors())) {
-      \Drupal::service('lock.persistent')->release('foia_upload_xml');
-    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $fid = $form_state->getValue(['agency_report_xml', 0]);
-    if (empty($fid)) {
-      return;
+    // Attempt to get a lock, tell them to try again if we can't.
+    $lock = \Drupal::service('lock.persistent');
+
+    // This is released in foia_upload_xml_execute_migration_finished().
+    if ($lock->acquire('foia_upload_xml', 3600)) {
+      $this->process($form_state);
     }
+    else {
+      $this->queue($form_state);
+    }
+  }
 
-    $file_storage = $this->entityTypeManager->getStorage('file');
-    $file = $file_storage->load($fid);
-    // If we do not use temporary, then we should add $file->setPermanent().
-    $file->save();
-    $directory = 'temporary://foia-xml';
-    \Drupal::service('file_system')->prepareDirectory($directory, FILE_CREATE_DIRECTORY);
-
-    // Get the user's agency abbreviation to put in the file name, so that
-    // simulataneous uploads don't wipe out each other's files.
+  /**
+   * Add a report upload file to be processed by the queue.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  protected function queue(FormStateInterface $form_state) {
     $user = User::load(\Drupal::currentUser()->id());
-    $user_agency_nid = $user->get('field_agency')->target_id;
-    $xml_upload_filename =
-      "$directory/report_" . date('Y') . "_" . $user_agency_nid . ".xml";
-    file_move($file, $xml_upload_filename, FILE_EXISTS_REPLACE);
+    $file = $this->getUploadedFile($form_state);
+    $file = $this->prepareFile($file, $user, 'public');
 
-    // Load the migrations, set them to use this new filename, and save them.
-    $migrations_list = $this->getMigrationsList();
-    foreach ($migrations_list as $migration_list_item) {
-      $migration = Migration::load($migration_list_item);
-      $source = $migration->get('source');
-      $source['urls'] = $xml_upload_filename;
-      $migration->set('source', $source);
-      $migration->save();
-    }
+    $this->addToQueue($file, $user);
+    \Drupal::messenger()->addStatus($this->t('Your report has been added to the queue.  Please check back in 15 minutes.'));
+  }
+
+  /**
+   * Process an uploaded report file immediately via the batch api.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  protected function process(FormStateInterface $form_state) {
+    $user = User::load(\Drupal::currentUser()->id());
+    $file = $this->getUploadedFile($form_state);
+    $file = $this->prepareFile($file, $user, 'temporary');
 
     $batch = [
       'title' => $this->t('Importing Annual Report XML Data...'),
-      'operations' => $this->getBatchOperations(),
+      'operations' => $this->getBatchOperations($file),
       'init_message' => $this->t('Commencing import'),
       'progress_message' => $this->t('Imported @current out of @total'),
       'error_message' => $this->t('An error occurred during import'),
@@ -168,97 +174,20 @@ class AgencyXmlUploadForm extends FormBase {
   }
 
   /**
-   * Fetches an array of migrations to run to import the Annual Report XML.
-   *
-   * @return string[]
-   *   List of migrations.
-   */
-  protected function getMigrationsList() {
-    $migrations_list = [
-      'component',
-      'component_ix_personnel',
-      'component_iv_statutes',
-      'component_va_requests',
-      'component_vb1_requests',
-      'component_vb2_requests',
-      'component_vb3_requests',
-      'component_via_disposition',
-      'component_vib_disposition',
-      'component_vic1_applied_exemptions',
-      'component_vic2_nonexemption_denial',
-      'component_vic3_other_denial',
-      'component_vic4_response_time',
-      'component_vic5_oldest_pending',
-      'component_viia_processed_requests',
-      'component_viib_processed_requests',
-      'component_viic1_simple_response',
-      'component_viic2_complex_response',
-      'component_viic3_expedited_response',
-      'component_viid_pending_requests',
-      'component_viie_oldest_pending',
-      'component_viiia_expedited_processing',
-      'component_viiib_fee_waiver',
-      'component_xia_subsection_c',
-      'component_xib_subsection_a2',
-      'component_xiia',
-      'component_xiib',
-      'component_xiic',
-      'component_xiid1',
-      'component_xiid2',
-      'component_xiie1',
-      'component_xiie2',
-      'component_x_fees',
-      'foia_vb2_other',
-      'foia_vic3_other',
-      'foia_iv_details',
-      'foia_iv_statute',
-      'foia_va_requests',
-      'foia_vb1_requests',
-      'foia_vb2',
-      'foia_vb3_requests',
-      'foia_via_disposition',
-      'foia_vib_disposition',
-      'foia_vic1_applied_exemptions',
-      'foia_vic2_nonexemption_denial',
-      'foia_vic3',
-      'foia_vic4_response_time',
-      'foia_vic5_oldest_pending',
-      'foia_viia_processed_requests',
-      'foia_viib_processed_requests',
-      'foia_viic1_simple_response',
-      'foia_viic2_complex_response',
-      'foia_viic3_expedited_response',
-      'foia_viid_pending_requests',
-      'foia_viie_oldest_pending',
-      'foia_viiia_expedited_processing',
-      'foia_viiib_fee_waiver',
-      'foia_ix_personnel',
-      'foia_x_fees',
-      'foia_xia_subsection_c',
-      'foia_xib_subsection_a2',
-      'foia_xiia',
-      'foia_xiib',
-      'foia_xiic',
-      'foia_xiid1',
-      'foia_xiid2',
-      'foia_xiie1',
-      'foia_xiie2',
-      'foia_agency_report',
-    ];
-
-    return $migrations_list;
-  }
-
-  /**
    * Operations for batch process.
+   *
+   * @param \Drupal\file\FileInterface $sourceFile
+   *   The data source to be processed.
    *
    * @return array
    *   Array of operations to execute via batch.
    */
-  protected function getBatchOperations() {
-    $migrations_list = $this->getMigrationsList();
+  protected function getBatchOperations(FileInterface $sourceFile) {
+    /** @var \Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor */
+    $processor = \Drupal::service('foia_upload_xml.migrations_processor');
+    $processor = $processor->setSourceFile($sourceFile);
     $operations = [];
-    foreach ($migrations_list as $migration_list_item) {
+    foreach ($processor->getMigrationsList() as $migration_list_item) {
       $operations[] = ['foia_upload_xml_execute_migration',
         [$migration_list_item],
       ];
@@ -268,13 +197,33 @@ class AgencyXmlUploadForm extends FormBase {
   }
 
   /**
+   * Create a queue item and add it to the foia_xml_report_import_worker queue.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The data source file to be processed later.
+   * @param \Drupal\Core\Entity\EntityInterface|null $user
+   *   The user uploading the source file.
+   */
+  protected function addToQueue(FileInterface $file, EntityInterface $user) {
+    $item = new \stdClass();
+    $item->fid = $file->id();
+    $item->uid = $user->id();
+    $item->agency = $user->get('field_agency')->target_id;
+    $item->report_year = date('Y');
+
+    /** @var \Drupal\Core\Queue\QueueInterface $queue */
+    $queue = \Drupal::service('queue')->get('foia_xml_report_import_worker');
+    $queue->createItem($item);
+  }
+
+  /**
    * Load the file uploaded in the agency_report_xml field.
    *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current form state.
    *
-   * @return bool|\Drupal\Core\Entity\EntityInterface|null
-   *   The uploaded file object or FALSE if one does not exist.
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   *   The uploaded file object or NULL if one does not exist.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
@@ -282,11 +231,48 @@ class AgencyXmlUploadForm extends FormBase {
   protected function getUploadedFile(FormStateInterface $form_state) {
     $fid = $form_state->getValue(['agency_report_xml', 0]);
     if (empty($fid)) {
-      return FALSE;
+      return NULL;
     }
 
     $file_storage = $this->entityTypeManager->getStorage('file');
     return $file_storage->load($fid);
+  }
+
+  /**
+   * Save and rename the uploaded file.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The uploaded file.
+   * @param \Drupal\user\UserInterface $user
+   *   The user that uploaded the file.
+   * @param string $file_scheme
+   *   The file scheme to use when moving the file.  Either temporary,
+   *   public, or private.
+   *
+   * @return \Drupal\file\FileInterface
+   *   The uploaded file after it has been moved.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  protected function prepareFile(FileInterface $file, UserInterface $user, string $file_scheme = 'temporary') {
+    if (!$file_scheme == 'temporary') {
+      // Store the file permanently so that it still exists when the queue goes
+      // to process it.
+      $file->setPermanent();
+    }
+
+    $file->save();
+    $directory = $file_scheme . '://foia-xml';
+    \Drupal::service('file_system')
+      ->prepareDirectory($directory, FILE_CREATE_DIRECTORY);
+
+    // Get the user's agency abbreviation to put in the file name, so that
+    // simultaneous uploads don't wipe out each other's files.
+    $user_agency_nid = $user->get('field_agency')->target_id;
+    $xml_upload_filename = "$directory/report_" . date('Y') . "_" . $user_agency_nid . ".xml";
+    $file = file_move($file, $xml_upload_filename, FILE_EXISTS_REPLACE);
+
+    return $file;
   }
 
 }
