@@ -52,7 +52,6 @@
         var ops = {
           '<': function(a, b) { return a < b },
           '>': function(a, b) { return a > b },
-          '+': function(a, b) { return a + b },
         }
         var fields = $("input[id^='" + componentId + "']").filter("input[name*='" + componentFieldName + "']");
         fields.each(function() {
@@ -61,7 +60,7 @@
             var isOverallNA = true;
             fields.each(function () {
               value = $(this).val();
-              if(String(value).toLowerCase() != 'n/a') {
+              if (String(value).toLowerCase() != 'n/a') {
                 isOverallNA = false;
                 if (value != '' && value !== null && (output == null || output == "n/a")) {
                   // Set output for the first valid value.
@@ -74,11 +73,11 @@
               }
             });
             // Clear overall value if output is "NaN".
-            if(output !== output) {
+            if (output !== output) {
               output = '';
             }
             // Set overall value to "N/A" if all fields are "N/A".
-            else if(isOverallNA) {
+            else if (isOverallNA) {
               output = 'N/A';
             }
             $('#' + event.data.overallFieldID).val(output);
@@ -163,9 +162,6 @@
       calcOverall('edit-field-proc-req-viib', 'field_exp_low', 'edit-field-overall-viib-exp-low-0-value', '<');
       // Fields from section VII.B. to calculate Highest Number of Days (expedited).
       calcOverall('edit-field-proc-req-viib', 'field_exp_high', 'edit-field-overall-viib-exp-high-0-value', '>');
-
-      // Fields from section VIII.A. to calculate Overall Number Adjudicated Within Ten Calendar Days.
-      calcOverall('edit-field-req-viiia', 'field_num_jud_w10', 'edit-field-overall-viiia-num-jud-w10-0-value', '+');
 
       // Section V A automatically calculate field_req_pend_end_yr.
       // req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
