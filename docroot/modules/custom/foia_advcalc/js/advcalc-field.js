@@ -58,24 +58,30 @@
         fields.each(function() {
           $(this).once('advCalcOverall').on('change', {overallFieldID: overallFieldID, operator: operator}, function(event) {
             var output = null;
+            var isOverallNA = true;
             fields.each(function () {
               value = $(this).val();
-              if(value != '' && String(value).toLowerCase() != 'n/a') {
-                if (output == null && value !== null) {
+              if(String(value).toLowerCase() != 'n/a') {
+                isOverallNA = false;
+                if (value != '' && value !== null && (output == null || output == "n/a")) {
+                  // Set output for the first valid value.
                   output = displayLessThan(specialNumber(value));
                 }
-                else if(value != undefined && ops[event.data.operator](specialNumber(value), specialNumber(output))) {
+                else if(value != '' && value != undefined && ops[event.data.operator](specialNumber(value), specialNumber(output))) {
+                  // Override output if operation criterion is met.
                   output = displayLessThan(specialNumber(value));
                 }
               }
             });
-            // Clear overall value if output is "NaN"
+            // Clear overall value if output is "NaN".
             if(output !== output) {
-              $('#' + event.data.overallFieldID).val('');
+              output = '';
             }
-            else {
-              $('#' + event.data.overallFieldID).val(output);
+            // Set overall value to "N/A" if all fields are "N/A".
+            else if(isOverallNA) {
+              output = 'N/A';
             }
+            $('#' + event.data.overallFieldID).val(output);
           });
         });
       }
