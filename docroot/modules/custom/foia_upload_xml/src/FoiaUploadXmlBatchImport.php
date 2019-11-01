@@ -19,7 +19,7 @@ class FoiaUploadXmlBatchImport {
   /**
    * The messenger service.
    *
-   * @var Drupal\Core\Messenger\MessengerInterface
+   * @var \Drupal\Core\Messenger\MessengerInterface
    */
   protected $messenger;
 
@@ -33,18 +33,18 @@ class FoiaUploadXmlBatchImport {
   /**
    * The current user object.
    *
-   * @var Drupal\Core\Session\AccountInterface
+   * @var \Drupal\Core\Session\AccountInterface
    */
   protected $user;
 
   /**
    * Creates a FoiaUploadXmlBatchImport object.
    *
-   * @param Drupal\Core\Messenger\MessengerInterface $messenger
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
    * @param \Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor $foiaUploadXmlMigrationsProcessor
    *   A class to configure and process report migrations.
-   * @param Drupal\Core\Session\AccountInterface $user
+   * @param \Drupal\Core\Session\AccountInterface $user
    *   The user to be used as the owner of the imported node.
    */
   public function __construct(MessengerInterface $messenger, FoiaUploadXmlMigrationsProcessor $foiaUploadXmlMigrationsProcessor, AccountInterface $user) {
