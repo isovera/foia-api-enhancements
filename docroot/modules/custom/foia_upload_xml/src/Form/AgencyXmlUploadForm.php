@@ -152,8 +152,8 @@ class AgencyXmlUploadForm extends FormBase {
     $item = new \stdClass();
     $item->fid = $file->id();
     $item->uid = $user->id();
-    $item->agency = $report_data['agency_tid'] ?? FALSE;
-    $item->report_year = $report_data['report_year'] ?? FALSE;
+    $item->agency = $report_data['agency_tid'] ?? $user->get('field_agency')->target_id;
+    $item->report_year = $report_data['report_year'] ?? date('Y');
 
     /** @var \Drupal\Core\Queue\QueueInterface $queue */
     $queue = \Drupal::service('queue')->get('foia_xml_report_import_worker');
