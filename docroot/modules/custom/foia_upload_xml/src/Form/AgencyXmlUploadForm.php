@@ -3,8 +3,7 @@
 namespace Drupal\foia_upload_xml\Form;
 
 use Drupal\file\FileInterface;
-use Drupal\user\UserInterface;
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\foia_upload_xml\ReportUploadValidator;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
@@ -139,9 +138,27 @@ class AgencyXmlUploadForm extends FormBase {
   protected function queue(FormStateInterface $form_state) {
     $user = User::load(\Drupal::currentUser()->id());
     $file = $this->getUploadedFile($form_state);
-    $file = $this->prepareFile($file, $user, 'public');
+    $file = $this->prepareFile($file, 'public');
+    $directory = $this->prepareDirectory('public');
 
-    $this->addToQueue($file, $user);
+    // Create a unique filename for this report based on the agency, year,
+    // and, if the agency can't be found, the uploading user id.
+    $report_data = \Drupal::service('foia_upload_xml.report_parser')->parse($file);
+    $id = $report_data['agency_tid'] ?? 'user_' . $user->id();
+    $year = $report_data['report_year'] ?? date('Y');
+    $xml_upload_filename = "$directory/report_" . $year . "_" . $id . ".xml";
+    $file = file_move($file, $xml_upload_filename, FileSystemInterface::EXISTS_RENAME);
+
+    $item = new \stdClass();
+    $item->fid = $file->id();
+    $item->uid = $user->id();
+    $item->agency = $report_data['agency_tid'] ?? FALSE;
+    $item->report_year = $report_data['report_year'] ?? FALSE;
+
+    /** @var \Drupal\Core\Queue\QueueInterface $queue */
+    $queue = \Drupal::service('queue')->get('foia_xml_report_import_worker');
+    $queue->createItem($item);
+
     \Drupal::messenger()->addStatus($this->t('Your report has been added to the queue.  Please check back in 15 minutes.'));
   }
 
@@ -158,7 +175,15 @@ class AgencyXmlUploadForm extends FormBase {
   protected function process(FormStateInterface $form_state) {
     $user = User::load(\Drupal::currentUser()->id());
     $file = $this->getUploadedFile($form_state);
-    $file = $this->prepareFile($file, $user, 'temporary');
+    $file = $this->prepareFile($file, 'temporary');
+    $directory = $this->prepareDirectory('temporary');
+
+    // Get the user's agency abbreviation to put in the file name, so that
+    // simultaneous uploads don't wipe out each other's files.
+    // This is fine when the file is being processed immediately.
+    $user_agency_nid = $user->get('field_agency')->target_id;
+    $xml_upload_filename = "$directory/report_" . date('Y') . "_" . $user_agency_nid . ".xml";
+    $file = file_move($file, $xml_upload_filename, FILE_EXISTS_REPLACE);
 
     $batch = [
       'title' => $this->t('Importing Annual Report XML Data...'),
@@ -197,26 +222,6 @@ class AgencyXmlUploadForm extends FormBase {
   }
 
   /**
-   * Create a queue item and add it to the foia_xml_report_import_worker queue.
-   *
-   * @param \Drupal\file\FileInterface $file
-   *   The data source file to be processed later.
-   * @param \Drupal\Core\Entity\EntityInterface|null $user
-   *   The user uploading the source file.
-   */
-  protected function addToQueue(FileInterface $file, EntityInterface $user) {
-    $item = new \stdClass();
-    $item->fid = $file->id();
-    $item->uid = $user->id();
-    $item->agency = $user->get('field_agency')->target_id;
-    $item->report_year = date('Y');
-
-    /** @var \Drupal\Core\Queue\QueueInterface $queue */
-    $queue = \Drupal::service('queue')->get('foia_xml_report_import_worker');
-    $queue->createItem($item);
-  }
-
-  /**
    * Load the file uploaded in the agency_report_xml field.
    *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
@@ -243,8 +248,6 @@ class AgencyXmlUploadForm extends FormBase {
    *
    * @param \Drupal\file\FileInterface $file
    *   The uploaded file.
-   * @param \Drupal\user\UserInterface $user
-   *   The user that uploaded the file.
    * @param string $file_scheme
    *   The file scheme to use when moving the file.  Either temporary,
    *   public, or private.
@@ -254,7 +257,7 @@ class AgencyXmlUploadForm extends FormBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function prepareFile(FileInterface $file, UserInterface $user, string $file_scheme = 'temporary') {
+  protected function prepareFile(FileInterface $file, string $file_scheme = 'temporary') {
     if (!$file_scheme == 'temporary') {
       // Store the file permanently so that it still exists when the queue goes
       // to process it.
@@ -262,17 +265,26 @@ class AgencyXmlUploadForm extends FormBase {
     }
 
     $file->save();
+
+    return $file;
+  }
+
+  /**
+   * Create a directory where reports should be saved, if it does not exist.
+   *
+   * @param string $file_scheme
+   *   The file scheme indicating where to create the foia-xml directory,
+   *   either temporary, public, or private.
+   *
+   * @return string
+   *   The directory file path where the upload will be saved, including scheme.
+   */
+  protected function prepareDirectory(string $file_scheme = 'temporary') {
     $directory = $file_scheme . '://foia-xml';
     \Drupal::service('file_system')
       ->prepareDirectory($directory, FILE_CREATE_DIRECTORY);
 
-    // Get the user's agency abbreviation to put in the file name, so that
-    // simultaneous uploads don't wipe out each other's files.
-    $user_agency_nid = $user->get('field_agency')->target_id;
-    $xml_upload_filename = "$directory/report_" . date('Y') . "_" . $user_agency_nid . ".xml";
-    $file = file_move($file, $xml_upload_filename, FILE_EXISTS_REPLACE);
-
-    return $file;
+    return $directory;
   }
 
 }
