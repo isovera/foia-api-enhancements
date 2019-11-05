@@ -160,6 +160,7 @@ class AgencyXmlUploadForm extends FormBase {
     $queue->createItem($item);
 
     \Drupal::messenger()->addStatus($this->t('Your report has been added to the queue.  Please check back in 15 minutes.'));
+    $form_state->setRedirect('user.page');
   }
 
   /**
