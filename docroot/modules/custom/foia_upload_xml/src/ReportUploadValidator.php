@@ -19,13 +19,6 @@ class ReportUploadValidator {
   use DependencySerializationTrait;
 
   /**
-   * An array of report data parsed from the xml file.
-   *
-   * @var array
-   */
-  private $data;
-
-  /**
    * The entity type manager.
    *
    * @var \Drupal\Core\Entity\EntityTypeManager
