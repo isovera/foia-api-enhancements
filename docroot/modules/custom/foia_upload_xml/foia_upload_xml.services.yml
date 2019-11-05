@@ -4,7 +4,7 @@ services:
     arguments: ['@messenger', '@foia_upload_xml.migrations_processor', '@current_user']
   foia_upload_xml.report_upload_validator:
     class: Drupal\foia_upload_xml\ReportUploadValidator
-    arguments: ['@plugin.manager.migrate_plus.data_parser', '@entity_type.manager']
+    arguments: ['@foia_upload_xml.report_parser', '@entity_type.manager', '@database']
   foia_upload_xml.migrations_processor:
     class: Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor
     arguments: ['@plugin.manager.migration']
