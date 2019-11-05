@@ -4,8 +4,9 @@ namespace Drupal\foia_upload_xml;
 
 use Drupal\file\FileInterface;
 use Drupal\migrate\MigrateMessage;
-use Drupal\migrate_plus\Entity\Migration;
+use Drupal\Core\Cache\NullBackend;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Component\Utility\NestedArray;
 use Drupal\migrate_tools\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrationPluginManager;
@@ -46,6 +47,7 @@ class FoiaUploadXmlMigrationsProcessor {
    */
   public function __construct(MigrationPluginManager $migrationPluginManager) {
     $this->migrationPluginManager = $migrationPluginManager;
+    $this->migrationPluginManager->setCacheBackend(new NullBackend('discovery'), 'migration_plugins', ['migration_plugins']);
     $this->migrateMessage = new MigrateMessage();
     $this->sourceOverrides = [];
   }
@@ -62,11 +64,18 @@ class FoiaUploadXmlMigrationsProcessor {
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    * @throws \Drupal\migrate\MigrateException
    */
-  public function process($migration_id, array $configuration) {
-    /** @var \Drupal\migrate\Plugin\Migration $migration */
+  public function process($migration_id, array $configuration = []) {
+    $configuration = NestedArray::mergeDeep($configuration, $this->sourceOverrides);
+    /** @var \Drupal\foia_upload_xml\Plugin\migrate\FoiaUploadXmlMigration $migration */
     $migration = $this->migrationPluginManager->createInstance($migration_id, $configuration);
+    // Ensure that the migration's source url is only using the url as
+    // configured by the FoiaUploadXmlMigrationsProcessor::setSourceFile()
+    // method, if it has been set.  This overwrites the source url that
+    // is set based on the migration's configuration and that may or may not
+    // exist.
+    $migration = $migration->setMigrationSourceUrls($migration);
     $migration->getIdMap()->prepareUpdate();
-    $executable = new MigrateExecutable($migration, new MigrateMessage());
+    $executable = new MigrateExecutable($migration, $this->migrateMessage);
     $executable->import();
   }
 
@@ -94,13 +103,7 @@ class FoiaUploadXmlMigrationsProcessor {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function setSourceFile(FileInterface $file) {
-    foreach ($this->getMigrationsList() as $migration_list_item) {
-      $migration = Migration::load($migration_list_item);
-      $source = $migration->get('source');
-      $source['urls'] = $file->getFileUri();
-      $migration->set('source', $source);
-      $migration->save();
-    }
+    $this->sourceOverrides['source']['urls'] = [$file->getFileUri()];
 
     return $this;
   }

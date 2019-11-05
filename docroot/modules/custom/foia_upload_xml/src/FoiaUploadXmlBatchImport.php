@@ -2,6 +2,7 @@
 
 namespace Drupal\foia_upload_xml;
 
+use Drupal\file\FileInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -58,47 +59,28 @@ class FoiaUploadXmlBatchImport {
    *
    * @param string $migration_list_item
    *   Migration ID.
+   * @param \Drupal\file\FileInterface $sourceFile
+   *   The data source for the migration.
    * @param array $context
    *   Batch Context.
    *
    * @throws \Drupal\migrate\MigrateException
    */
-  public function executeMigration($migration_list_item, array &$context) {
+  public function executeMigration($migration_list_item, FileInterface $sourceFile, array &$context) {
     $this->messenger->addStatus($migration_list_item . ' in progress.');
     $context['sandbox']['current_migration'] = $migration_list_item;
 
-    // This assumes that source url has already been configured in
-    // AgencyUploadXmlForm::getBatchOperations().
+    // Set the source url and user for this migration and run it.
     $this->migrationsProcessor
       ->setMessenger(new MigrateMessage())
-      ->process($migration_list_item, $this->sourceOverrides());
+      ->setUser($this->user)
+      ->setSourceFile($sourceFile)
+      ->process($migration_list_item);
 
     $strings = ['@item' => $migration_list_item];
     $context['message'] = $this->t('@item processed.', $strings);
     $context['results'][] = $migration_list_item;
     $this->messenger->addStatus($this->t('@item execution completed.', $strings));
-  }
-
-  /**
-   * Overrides for migration source plugin.
-   *
-   * These values will be merged with the ones defined in the migration's YAML
-   * file.
-   *
-   * Note - attempts to override $source['urls'] here didn't work, instead we
-   * load, set the url, and save the migration configuration in the form.
-   *
-   * @return array
-   *   A single key 'source', and the value is an array of overrides.
-   */
-  protected function sourceOverrides() {
-    $source = [
-      'constants' => [
-        'user_id' => $this->user->id(),
-      ],
-    ];
-
-    return ['source' => $source];
   }
 
   /**

@@ -210,11 +210,10 @@ class AgencyXmlUploadForm extends FormBase {
   protected function getBatchOperations(FileInterface $sourceFile) {
     /** @var \Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor */
     $processor = \Drupal::service('foia_upload_xml.migrations_processor');
-    $processor = $processor->setSourceFile($sourceFile);
     $operations = [];
     foreach ($processor->getMigrationsList() as $migration_list_item) {
       $operations[] = ['foia_upload_xml_execute_migration',
-        [$migration_list_item],
+        [$migration_list_item, $sourceFile],
       ];
     }
 
