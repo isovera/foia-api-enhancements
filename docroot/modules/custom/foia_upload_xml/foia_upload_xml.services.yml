@@ -8,3 +8,6 @@ services:
   foia_upload_xml.migrations_processor:
     class: Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor
     arguments: ['@plugin.manager.migration']
+  foia_upload_xml.report_parser:
+    class: Drupal\foia_upload_xml\FoiaUploadXmlReportParser
+    arguments: ['@plugin.manager.migrate_plus.data_parser', '@entity_type.manager']
