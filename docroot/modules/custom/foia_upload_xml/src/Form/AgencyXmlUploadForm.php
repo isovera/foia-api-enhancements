@@ -159,7 +159,7 @@ class AgencyXmlUploadForm extends FormBase {
     $queue = \Drupal::service('queue')->get('foia_xml_report_import_worker');
     $queue->createItem($item);
 
-    \Drupal::messenger()->addStatus($this->t('Your report has been added to the queue.  Please check back in 15 minutes.'));
+    \Drupal::messenger()->addStatus($this->t('Your report has been queued. It will appear in your home page once it has successfully uploaded. You may navigate away from this page and check back shortly.'));
     $form_state->setRedirect('user.page');
   }
 

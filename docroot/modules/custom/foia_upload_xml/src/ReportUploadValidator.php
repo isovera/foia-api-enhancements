@@ -70,7 +70,7 @@ class ReportUploadValidator {
 
     if ($this->agencyReportYearIsQueued($file_data['agency_tid'], $report_year)) {
       $form_state->setErrorByName('submit', \Drupal::translation()
-        ->translate("Your agency's report has already been queued for processing.  It cannot be uploaded again until the previous upload has been processed, which takes place every 15 minutes."));
+        ->translate("Your agency already uploaded a report for the fiscal year. You may continue working on the existing report. Or you may start over by deleting the existing report before uploading a new XML"));
     }
   }
 
