@@ -103,7 +103,7 @@ class FoiaUploadXmlMigrationsProcessor {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function setSourceFile(FileInterface $file) {
-    $this->sourceOverrides['source']['urls'] = [$file->getFileUri()];
+    $this->sourceOverrides['source']['urls'] = $file->getFileUri();
 
     return $this;
   }
