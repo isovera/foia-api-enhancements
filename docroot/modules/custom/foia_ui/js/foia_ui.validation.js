@@ -807,6 +807,17 @@
         }
       });
 
+      // VII.A. Simple - Agency Component Lowest Number of Days
+      $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_sim_low']").each(function(index) {
+        var comparison_input = $(this).attr('name').replace('field_sim_low', 'field_sim_high');
+        $(this).rules("add", {
+          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          messages: {
+            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+          }
+        });
+      });
+
       // VII.A. Simple - Agency Overall Lowest Number of Days
       $( "#edit-field-overall-viia-sim-low-0-value").rules( "add", {
         equalToLowestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_low']"),
@@ -841,6 +852,17 @@
         }
       });
 
+      // VII.A. Complex - Agency Component Lowest Number of Days
+      $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_comp_low']").each(function(index) {
+        var comparison_input = $(this).attr('name').replace('field_comp_low', 'field_comp_high');
+        $(this).rules("add", {
+          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          messages: {
+            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+          }
+        });
+      });
+
       // VII.A. Complex - Agency Overall Highest Number of Days
       $( "#edit-field-overall-viia-comp-high-0-value").rules( "add", {
         equalToHighestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_comp_high']"),
@@ -865,6 +887,17 @@
         messages: {
           equalToLowestComp: "Must equal smallest value of Lowest number of days."
         }
+      });
+
+      // VII.A. Expedited Processing - Agency Component Lowest Number of Days
+      $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_exp_low']").each(function(index) {
+        var comparison_input = $(this).attr('name').replace('field_exp_low', 'field_exp_high');
+        $(this).rules("add", {
+          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          messages: {
+            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+          }
+        });
       });
 
       // VII.A. Expedited Processing - Agency Overall Highest Number of Days
@@ -893,6 +926,17 @@
         }
       });
 
+      // VII.B. Simple - Agency Component Lowest Number of Days
+      $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_sim_low']").each(function(index) {
+        var comparison_input = $(this).attr('name').replace('field_sim_low', 'field_sim_high');
+        $(this).rules("add", {
+          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          messages: {
+            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+          }
+        });
+      });
+
       // VII.B. Simple - Agency Overall Highest Number of Days
       $( "#edit-field-overall-viib-sim-high-0-value").rules( "add", {
         equalToHighestComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_sim_high']"),
@@ -919,6 +963,17 @@
         }
       });
 
+      // VII.B. Complex - Agency Component Lowest Number of Days
+      $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_comp_low']").each(function(index) {
+        var comparison_input = $(this).attr('name').replace('field_comp_low', 'field_comp_high');
+        $(this).rules("add", {
+          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          messages: {
+            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+          }
+        });
+      });
+
       // VII.B. Complex - Agency Overall Highest Number of Days
       $( "#edit-field-overall-viib-comp-high-0-value").rules( "add", {
         equalToHighestComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_comp_high']"),
@@ -943,6 +998,17 @@
         messages: {
           equalToLowestComp: "Must equal smallest value of Lowest number of days."
         }
+      });
+
+      // VII.B. Expedited Processing - Agency Component Lowest Number of Days
+      $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_exp_low']").each(function(index) {
+        var comparison_input = $(this).attr('name').replace('field_exp_low', 'field_exp_high');
+        $(this).rules("add", {
+          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          messages: {
+            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+          }
+        });
       });
 
       // VII.B. Expedited Processing - Agency Overall Highest Number of Days
