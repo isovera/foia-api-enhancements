@@ -85,6 +85,42 @@
       }
 
       /**
+       * Runs validation for a single element except on certain keyup events.
+       *
+       * This is based on jquery.validate.js onkeyup method.
+       *
+       * @param event
+       * @param element
+       */
+      function revalidateOnKeyup(event, element) {
+        var validator = $(drupalSettings.foiaUI.foiaUISettings.formID).validate();
+        // Avoid revalidate the field when pressing one of the following keys
+        // Shift       => 16
+        // Ctrl        => 17
+        // Alt         => 18
+        // Caps lock   => 20
+        // End         => 35
+        // Home        => 36
+        // Left arrow  => 37
+        // Up arrow    => 38
+        // Right arrow => 39
+        // Down arrow  => 40
+        // Insert      => 45
+        // Num lock    => 144
+        // AltGr key   => 225
+        var excludedKeys = [
+          16, 17, 18, 20, 35, 36, 37,
+          38, 39, 40, 45, 144, 225
+        ];
+
+        if ($.inArray( event.keyCode, excludedKeys ) !== -1 ) {
+          return;
+        } else {
+          validator.element( element );
+        }
+      }
+
+      /**
        * Custom validation methods
        */
       // lessThanEqualTo
@@ -816,6 +852,12 @@
             lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
+
+        // Revalidate the lowest days value when the highest days value changes.
+        var that = this;
+        $('input[name="' + comparison_input + '"]').once('VIIASimHighValidate').keyup(function(event) {
+          revalidateOnKeyup(event, that);
+        })
       });
 
       // VII.A. Simple - Agency Overall Lowest Number of Days
@@ -861,6 +903,12 @@
             lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
+
+        // Revalidate the lowest days value when the highest days value changes.
+        var that = this;
+        $('input[name="' + comparison_input + '"]').once('VIIACompHighValidate').keyup(function(event) {
+          revalidateOnKeyup(event, that);
+        })
       });
 
       // VII.A. Complex - Agency Overall Highest Number of Days
@@ -898,6 +946,12 @@
             lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
+
+        // Revalidate the lowest days value when the highest days value changes.
+        var that = this;
+        $('input[name="' + comparison_input + '"]').once('VIIAExpHighValidate').keyup(function(event) {
+          revalidateOnKeyup(event, that);
+        })
       });
 
       // VII.A. Expedited Processing - Agency Overall Highest Number of Days
@@ -935,6 +989,12 @@
             lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
+
+        // Revalidate the lowest days value when the highest days value changes.
+        var that = this;
+        $('input[name="' + comparison_input + '"]').once('VIIBSimHighValidate').keyup(function(event) {
+          revalidateOnKeyup(event, that);
+        })
       });
 
       // VII.B. Simple - Agency Overall Highest Number of Days
@@ -972,6 +1032,12 @@
             lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
+
+        // Revalidate the lowest days value when the highest days value changes.
+        var that = this;
+        $('input[name="' + comparison_input + '"]').once('VIIBCompHighValidate').keyup(function(event) {
+          revalidateOnKeyup(event, that);
+        })
       });
 
       // VII.B. Complex - Agency Overall Highest Number of Days
@@ -1009,6 +1075,12 @@
             lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
+
+        // Revalidate the lowest days value when the highest days value changes.
+        var that = this;
+        $('input[name="' + comparison_input + '"]').once('VIIBExpHighValidate').keyup(function(event) {
+          revalidateOnKeyup(event, that);
+        })
       });
 
       // VII.B. Expedited Processing - Agency Overall Highest Number of Days
