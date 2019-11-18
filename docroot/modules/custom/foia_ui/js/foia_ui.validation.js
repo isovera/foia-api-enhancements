@@ -1,10 +1,37 @@
 (function ($, drupalSettings, Drupal) {
+
+  /**
+   * Converts value to number and "N/A", "n/a", and "<1" values to 0.
+   *
+   * @param value
+   * @returns {number}
+   */
+  Drupal.FoiaUI = {
+    specialNumber: function(value) {
+      switch (String(value).toLowerCase()) {
+        case "n/a":
+          return Number(0);
+          break;
+        case "<1":
+          return Number(0.1);
+          break;
+        default:
+          return Number(value);
+      }
+    }
+  }
+
   Drupal.behaviors.foia_ui_validation = {
     attach: function attach() {
       jQuery.validator.setDefaults({
         ignore: ".ignore-validation",
         onsubmit: false
       });
+
+      /**
+       * Alias for Drupal.FoiaUI.specialNumber() utility function
+       */
+      var specialNumber = Drupal.FoiaUI.specialNumber;
 
       /**
        * Added for ie11 compatability.
@@ -16,20 +43,6 @@
         return typeof value === 'number' &&
             isFinite(value) &&
             Math.floor(value) === value;
-      }
-
-      /**
-       * Treat "N/A", "n/a", and "<1" values as zero
-       */
-      function convertSpecialToZero(value) {
-        switch (String(value).toLowerCase()) {
-          case "n/a":
-          case "<1":
-            return Number(0);
-            break;
-          default:
-            return value;
-        }
       }
 
       /**
@@ -131,21 +144,21 @@
 
       // lessThanEqualToNA
       $.validator.addMethod( "lessThanEqualToNA", function( value, element, param ) {
-        var target = convertSpecialToZero($( param ).val());
-        value = convertSpecialToZero(value);
-        return value <= Number(target);
-    }, "Please enter a lesser value." );
+        var target = specialNumber($( param ).val());
+        value = specialNumber(value);
+        return value <= target;
+      }, "Please enter a lesser value." );
 
        // greaterThanEqualTo
       $.validator.addMethod( "greaterThanEqualTo", function( value, element, param ) {
         var target = $( param );
-        return value >= Number(target.val());
+        return value >= target.val();
       }, "Please enter a greater value." );
 
        // greaterThanEqualToNA
       $.validator.addMethod( "greaterThanEqualToNA", function( value, element, param ) {
-        var target = convertSpecialToZero($( param ));
-        return value >= Number(convertSpecialToZero(target.val()));
+        var target = specialNumber($( param ));
+        return value >= specialNumber(target.val());
       }, "Please enter a greater value." );
 
        // greaterThanZero
@@ -205,14 +218,14 @@
 
       // lessThanEqualSumComp
       jQuery.validator.addMethod("lessThanEqualSumComp", function(value, element, params) {
-        value = convertSpecialToZero(value);
+        value = specialNumber(value);
         var sum = 0;
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
         for (var i = 0; i < params.length; i++){
           for (var j = 0; j < params[i].length; j++){
             var paramAgencyComponent = $(params[i][j]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
             if (paramAgencyComponent == elementAgencyComponent) {
-              sum += Number(convertSpecialToZero($( params[i][j] ).val()));
+              sum += specialNumber($( params[i][j] ).val());
             }
           }
         }
@@ -221,18 +234,18 @@
 
       // multiLessThanEqualSumComp
       jQuery.validator.addMethod("multiLessThanEqualSumComp", function(value, element, params) {
-        value = convertSpecialToZero(value);
+        value = specialNumber(value);
         var sum = 0;
         var target = 0;
         params.multiFields.forEach(function(multiField) {
           var sumElement = $(element).parents('.paragraphs-subform').find("input[name*='" + multiField + "']");
-          sum += Number(convertSpecialToZero($(sumElement).val()));
+          sum += specialNumber($(sumElement).val());
         });
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
         for (var i = 0; i < params.target.length; i++){
           var paramAgencyComponent = $(params.target[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
           if (paramAgencyComponent == elementAgencyComponent) {
-            target = Number(convertSpecialToZero($( params.target[i] ).val()));
+            target = specialNumber($( params.target[i] ).val());
           }
         }
         return this.optional(element) || sum <= target;
@@ -252,12 +265,12 @@
 
       // lessThanEqualComp
       jQuery.validator.addMethod("lessThanEqualComp", function(value, element, params) {
-        value = convertSpecialToZero(value);
+        value = specialNumber(value);
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
         for (var i = 0; i < params.length; i++){
           var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
           if (paramAgencyComponent == elementAgencyComponent) {
-            var target = Number(convertSpecialToZero($( params[i] ).val()));
+            var target = specialNumber($( params[i] ).val());
             return this.optional(element) || value <= target;
           }
         }
@@ -265,7 +278,7 @@
 
       // lessThanEqualOlderComp
       jQuery.validator.addMethod("lessThanEqualOlderComp", function(value, element, params) {
-        value = Number(convertSpecialToZero(value));
+        value = specialNumber(value);
         var target = Number($(element).parents('.paragraphs-subform').find("input[name*='" + params + "']").val());
         return this.optional(element) || value <= target;
       }, "Must be less than or equal to a field.");
@@ -296,10 +309,10 @@
 
       // betweenMinMaxCompNA
       jQuery.validator.addMethod("betweenMinMaxCompNA", function(value, element, params) {
-        value = convertSpecialToZero(value);
+        value = specialNumber(value);
         var valuesArray = [];
         for (var i = 0; i < params.length; i++){
-          valuesArray.push(Number(convertSpecialToZero($( params[i] ).val())));
+          valuesArray.push(specialNumber($( params[i] ).val()));
         }
         var min = Math.min.apply(null, valuesArray);
         var max = Math.max.apply(null, valuesArray);
@@ -308,20 +321,20 @@
 
       // equalToLowestComp
       jQuery.validator.addMethod("equalToLowestComp", function(value, element, params) {
-        value = convertSpecialToZero(value);
+        value = specialNumber(value);
         var valuesArray = [];
         for (var i = 0; i < params.length; i++){
-          valuesArray.push(Number(convertSpecialToZero($( params[i] ).val())));
+          valuesArray.push(specialNumber($( params[i] ).val()));
         }
         return this.optional(element) || (value == Math.min.apply(null, valuesArray));
       }, "Must equal the lowest value.");
 
       // equalToHighestComp
       jQuery.validator.addMethod("equalToHighestComp", function(value, element, params) {
-        value = convertSpecialToZero(value);
+        value = specialNumber(value);
         var valuesArray = [];
         for (var i = 0; i < params.length; i++){
-          valuesArray.push(Number(convertSpecialToZero($( params[i] ).val())));
+          valuesArray.push(specialNumber($( params[i] ).val()));
         }
         return this.optional(element) || (value == Math.max.apply(null, valuesArray));
       }, "Must equal the highest value.");
@@ -354,10 +367,10 @@
 
       // notAverageCompNA
       jQuery.validator.addMethod("notAverageCompNA", function(value, element, params) {
-        value = convertSpecialToZero(value);
+        value = specialNumber(value);
         var sum = 0;
         for (var i = 0; i < params.length; i++){
-          sum += Number(convertSpecialToZero($( params[i] ).val()));
+          sum += specialNumber($( params[i] ).val());
         }
         var average = sum/params.length;
         return this.optional(element) || !(value == average);
