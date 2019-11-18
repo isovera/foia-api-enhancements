@@ -7,7 +7,7 @@
        */
       var specialNumber = Drupal.FoiaUI.specialNumber;
 
-     /**
+      /**
        * Converts number back to "<1" if between 0 and 1.
        *
        * @param {number}
