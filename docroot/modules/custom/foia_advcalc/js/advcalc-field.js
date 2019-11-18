@@ -3,23 +3,9 @@
     attach: function attach() {
 
       /**
-       * Converts value to number and "N/A", "n/a", and "<1" values to 0.
-       *
-       * @param value
-       * @returns {number}
+       * Alias for Drupal.FoiaUI.specialNumber() utility function
        */
-      function specialNumber(value) {
-        switch (String(value).toLowerCase()) {
-          case "n/a":
-            return Number(0);
-            break;
-          case "<1":
-            return Number(0.1);
-            break;
-          default:
-            return Number(value);
-        }
-      }
+      var specialNumber = Drupal.FoiaUI.specialNumber;
 
      /**
        * Converts number back to "<1" if between 0 and 1.
