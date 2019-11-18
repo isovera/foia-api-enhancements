@@ -32,7 +32,7 @@
        * @param {string} overallFieldID
        *    The calculated overall field HTML fragment ID.
        * @param {string} operator
-       *    The operation to be performed, "<", ">", or "+".
+       *    The operation to be performed, "<" or ">".
        */
       function calcOverall(componentId, componentFieldName, overallFieldID, operator) {
         var ops = {
