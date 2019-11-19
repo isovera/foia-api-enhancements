@@ -3,9 +3,10 @@
     attach: function attach() {
 
       /**
-       * Alias for Drupal.FoiaUI.specialNumber() utility function
+       * Alias Drupal.FoiaUI utility functions
        */
       var specialNumber = Drupal.FoiaUI.specialNumber;
+      var getAgencyComponent = Drupal.FoiaUI.getAgencyComponent;
 
       /**
        * Converts number back to "<1" if between 0 and 1.
@@ -252,11 +253,6 @@
           $(perc_costs).val(perc_costs_val);
           return perc_costs;
         }
-      }
-
-      // Gets agency_component field for given field.
-      function getAgencyComponent(changed) {
-        return $(changed).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
       }
 
       // Get input field based on changed field ID and agency_component value.

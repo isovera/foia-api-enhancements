@@ -18,6 +18,17 @@
         default:
           return Number(value);
       }
+    },
+
+    /**
+     * Gets agency_component field for given field.
+     *
+     * @param changed
+     *   jQuery object
+     * @returns {jQuery object}
+     */
+    getAgencyComponent: function(changed) {
+      return $(changed).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
     }
   }
 
@@ -29,9 +40,10 @@
       });
 
       /**
-       * Alias for Drupal.FoiaUI.specialNumber() utility function
+       * Alias Drupal.FoiaUI utility functions
        */
       var specialNumber = Drupal.FoiaUI.specialNumber;
+      var getAgencyComponent = Drupal.FoiaUI.getAgencyComponent;
 
       /**
        * Added for ie11 compatability.
@@ -172,9 +184,9 @@
 
       // ifGreaterThanZeroComp
       jQuery.validator.addMethod("ifGreaterThanZeroComp", function(value, element, params) {
-        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var elementAgencyComponent = getAgencyComponent(element);
         for (var i = 0; i < params.length; i++){
-          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          var paramAgencyComponent = getAgencyComponent(params[i]);
           if (paramAgencyComponent == elementAgencyComponent) {
             var target = Number($( params[i] ).val());
           }
@@ -209,10 +221,10 @@
       jQuery.validator.addMethod("lessThanEqualSumComp", function(value, element, params) {
         value = specialNumber(value);
         var sum = 0;
-        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var elementAgencyComponent = getAgencyComponent(element);
         for (var i = 0; i < params.length; i++){
           for (var j = 0; j < params[i].length; j++){
-            var paramAgencyComponent = $(params[i][j]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+            var paramAgencyComponent = getAgencyComponent(params[i][j]);
             if (paramAgencyComponent == elementAgencyComponent) {
               sum += specialNumber($( params[i][j] ).val());
             }
@@ -230,9 +242,9 @@
           var sumElement = $(element).parents('.paragraphs-subform').find("input[name*='" + multiField + "']");
           sum += specialNumber($(sumElement).val());
         });
-        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var elementAgencyComponent = getAgencyComponent(element);
         for (var i = 0; i < params.target.length; i++){
-          var paramAgencyComponent = $(params.target[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          var paramAgencyComponent = getAgencyComponent(params.target[i]);
           if (paramAgencyComponent == elementAgencyComponent) {
             target = specialNumber($( params.target[i] ).val());
           }
@@ -242,9 +254,9 @@
 
       // equalToComp
       jQuery.validator.addMethod("equalToComp", function(value, element, params) {
-        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var elementAgencyComponent = getAgencyComponent(element);
         for (var i = 0; i < params.length; i++){
-          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          var paramAgencyComponent = getAgencyComponent(params[i]);
           if (paramAgencyComponent == elementAgencyComponent) {
             var target = Number($( params[i] ).val());
             return this.optional(element) || value == target;
@@ -255,9 +267,9 @@
       // lessThanEqualComp
       jQuery.validator.addMethod("lessThanEqualComp", function(value, element, params) {
         value = specialNumber(value);
-        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var elementAgencyComponent = getAgencyComponent(element);
         for (var i = 0; i < params.length; i++){
-          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          var paramAgencyComponent = getAgencyComponent(params[i]);
           if (paramAgencyComponent == elementAgencyComponent) {
             var target = specialNumber($( params[i] ).val());
             return this.optional(element) || value <= target;
@@ -274,9 +286,9 @@
 
       // greaterThanEqualComp
       jQuery.validator.addMethod("greaterThanEqualComp", function(value, element, params) {
-        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var elementAgencyComponent = getAgencyComponent(element);
         for (var i = 0; i < params.length; i++){
-          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          var paramAgencyComponent = getAgencyComponent(params[i]);
           if (paramAgencyComponent == elementAgencyComponent) {
             var target = Number($( params[i] ).val());
             return this.optional(element) || value >= target;
@@ -285,10 +297,10 @@
       }, "Must be greater than or equal to a field.");
 
       jQuery.validator.addMethod("greaterThanEqualSumComp", function(value, element, params) {
-        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var elementAgencyComponent = getAgencyComponent(element);
         var sum = 0;
         for (var i = 0; i < params.length; i++) {
-          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          var paramAgencyComponent = getAgencyComponent(params[i]);
           if (paramAgencyComponent == elementAgencyComponent) {
             sum += Number($( params[i] ).val());
           }
@@ -367,12 +379,12 @@
 
       // greaterThanZeroSumComp
       jQuery.validator.addMethod("greaterThanZeroSumComp", function(value, element, params) {
-        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var elementAgencyComponent = getAgencyComponent(element);
         var sum = 0;
         if (value > 0) {
           for (var i = 0; i < params.length; i++) {
             for (var j = 0; j < params[i].length; j++) {
-              var paramAgencyComponent = $(params[i][j]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+              var paramAgencyComponent = getAgencyComponent(params[i][j]);
               if (paramAgencyComponent == elementAgencyComponent) {
                 sum += Number($(params[i][j]).val());
               }
@@ -388,27 +400,27 @@
       // vb1matchDispositionComp: hard-coded for V.B.(1)
       jQuery.validator.addMethod("vb1matchDispositionComp", function(value, element, params) {
         var allReqProcessedYr = $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']");
-        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var elementAgencyComponent = getAgencyComponent(element);
         var reqProcessedYr = null;
         var otherField = null;
         var sumVIICTotals = 0;
 
         for (var i = 0; i < allReqProcessedYr.length; i++){
-          var paramAgencyComponent = $(allReqProcessedYr[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          var paramAgencyComponent = getAgencyComponent(allReqProcessedYr[i]);
           if (paramAgencyComponent == elementAgencyComponent) {
             var reqProcessedYr = Number($( allReqProcessedYr[i] ).val());
           }
         }
 
         for (var i = 0; i < params.viicn.length; i++){
-          var paramAgencyComponent = $(params.viicn[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          var paramAgencyComponent = getAgencyComponent(params.viicn[i]);
           if (paramAgencyComponent == elementAgencyComponent) {
             sumVIICTotals += Number($( params.viicn[i] ).val());
           }
         }
 
         for (var i = 0; i < params.otherField.length; i++){
-          var paramAgencyComponent = $(params.otherField[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          var paramAgencyComponent = getAgencyComponent(params.otherField[i]);
           if (paramAgencyComponent == elementAgencyComponent) {
             otherField = Number($( params.otherField[i] ).val());
           }
