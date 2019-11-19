@@ -1,4 +1,13 @@
+/**
+ * @file
+ * Automatically calculate total fields with non-trivial summation.
+ * See foia_autocalc module for simple sum auto-calculations.
+ */
+
 (function ($, drupalSettings, Drupal) {
+
+  'use strict';
+
   Drupal.behaviors.advcalc_field = {
     attach: function attach() {
 
@@ -46,7 +55,7 @@
             var output = null;
             var isOverallNA = true;
             fields.each(function () {
-              value = $(this).val();
+              var value = $(this).val();
               if (String(value).toLowerCase() != 'n/a') {
                 isOverallNA = false;
                 if (value != '' && value !== null && (output == null || output == "n/a")) {
@@ -216,7 +225,7 @@
       });
 
       // Fields from IX and X to calculate field_perc_costs per agency.
-      //FOIA Personnel and Costs IX. proc_costs / Fees X. total_fees  = Fees X. perc_costs
+      // FOIA Personnel and Costs IX. proc_costs / Fees X. total_fees  = Fees X. perc_costs
       // If section IX proc_costs field changes.
       $( "input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']").each(function() {
         $(this).once('advCalcIXProcCosts').change(function() {

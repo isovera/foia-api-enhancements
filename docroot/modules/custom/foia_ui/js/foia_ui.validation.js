@@ -1,4 +1,11 @@
-(function ($, drupalSettings, Drupal) {
+/**
+ * @file
+ * Provide client-side validation for FOIA Annual Report.
+ */
+
+ (function ($, drupalSettings, Drupal) {
+
+  'use strict';
 
   /**
    * Converts value to number and "N/A", "n/a", and "<1" values to 0.
@@ -21,11 +28,12 @@
     },
 
     /**
-     * Gets agency_component field for given field.
+     * Gets Agency/Component field value for a given field.
      *
-     * @param changed
-     *   jQuery object
-     * @returns {jQuery object}
+     * @param {jQuery} changed
+     *   A jQuery object of the changed field
+     * @returns {string}
+     *   The related select value of field_agency_component.
      */
     getAgencyComponent: function (changed) {
       return $(changed).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
@@ -813,7 +821,7 @@
       // For each Agency/Component, iterate over 2nd to 10th Oldest days
       // comparing the value to the one before it, e.g. value of 9th <= 8th.
       for (var i = 2; i <= 10; i++){
-        priorOrdinal = oldestOrdinal(i - 1);
+        var priorOrdinal = oldestOrdinal(i - 1);
         $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_" + i + "']").each(function () {
           $(this).rules( "add", {
             lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
