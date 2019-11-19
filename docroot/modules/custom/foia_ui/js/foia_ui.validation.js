@@ -138,27 +138,16 @@
        */
       // lessThanEqualTo
       $.validator.addMethod( "lessThanEqualTo", function( value, element, param ) {
-        var target = $( param );
-        return value <= Number(target.val());
-      }, "Please enter a lesser value." );
-
-      // lessThanEqualToNA
-      $.validator.addMethod( "lessThanEqualToNA", function( value, element, param ) {
-        var target = specialNumber($( param ).val());
         value = specialNumber(value);
+        var target = specialNumber($( param ).val());
         return value <= target;
       }, "Please enter a lesser value." );
 
        // greaterThanEqualTo
       $.validator.addMethod( "greaterThanEqualTo", function( value, element, param ) {
-        var target = $( param );
-        return value >= target.val();
-      }, "Please enter a greater value." );
-
-       // greaterThanEqualToNA
-      $.validator.addMethod( "greaterThanEqualToNA", function( value, element, param ) {
-        var target = specialNumber($( param ));
-        return value >= specialNumber(target.val());
+        value = specialNumber(value);
+        var target = specialNumber($( param ).val());
+        return value >= target;
       }, "Please enter a greater value." );
 
        // greaterThanZero
@@ -777,19 +766,19 @@
 
       // VI.C.(4) - Agency Overall Lowest Number of Days
       $( "#edit-field-overall-vic4-low-num-days-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic4-high-num-days-0-value",
+        lessThanEqualTo: "#edit-field-overall-vic4-high-num-days-0-value",
         greaterThanZeroOrNA: true,
         messages: {
-          lessThanEqualToNA: "Must be lower than or equal to the highest number of days."
+          lessThanEqualTo: "Must be lower than or equal to the highest number of days."
         }
       });
 
       // VI.C.(4) - Agency Overall Highest Number of Days
       $( "#edit-field-overall-vic4-high-num-days-0-value").rules( "add", {
-        greaterThanEqualToNA: "#edit-field-overall-vic4-low-num-days-0-value",
+        greaterThanEqualTo: "#edit-field-overall-vic4-low-num-days-0-value",
         greaterThanZeroOrNA: true,
         messages: {
-          greaterThanEqualToNA: "Must be greater than or equal to the lowest number of days."
+          greaterThanEqualTo: "Must be greater than or equal to the lowest number of days."
         }
       });
 
@@ -801,9 +790,9 @@
             inputId = "#edit-field-overall-vic5-num-day-" + i + "-0-value",
             comparisonId = "#edit-field-overall-vic5-num-day-" + (i - 1) + "-0-value";
         $(inputId).rules( "add", {
-          lessThanEqualToNA: $(comparisonId),
+          lessThanEqualTo: $(comparisonId),
           messages: {
-            lessThanEqualToNA: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
+            lessThanEqualTo: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
           }
         });
       }
@@ -835,9 +824,9 @@
       $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_sim_low']").each(function(index) {
         var comparison_input = $(this).attr('name').replace('field_sim_low', 'field_sim_high');
         $(this).rules("add", {
-          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
           messages: {
-            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+            lessThanEqualTo: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
 
@@ -884,9 +873,9 @@
       $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_comp_low']").each(function(index) {
         var comparison_input = $(this).attr('name').replace('field_comp_low', 'field_comp_high');
         $(this).rules("add", {
-          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
           messages: {
-            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+            lessThanEqualTo: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
 
@@ -925,9 +914,9 @@
       $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_exp_low']").each(function(index) {
         var comparison_input = $(this).attr('name').replace('field_exp_low', 'field_exp_high');
         $(this).rules("add", {
-          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
           messages: {
-            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+            lessThanEqualTo: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
 
@@ -966,9 +955,9 @@
       $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_sim_low']").each(function(index) {
         var comparison_input = $(this).attr('name').replace('field_sim_low', 'field_sim_high');
         $(this).rules("add", {
-          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
           messages: {
-            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+            lessThanEqualTo: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
 
@@ -1007,9 +996,9 @@
       $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_comp_low']").each(function(index) {
         var comparison_input = $(this).attr('name').replace('field_comp_low', 'field_comp_high');
         $(this).rules("add", {
-          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
           messages: {
-            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+            lessThanEqualTo: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
 
@@ -1048,9 +1037,9 @@
       $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_exp_low']").each(function(index) {
         var comparison_input = $(this).attr('name').replace('field_exp_low', 'field_exp_high');
         $(this).rules("add", {
-          lessThanEqualToNA: $('input[name="' + comparison_input + '"]'),
+          lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
           messages: {
-            lessThanEqualToNA: "This should be less than or equal to the number of days for Highest Number of Days.",
+            lessThanEqualTo: "This should be less than or equal to the number of days for Highest Number of Days.",
           }
         });
 
@@ -1139,9 +1128,9 @@
             inputId = "#edit-field-overall-viie-num-days-" + i + "-0-value",
             comparisonId = "#edit-field-overall-viie-num-days-" + (i - 1) + "-0-value";
         $(inputId).rules( "add", {
-          lessThanEqualToNA: $(comparisonId),
+          lessThanEqualTo: $(comparisonId),
           messages: {
-            lessThanEqualToNA: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
+            lessThanEqualTo: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
           }
         });
       }
@@ -1251,9 +1240,9 @@
 
       // XII.A. Agency Overall Number of Backlogged Appeals as of End of Fiscal Year
       $( "#edit-field-overall-xiia-back-app-end-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-via-app-pend-endyr-0-value",
+        lessThanEqualTo: "#edit-field-overall-via-app-pend-endyr-0-value",
         messages: {
-          lessThanEqualToNA: "Must be equal to or less than VI.A.(1). Agency Overall Number of Appeals Pending as of End of Fiscal Year",
+          lessThanEqualTo: "Must be equal to or less than VI.A.(1). Agency Overall Number of Appeals Pending as of End of Fiscal Year",
         }
       });
 
@@ -1277,9 +1266,9 @@
             inputId = "#edit-field-overall-xiic-num-days-" + i + "-0-value",
             comparisonId = "#edit-field-overall-xiic-num-days-" + (i - 1) + "-0-value";
         $(inputId).rules( "add", {
-            lessThanEqualToNA: $(comparisonId),
+            lessThanEqualTo: $(comparisonId),
             messages: {
-              lessThanEqualToNA: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
+              lessThanEqualTo: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
             }
           });
       }
