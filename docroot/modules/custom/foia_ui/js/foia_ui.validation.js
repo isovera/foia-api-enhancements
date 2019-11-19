@@ -7,7 +7,7 @@
    * @returns {number}
    */
   Drupal.FoiaUI = {
-    specialNumber: function(value) {
+    specialNumber: function (value) {
       switch (String(value).toLowerCase()) {
         case "n/a":
           return Number(0);
@@ -27,7 +27,7 @@
      *   jQuery object
      * @returns {jQuery object}
      */
-    getAgencyComponent: function(changed) {
+    getAgencyComponent: function (changed) {
       return $(changed).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
     }
   }
@@ -149,26 +149,26 @@
        * Custom validation methods
        */
       // lessThanEqualTo
-      $.validator.addMethod( "lessThanEqualTo", function( value, element, param ) {
+      $.validator.addMethod( "lessThanEqualTo", function (value, element, param ) {
         value = specialNumber(value);
         var target = specialNumber($( param ).val());
         return value <= target;
       }, "Please enter a lesser value." );
 
        // greaterThanEqualTo
-      $.validator.addMethod( "greaterThanEqualTo", function( value, element, param ) {
+      $.validator.addMethod( "greaterThanEqualTo", function (value, element, param ) {
         value = specialNumber(value);
         var target = specialNumber($( param ).val());
         return value >= target;
       }, "Please enter a greater value." );
 
        // greaterThanZero
-       $.validator.addMethod( "greaterThanZero", function( value, element, param ) {
+       $.validator.addMethod( "greaterThanZero", function (value, element, param ) {
         return value > 0;
       }, "Please enter a value greater than zero." );
 
        // greaterThanZeroOrNA
-       $.validator.addMethod( "greaterThanZeroOrNA", function( value, element, param ) {
+       $.validator.addMethod( "greaterThanZeroOrNA", function (value, element, param ) {
         switch (String(value).toLowerCase()) {
           case "n/a":
           case "<1":
@@ -178,12 +178,12 @@
       }, "Please enter a value greater than zero." );
 
       // notNegative
-      $.validator.addMethod( "notNegative", function( value, element, param ) {
+      $.validator.addMethod( "notNegative", function (value, element, param ) {
         return value >= 0;
       }, "Please enter zero or a positive number." );
 
       // ifGreaterThanZeroComp
-      jQuery.validator.addMethod("ifGreaterThanZeroComp", function(value, element, params) {
+      jQuery.validator.addMethod("ifGreaterThanZeroComp", function (value, element, params) {
         var elementAgencyComponent = getAgencyComponent(element);
         for (var i = 0; i < params.length; i++){
           var paramAgencyComponent = getAgencyComponent(params[i]);
@@ -200,7 +200,7 @@
       }, "Must be greater than or equal to a field.");
 
       // equalSumComp
-      jQuery.validator.addMethod("equalSumComp", function(value, element, params) {
+      jQuery.validator.addMethod("equalSumComp", function (value, element, params) {
         var sum = 0;
         for (var i = 0; i < params.length; i++){
           sum += Number($( params[i] ).val());
@@ -209,16 +209,16 @@
       }, "Must equal sum of fields.");
 
       // lessThanEqualSum
-      jQuery.validator.addMethod("lessThanEqualSum", function(value, element, params) {
+      jQuery.validator.addMethod("lessThanEqualSum", function (value, element, params) {
         var sum = 0;
-        params.forEach(function(param) {
+        params.forEach(function (param) {
           sum += Number($(param).val());
         });
         return this.optional(element) || value <= sum;
       }, "Must equal less than equal a sum of other fields.");
 
       // lessThanEqualSumComp
-      jQuery.validator.addMethod("lessThanEqualSumComp", function(value, element, params) {
+      jQuery.validator.addMethod("lessThanEqualSumComp", function (value, element, params) {
         value = specialNumber(value);
         var sum = 0;
         var elementAgencyComponent = getAgencyComponent(element);
@@ -234,11 +234,11 @@
       }, "Must be less than or equal to a field.");
 
       // multiLessThanEqualSumComp
-      jQuery.validator.addMethod("multiLessThanEqualSumComp", function(value, element, params) {
+      jQuery.validator.addMethod("multiLessThanEqualSumComp", function (value, element, params) {
         value = specialNumber(value);
         var sum = 0;
         var target = 0;
-        params.multiFields.forEach(function(multiField) {
+        params.multiFields.forEach(function (multiField) {
           var sumElement = $(element).parents('.paragraphs-subform').find("input[name*='" + multiField + "']");
           sum += specialNumber($(sumElement).val());
         });
@@ -253,7 +253,7 @@
       }, "Sum of fields must be less than or equal to a field.");
 
       // equalToComp
-      jQuery.validator.addMethod("equalToComp", function(value, element, params) {
+      jQuery.validator.addMethod("equalToComp", function (value, element, params) {
         var elementAgencyComponent = getAgencyComponent(element);
         for (var i = 0; i < params.length; i++){
           var paramAgencyComponent = getAgencyComponent(params[i]);
@@ -265,7 +265,7 @@
       }, "Must be equal to a field.");
 
       // lessThanEqualComp
-      jQuery.validator.addMethod("lessThanEqualComp", function(value, element, params) {
+      jQuery.validator.addMethod("lessThanEqualComp", function (value, element, params) {
         value = specialNumber(value);
         var elementAgencyComponent = getAgencyComponent(element);
         for (var i = 0; i < params.length; i++){
@@ -278,14 +278,14 @@
       }, "Must be less than or equal to a field.");
 
       // lessThanEqualOlderComp
-      jQuery.validator.addMethod("lessThanEqualOlderComp", function(value, element, params) {
+      jQuery.validator.addMethod("lessThanEqualOlderComp", function (value, element, params) {
         value = specialNumber(value);
         var target = Number($(element).parents('.paragraphs-subform').find("input[name*='" + params + "']").val());
         return this.optional(element) || value <= target;
       }, "Must be less than or equal to a field.");
 
       // greaterThanEqualComp
-      jQuery.validator.addMethod("greaterThanEqualComp", function(value, element, params) {
+      jQuery.validator.addMethod("greaterThanEqualComp", function (value, element, params) {
         var elementAgencyComponent = getAgencyComponent(element);
         for (var i = 0; i < params.length; i++){
           var paramAgencyComponent = getAgencyComponent(params[i]);
@@ -296,7 +296,7 @@
         }
       }, "Must be greater than or equal to a field.");
 
-      jQuery.validator.addMethod("greaterThanEqualSumComp", function(value, element, params) {
+      jQuery.validator.addMethod("greaterThanEqualSumComp", function (value, element, params) {
         var elementAgencyComponent = getAgencyComponent(element);
         var sum = 0;
         for (var i = 0; i < params.length; i++) {
@@ -309,7 +309,7 @@
       }, "Must be greater than or equal to sum of the fields.");
 
       // betweenMinMaxCompNA
-      jQuery.validator.addMethod("betweenMinMaxCompNA", function(value, element, params) {
+      jQuery.validator.addMethod("betweenMinMaxCompNA", function (value, element, params) {
         value = specialNumber(value);
         var valuesArray = [];
         for (var i = 0; i < params.length; i++){
@@ -321,7 +321,7 @@
       }, "Must be between the smallest and largest values.");
 
       // equalToLowestComp
-      jQuery.validator.addMethod("equalToLowestComp", function(value, element, params) {
+      jQuery.validator.addMethod("equalToLowestComp", function (value, element, params) {
         value = specialNumber(value);
         var valuesArray = [];
         for (var i = 0; i < params.length; i++){
@@ -331,7 +331,7 @@
       }, "Must equal the lowest value.");
 
       // equalToHighestComp
-      jQuery.validator.addMethod("equalToHighestComp", function(value, element, params) {
+      jQuery.validator.addMethod("equalToHighestComp", function (value, element, params) {
         value = specialNumber(value);
         var valuesArray = [];
         for (var i = 0; i < params.length; i++){
@@ -367,7 +367,7 @@
       }, "Must be a valid date.");
 
       // notAverageCompNA
-      jQuery.validator.addMethod("notAverageCompNA", function(value, element, params) {
+      jQuery.validator.addMethod("notAverageCompNA", function (value, element, params) {
         value = specialNumber(value);
         var sum = 0;
         for (var i = 0; i < params.length; i++){
@@ -378,7 +378,7 @@
       }, "Must not be equal to the average.");
 
       // greaterThanZeroSumComp
-      jQuery.validator.addMethod("greaterThanZeroSumComp", function(value, element, params) {
+      jQuery.validator.addMethod("greaterThanZeroSumComp", function (value, element, params) {
         var elementAgencyComponent = getAgencyComponent(element);
         var sum = 0;
         if (value > 0) {
@@ -398,7 +398,7 @@
       }, "Sum of the fields must be greater than zero.");
 
       // vb1matchDispositionComp: hard-coded for V.B.(1)
-      jQuery.validator.addMethod("vb1matchDispositionComp", function(value, element, params) {
+      jQuery.validator.addMethod("vb1matchDispositionComp", function (value, element, params) {
         var allReqProcessedYr = $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']");
         var elementAgencyComponent = getAgencyComponent(element);
         var reqProcessedYr = null;
@@ -438,17 +438,17 @@
 
         // Show errors using the built in defaultShowErrors() method
         // and then highlight tabs all at once.
-        showErrors: function(errors) {
+        showErrors: function (errors) {
           this.defaultShowErrors();
           this.settings.highlightTabs();
         },
 
         // Highlight top level tabs only.
-        highlightTabs: function() {
+        highlightTabs: function () {
           // Gets only the top level of vertical tab menu items.
           var tabs = document.querySelector('.js-vertical-tabs--main > .vertical-tabs > .vertical-tabs__menu');
 
-          $('> .vertical-tabs__menu-item', tabs).each(function(index, menuItem) {
+          $('> .vertical-tabs__menu-item', tabs).each(function (index, menuItem) {
             try {
               var link = $('> a', menuItem).get(0),
                   tabId = link.getAttribute('href') || false;
@@ -485,7 +485,7 @@
             '</div></div>');
       }
 
-      $('input#edit-validate-button').once('foia-validation').on('click', function(event) {
+      $('input#edit-validate-button').once('foia-validation').on('click', function (event) {
         event.preventDefault();
 
         $('.validation-overlay').removeClass('hidden');
@@ -496,7 +496,7 @@
 
 
         // Allow some time for the overlay to render.
-        setTimeout(function() {
+        setTimeout(function () {
           // Validate form
           $(drupalSettings.foiaUI.foiaUISettings.formID).valid();
 
@@ -515,7 +515,7 @@
        * Note: All validation rules can be bypassed on submit.
        */
       // Require all Annual Report fields.
-      $(".form-text, .form-textarea, .form-select, .form-number, .form-date").not('#edit-revision-log-0-value').not('[readonly]').not('[id*="footnote"]').each(function() {
+      $(".form-text, .form-textarea, .form-select, .form-number, .form-date").not('#edit-revision-log-0-value').not('[readonly]').not('[id*="footnote"]').each(function () {
         $(this).rules( "add", {
         required: true,
         });
@@ -537,7 +537,7 @@
           });
 
        // V.A. FOIA Requests
-      $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function() {
+      $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function () {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
           greaterThanEqualSumComp: $( "input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
@@ -559,7 +559,7 @@
       });
 
       // V.B.(1) Records Not Reasonably Described
-      $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_rec_not_desc']").each(function() {
+      $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_rec_not_desc']").each(function () {
         $(this).rules( "add", {
           vb1matchDispositionComp: {
             viicn: $( "input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
@@ -574,7 +574,7 @@
       });
 
       // V.B.(1) Improper FOIA Request for Other Reason
-      $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_imp_req_oth_reason']").each(function() {
+      $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_imp_req_oth_reason']").each(function () {
         $(this).rules( "add", {
           vb1matchDispositionComp: {
             viicn: $( "input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
@@ -629,7 +629,7 @@
       });
 
       // V.B.(1) Agency Component Other*
-      $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_oth']").each(function() {
+      $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_oth']").each(function () {
           $(this).rules( "add", {
               equalToComp: $("input[name*='field_foia_requests_vb2']").filter("input[name*='field_total']"),
               messages: {
@@ -639,7 +639,7 @@
       });
 
       // V.B.(1) Agency Number of Full Denials Based on Exemptions
-        $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_full_denials_ex']").each(function() {
+        $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_full_denials_ex']").each(function () {
           $(this).rules( "add", {
             lessThanEqualSumComp: [
               $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_1']"),
@@ -681,7 +681,7 @@
       });
 
       // VI.A. Administrative Appeals Processed During Fiscal Year from Current Annual Report
-      $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_processed_yr']").each(function() {
+      $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_processed_yr']").each(function () {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_admin_app_vib']").filter("input[name*='field_total']"),
           messages: {
@@ -691,7 +691,7 @@
       });
 
       // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year
-      $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']").each(function() {
+      $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']").each(function () {
         $(this).rules( "add", {
           greaterThanZeroSumComp: [
             $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_1']"),
@@ -712,7 +712,7 @@
       });
 
       // VI.B. Administrative Appeals
-      $( "input[name*='field_admin_app_vib']").filter("input[name*='field_closed_oth_app']").each(function() {
+      $( "input[name*='field_admin_app_vib']").filter("input[name*='field_closed_oth_app']").each(function () {
         $(this).rules( "add", {
           lessThanEqualComp: $("input[name*='field_admin_app_vic2']").filter("input[name*='field_oth']"),
           messages: {
@@ -750,7 +750,7 @@
       });
 
       // VI.C.2 Reasons for Denial on Appeal -- "Other" Reasons
-      $( "input[name*='field_admin_app_vic2']").filter("input[name*='field_oth']").each(function() {
+      $( "input[name*='field_admin_app_vic2']").filter("input[name*='field_oth']").each(function () {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_admin_app_vic3']").filter("input[name*='field_total']"),
           messages: {
@@ -814,7 +814,7 @@
       // comparing the value to the one before it, e.g. value of 9th <= 8th.
       for (var i = 2; i <= 10; i++){
         priorOrdinal = oldestOrdinal(i - 1);
-        $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_" + i + "']").each(function() {
+        $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_" + i + "']").each(function () {
           $(this).rules( "add", {
             lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
             messages: {
@@ -833,7 +833,7 @@
       });
 
       // VII.A. Simple - Agency Component Lowest Number of Days
-      $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_sim_low']").each(function(index) {
+      $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_sim_low']").each(function (index) {
         var comparison_input = $(this).attr('name').replace('field_sim_low', 'field_sim_high');
         $(this).rules("add", {
           lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
@@ -844,7 +844,7 @@
 
         // Revalidate the lowest days value when the highest days value changes.
         var that = this;
-        $('input[name="' + comparison_input + '"]').once('VIIASimHighValidate').keyup(function(event) {
+        $('input[name="' + comparison_input + '"]').once('VIIASimHighValidate').keyup(function (event) {
           revalidateOnKeyup(event, that);
         })
       });
@@ -882,7 +882,7 @@
       });
 
       // VII.A. Complex - Agency Component Lowest Number of Days
-      $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_comp_low']").each(function(index) {
+      $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_comp_low']").each(function (index) {
         var comparison_input = $(this).attr('name').replace('field_comp_low', 'field_comp_high');
         $(this).rules("add", {
           lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
@@ -893,7 +893,7 @@
 
         // Revalidate the lowest days value when the highest days value changes.
         var that = this;
-        $('input[name="' + comparison_input + '"]').once('VIIACompHighValidate').keyup(function(event) {
+        $('input[name="' + comparison_input + '"]').once('VIIACompHighValidate').keyup(function (event) {
           revalidateOnKeyup(event, that);
         })
       });
@@ -923,7 +923,7 @@
       });
 
       // VII.A. Expedited Processing - Agency Component Lowest Number of Days
-      $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_exp_low']").each(function(index) {
+      $('input[name^="field_proc_req_viia"]').filter("input[name*='subform']").filter("input[name*='field_exp_low']").each(function (index) {
         var comparison_input = $(this).attr('name').replace('field_exp_low', 'field_exp_high');
         $(this).rules("add", {
           lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
@@ -934,7 +934,7 @@
 
         // Revalidate the lowest days value when the highest days value changes.
         var that = this;
-        $('input[name="' + comparison_input + '"]').once('VIIAExpHighValidate').keyup(function(event) {
+        $('input[name="' + comparison_input + '"]').once('VIIAExpHighValidate').keyup(function (event) {
           revalidateOnKeyup(event, that);
         })
       });
@@ -964,7 +964,7 @@
       });
 
       // VII.B. Simple - Agency Component Lowest Number of Days
-      $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_sim_low']").each(function(index) {
+      $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_sim_low']").each(function (index) {
         var comparison_input = $(this).attr('name').replace('field_sim_low', 'field_sim_high');
         $(this).rules("add", {
           lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
@@ -975,7 +975,7 @@
 
         // Revalidate the lowest days value when the highest days value changes.
         var that = this;
-        $('input[name="' + comparison_input + '"]').once('VIIBSimHighValidate').keyup(function(event) {
+        $('input[name="' + comparison_input + '"]').once('VIIBSimHighValidate').keyup(function (event) {
           revalidateOnKeyup(event, that);
         })
       });
@@ -1005,7 +1005,7 @@
       });
 
       // VII.B. Complex - Agency Component Lowest Number of Days
-      $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_comp_low']").each(function(index) {
+      $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_comp_low']").each(function (index) {
         var comparison_input = $(this).attr('name').replace('field_comp_low', 'field_comp_high');
         $(this).rules("add", {
           lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
@@ -1016,7 +1016,7 @@
 
         // Revalidate the lowest days value when the highest days value changes.
         var that = this;
-        $('input[name="' + comparison_input + '"]').once('VIIBCompHighValidate').keyup(function(event) {
+        $('input[name="' + comparison_input + '"]').once('VIIBCompHighValidate').keyup(function (event) {
           revalidateOnKeyup(event, that);
         })
       });
@@ -1046,7 +1046,7 @@
       });
 
       // VII.B. Expedited Processing - Agency Component Lowest Number of Days
-      $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_exp_low']").each(function(index) {
+      $('input[name^="field_proc_req_viib"]').filter("input[name*='subform']").filter("input[name*='field_exp_low']").each(function (index) {
         var comparison_input = $(this).attr('name').replace('field_exp_low', 'field_exp_high');
         $(this).rules("add", {
           lessThanEqualTo: $('input[name="' + comparison_input + '"]'),
@@ -1057,7 +1057,7 @@
 
         // Revalidate the lowest days value when the highest days value changes.
         var that = this;
-        $('input[name="' + comparison_input + '"]').once('VIIBExpHighValidate').keyup(function(event) {
+        $('input[name="' + comparison_input + '"]').once('VIIBExpHighValidate').keyup(function (event) {
           revalidateOnKeyup(event, that);
         })
       });
@@ -1072,7 +1072,7 @@
 
       // VII.D. Sum of requests in simple, complex, and expedited must be equal
       // to or less than number of requests pending at end of FY from V.A
-      $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_sim_pend'], input[name*='field_comp_pend'], input[name*='field_exp_pend']").each(function() {
+      $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_sim_pend'], input[name*='field_comp_pend'], input[name*='field_exp_pend']").each(function () {
         $(this).rules( "add", {
           multiLessThanEqualSumComp: {
             multiFields: ['field_sim_pend', 'field_comp_pend', 'field_exp_pend'],
@@ -1152,7 +1152,7 @@
       // comparing the value to the one before it, e.g. value of 9th <= 8th.
       for (var i = 2; i <= 10; i++){
         priorOrdinal = oldestOrdinal(i - 1);
-        $("input[name*='field_admin_app_viie']").filter("input[name*='field_num_days_" + i + "']").each(function() {
+        $("input[name*='field_admin_app_viie']").filter("input[name*='field_num_days_" + i + "']").each(function () {
           $(this).rules( "add", {
             lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
             messages: {
@@ -1190,7 +1190,7 @@
       });
 
       // IX. Total Number of "Full-Time FOIA Staff"
-      $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_total_staff']").each(function() {
+      $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_total_staff']").each(function () {
         $(this).rules( "add", {
           ifGreaterThanZeroComp: $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
           messages: {
@@ -1201,10 +1201,10 @@
 
       // IX. Agency Overall Total Number of "Full-Time FOIA Staff"
       // IX. Agency Overall Processing Costs
-      $( "#edit-field-overall-ix-total-staff-0-value, #edit-field-overall-ix-total-costs-0-value").each(function() {
+      $( "#edit-field-overall-ix-total-staff-0-value, #edit-field-overall-ix-total-costs-0-value").each(function () {
         $(this).rules( "add", {
           greaterThanZero: {
-            depends: function() {
+            depends: function () {
               return Number($("#edit-field-overall-vb1-total-0-value").val()) > 0;
             }
           },
@@ -1215,7 +1215,7 @@
       });
 
       // XII.A. Number of Backlogged Requests as of End of Fiscal Year
-      $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_req_end_yr']").each(function() {
+      $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_req_end_yr']").each(function () {
         $(this).rules( "add", {
           lessThanEqualSumComp: [
             $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_sim_pend']"),
@@ -1229,7 +1229,7 @@
       });
 
       // XII.A. Number of Backlogged Appeals as of End of Fiscal Year
-      $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_app_end_yr']").each(function() {
+      $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_app_end_yr']").each(function () {
         $(this).rules( "add", {
           lessThanEqualComp: $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']"),
           messages: {
@@ -1290,7 +1290,7 @@
       // comparing the value to the one before it, e.g. value of 9th <= 8th.
       for (var i = 2; i <= 10; i++){
         priorOrdinal = oldestOrdinal(i - 1);
-        $("input[name*='field_foia_xiic']").filter("input[name*='field_num_days_" + i + "']").each(function() {
+        $("input[name*='field_foia_xiic']").filter("input[name*='field_num_days_" + i + "']").each(function () {
           $(this).rules( "add", {
             lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
             messages: {
@@ -1301,7 +1301,7 @@
       }
 
       // XII.D.(1). Number Received During Fiscal Year from Current Annual Report
-      $( "input[name*='field_foia_xiid1']").filter("input[name*='field_received_cur_yr']").each(function() {
+      $( "input[name*='field_foia_xiid1']").filter("input[name*='field_received_cur_yr']").each(function () {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_received_yr']"),
           messages: {
@@ -1311,7 +1311,7 @@
       });
 
       // XII.D.(1). Number Processed During Fiscal Year from Current Annual Report
-      $( "input[name*='field_foia_xiid1']").filter("input[name*='field_proc_cur_yr']").each(function() {
+      $( "input[name*='field_foia_xiid1']").filter("input[name*='field_proc_cur_yr']").each(function () {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']"),
           messages: {
@@ -1337,7 +1337,7 @@
       });
 
       // XII.D.(2). Number of Backlogged Requests as of End of the Fiscal Year from Current Annual Report
-      $( "input[name*='field_foia_xiid2']").filter("input[name*='field_back_cur_yr']").each(function() {
+      $( "input[name*='field_foia_xiid2']").filter("input[name*='field_back_cur_yr']").each(function () {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_req_end_yr']"),
           messages: {
@@ -1355,7 +1355,7 @@
       });
 
       // XII.E.(1). Number Received During Fiscal Year from Current Annual Report
-      $( "input[name*='field_foia_xiie1']").filter("input[name*='field_received_cur_yr']").each(function() {
+      $( "input[name*='field_foia_xiie1']").filter("input[name*='field_received_cur_yr']").each(function () {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_received_yr']"),
           messages: {
@@ -1365,7 +1365,7 @@
       });
 
       // XII.E.(1). Number Processed During Fiscal Year from Current Annual Report
-      $( "input[name*='field_foia_xiie1']").filter("input[name*='field_proc_cur_yr']").each(function() {
+      $( "input[name*='field_foia_xiie1']").filter("input[name*='field_proc_cur_yr']").each(function () {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_processed_yr']"),
           messages: {
@@ -1391,7 +1391,7 @@
       });
 
       // XII.E.(2). Number Processed During Fiscal Year from Current Annual Report
-      $( "input[name*='field_foia_xiie2']").filter("input[name*='field_back_cur_yr']").each(function() {
+      $( "input[name*='field_foia_xiie2']").filter("input[name*='field_back_cur_yr']").each(function () {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_app_end_yr']"),
           messages: {
