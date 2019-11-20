@@ -817,35 +817,11 @@
         })
       });
 
-      // VII.A. Simple - Agency Overall Lowest Number of Days
-      $( "#edit-field-overall-viia-sim-low-0-value").rules( "add", {
-        equalToLowestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_low']"),
-        messages: {
-          equalToLowestComp: "Must equal smallest value of Lowest number of days."
-        }
-      });
-
-      // VII.A. Simple - Agency Overall Highest Number of Days
-      $( "#edit-field-overall-viia-sim-high-0-value").rules( "add", {
-        equalToHighestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_high']"),
-        messages: {
-          equalToHighestComp: "Must equal largest value of Highest number of days."
-        }
-      });
-
       // VII.A. Complex - Agency Overall Median Number of Days
       $( "#edit-field-overall-viia-comp-med-0-value").rules( "add", {
         betweenMinMaxCompNA: $("input[name*='field_proc_req_viia']").filter("input[name*='field_comp_med']"),
         messages: {
           betweenMinMaxCompNA: "This field should be between the largest and smallest values of Median Number of Days"
-        }
-      });
-
-      // VII.A. Complex - Agency Overall Lowest Number of Days
-      $( "#edit-field-overall-viia-comp-low-0-value").rules( "add", {
-        equalToLowestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_comp_low']"),
-        messages: {
-          equalToLowestComp: "Must equal smallest value of Lowest number of days."
         }
       });
 
@@ -866,27 +842,11 @@
         })
       });
 
-      // VII.A. Complex - Agency Overall Highest Number of Days
-      $( "#edit-field-overall-viia-comp-high-0-value").rules( "add", {
-        equalToHighestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_comp_high']"),
-        messages: {
-          equalToHighestComp: "Must equal largest value of Highest number of days."
-        }
-      });
-
       // VII.A. Expedited Processing - Agency Overall Median Number of Days
       $( "#edit-field-overall-viia-exp-med-0-value").rules( "add", {
         betweenMinMaxCompNA: $("input[name*='field_proc_req_viia']").filter("input[name*='field_exp_med']"),
         messages: {
           betweenMinMaxCompNA: "This field should be between the largest and smallest values of Median Number of Days"
-        }
-      });
-
-      // VII.A. Expedited Processing - Agency Overall Lowest Number of Days
-      $( "#edit-field-overall-viia-exp-low-0-value").rules( "add", {
-        equalToLowestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_exp_low']"),
-        messages: {
-          equalToLowestComp: "Must equal smallest value of Lowest number of days."
         }
       });
 
@@ -905,14 +865,6 @@
         $('input[name="' + comparison_input + '"]').once('VIIAExpHighValidate').keyup(function(event) {
           revalidateOnKeyup(event, that);
         })
-      });
-
-      // VII.A. Expedited Processing - Agency Overall Highest Number of Days
-      $( "#edit-field-overall-viia-exp-high-0-value").rules( "add", {
-        equalToHighestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_exp_high']"),
-        messages: {
-          equalToHighestComp: "Must equal largest value of Highest number of days."
-        }
       });
 
       // VII.B. Simple - Agency Overall Median Number of Days
