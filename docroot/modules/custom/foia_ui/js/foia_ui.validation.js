@@ -762,24 +762,6 @@
         }
       });
 
-      // VI.C.(4) - Agency Overall Lowest Number of Days
-      $( "#edit-field-overall-vic4-low-num-days-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic4-high-num-days-0-value",
-        greaterThanZeroOrNA: true,
-        messages: {
-          lessThanEqualToNA: "Must be lower than or equal to the highest number of days."
-        }
-      });
-
-      // VI.C.(4) - Agency Overall Highest Number of Days
-      $( "#edit-field-overall-vic4-high-num-days-0-value").rules( "add", {
-        greaterThanEqualToNA: "#edit-field-overall-vic4-low-num-days-0-value",
-        greaterThanZeroOrNA: true,
-        messages: {
-          greaterThanEqualToNA: "Must be greater than or equal to the lowest number of days."
-        }
-      });
-
       // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2nd - 10th
       // Iterate over 2nd to 10th oldest overall pending appeals, comparing
       // the value to the one before it, e.g. value of 9th <= 8th.
