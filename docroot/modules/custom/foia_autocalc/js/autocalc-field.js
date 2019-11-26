@@ -4,13 +4,17 @@
       var autocalcSettings = drupalSettings.foiaAutocalc.autocalcSettings;
       Object.keys(autocalcSettings).forEach(function(fieldName, fieldIndex) {
         var fieldSettings = autocalcSettings[fieldName];
+
+        // Calculate field on initial form load only.
+        var fieldCalculationsInitialized = fieldSettings['fieldCalculationsInitialized'] || false;
+        if (!fieldCalculationsInitialized) {
+          calculateField(fieldName, fieldSettings);
+          fieldSettings['fieldCalculationsInitialized'] = true;
+        }
+
         fieldSettings.forEach(function(fieldSetting) {
           var fieldSelector = convertToFieldSelector(fieldSetting);
           $(fieldSelector + ' input').each(function(index) {
-            // Calculate field on initial form load.
-            $(fieldSelector + ' input').each(function(index) {
-              calculateField(fieldName, fieldSettings);
-            });
             // Bind event listeners to calculate field when input fields are changed.
             $(this).once(fieldSelector + '_' + fieldIndex + '_' + index).on('change', function() {
               calculateField(fieldName, fieldSettings);
