@@ -150,36 +150,25 @@
         calculateOverallPercentageOfCosts();
       });
 
-      // Fields from section VI A to calculate app_pend_end_yr.
-      var via = $('input[id^="edit-field-admin-app-via"]');
-      via.once('advCalcVIAppPendEndYr').change(function() {
-        var via_count = $("table[id^='field-admin-app-via-values'] tbody" + " tr");
-        var via_vals = [];
-
-        for (var i = 0; i < via_count.length; i++) {
-          var edit_pend_start_name = "[data-drupal-selector='edit-field-admin-app-via-" + i + "-subform-field-app-pend-start-yr-0-value'";
-          var edit_rec_name = "[data-drupal-selector='edit-field-admin-app-via-" + i + "-subform-field-app-received-yr-0-value'";
-          var edit_proc_name = "[data-drupal-selector='edit-field-admin-app-via-" + i + "-subform-field-app-processed-yr-0-value'";
-          var edit_pend_end_name = "[data-drupal-selector='edit-field-admin-app-via-" + i + "-subform-field-app-pend-end-yr-0-value'";
-          via_vals[i] = {
-            appPendStartYr: Number($(edit_pend_start_name).val()),
-            appReceivedYr: Number($(edit_rec_name).val()),
-            appProcessedYr: Number($(edit_proc_name).val()),
-            appPendEndYr: function() {
-              return this.appPendStartYr + this.appReceivedYr - this.appProcessedYr;
-            }
-          };
-          $(edit_pend_end_name).val(via_vals[i].appPendEndYr());
-        }
-
-        $("#edit-field-overall-via-app-pend-start-0-value, #edit-field-overall-via-app-recd-yr-0-value, #edit-field-overall-via-app-proc-yr-0-value").once('advCalcVIOverallAppPendEndYr').change(function() {
-          var overall_app_pend_start_yr = Number($("#edit-field-overall-via-app-pend-start-0-value").val());
-          var overall_app_received_yr = Number($("#edit-field-overall-via-app-recd-yr-0-value").val());
-          var overall_app_processed_yr = Number($("#edit-field-overall-via-app-proc-yr-0-value").val());
-          var overall_app_pend_end_yr = overall_app_pend_start_yr + overall_app_received_yr - overall_app_processed_yr;
-          $('#edit-field-overall-via-app-pend-endyr-0-value').val(overall_app_pend_end_yr);
+      // VI.A. Number of Appeals Pending as of End of Fiscal Year
+      $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_start_yr'], input[name*='field_app_received_yr'], input[name*='field_app_processed_yr']").each(function() {
+        $(this).once('advCalcVIAppPendEndYr').change(function() {
+          var component = $(this).parents('.paragraphs-subform');
+          var app_pend_start_yr = Number(component.find("input[name*='field_app_pend_start_yr']").val());
+          var app_received_yr = Number(component.find("input[name*='field_app_received_yr']").val());
+          var app_processed_yr = Number(component.find("input[name*='field_app_processed_yr']").val());
+          var app_pend_end_yr = app_pend_start_yr + app_received_yr - app_processed_yr;
+          component.find("input[name*='field_app_pend_end_yr']").val(app_pend_end_yr);
         });
+      });
 
+      // Section VI.A. Agency Overall Number of Appeals Pending as of End of Fiscal Year
+      $("#edit-field-overall-via-app-pend-start-0-value, #edit-field-overall-via-app-recd-yr-0-value, #edit-field-overall-via-app-proc-yr-0-value").once('advCalcVIOverallAppPendEndYr').change(function() {
+        var overall_app_pend_start_yr = Number($("#edit-field-overall-via-app-pend-start-0-value").val());
+        var overall_app_received_yr = Number($("#edit-field-overall-via-app-recd-yr-0-value").val());
+        var overall_app_processed_yr = Number($("#edit-field-overall-via-app-proc-yr-0-value").val());
+        var overall_app_pend_end_yr = overall_app_pend_start_yr + overall_app_received_yr - overall_app_processed_yr;
+        $('#edit-field-overall-via-app-pend-endyr-0-value').val(overall_app_pend_end_yr);
       });
 
       // Fields from section VI.C.(4) to calculate Lowest Number of Days.
