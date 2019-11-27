@@ -33,6 +33,31 @@
       }
 
       /**
+       * Check if a field has been marked as having been calculated on page load.
+       *
+       * @param {string} selector
+       * @returns {boolean}
+       */
+      function fieldIsInitialized(selector) {
+        var field = $(selector);
+
+        if (field && field.length > 0) {
+          return $(field.get(0)).hasClass('foia-advcalc-is-initialized');
+        }
+
+        return false;
+      }
+
+      /**
+       * Add a class to a field to mark that it has been calculated on page load.
+       *
+       * @param selector
+       */
+      function markFieldInitialized(selector) {
+        $(selector).addClass('foia-advcalc-is-initialized');
+      }
+
+      /**
        * Calculates overall value for a given component.
        *
        * @param {string} componentId
@@ -48,41 +73,70 @@
         var ops = {
           '<': function(a, b) { return a < b },
           '>': function(a, b) { return a > b },
-        }
+        };
+
+        // Calculate the initial value of the field.
         var fields = $("input[id^='" + componentId + "']").filter("input[name*='" + componentFieldName + "']");
+        if (!fieldIsInitialized('#' + overallFieldID)) {
+          var value = calculateBoundaryOfSet(fields, operator);
+          $('#' + overallFieldID).val(value);
+          markFieldInitialized('#' + overallFieldID);
+        }
+
         fields.each(function() {
           $(this).once('advCalcOverall').on('change', {overallFieldID: overallFieldID, operator: operator}, function(event) {
-            var output = null;
-            var isOverallNA = true;
-            fields.each(function () {
-              var value = $(this).val();
-              if (String(value).toLowerCase() != 'n/a') {
-                isOverallNA = false;
-                if (value != '' && value !== null && (output == null || output == "n/a")) {
-                  // Set output for the first valid value.
-                  output = displayLessThan(specialNumber(value));
-                }
-                else if(value != '' && value != undefined && ops[event.data.operator](specialNumber(value), specialNumber(output))) {
-                  // Override output if operation criterion is met.
-                  output = displayLessThan(specialNumber(value));
-                }
-              }
-            });
-            // Clear overall value if output is "NaN".
-            if (output !== output) {
-              output = '';
-            }
-            // Set overall value to "N/A" if all fields are "N/A".
-            else if (isOverallNA) {
-              output = 'N/A';
-            }
+            var output = calculateBoundaryOfSet(fields, event.data.operator);
             $('#' + event.data.overallFieldID).val(output);
           });
         });
       }
 
-      // Fields from sections IX and X to calculate overall_x_perc_costs.
-      $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value").once('advCalcOverallXPercCosts').change(function() {
+      /**
+       * Compares the values of a set of fields, returning either the upper or lower bound of the set.
+       *
+       * @param fields
+       *   A jquery object containing a set of fields.
+       * @param operator
+       *   Either less than or greater than depending on which boundary of the set should be retrieved.
+       * @returns {*}
+       */
+      function calculateBoundaryOfSet(fields, operator) {
+        var ops = {
+          '<': function(a, b) { return a < b },
+          '>': function(a, b) { return a > b },
+        };
+        var output = null;
+        var isOverallNA = true;
+        fields.each(function () {
+          var value = $(this).val();
+          if (String(value).toLowerCase() != 'n/a') {
+            isOverallNA = false;
+            if (value != '' && value !== null && (output == null || output == "n/a")) {
+              // Set output for the first valid value.
+              output = displayLessThan(specialNumber(value));
+            }
+            else if(value != '' && value != undefined && ops[operator](specialNumber(value), specialNumber(output))) {
+              // Override output if operation criterion is met.
+              output = displayLessThan(specialNumber(value));
+            }
+          }
+        });
+        // Clear overall value if output is "NaN".
+        if (output !== output) {
+          output = '';
+        }
+        // Set overall value to "N/A" if all fields are "N/A".
+        else if (isOverallNA) {
+          output = 'N/A';
+        }
+
+        return output;
+      }
+
+      /**
+       * Calculate section X's overall percentage of total costs field.
+       */
+      function calculateOverallPercentageOfCosts() {
         var overall_x_total_fees = Number($("#edit-field-overall-x-total-fees-0-value").val());
         if ( overall_x_total_fees > 0 ) {
           var overall_ix_proc_costs = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
@@ -90,6 +144,15 @@
           var overall_x_perc_costs = Math.round(overall_x_perc_costs * 10000) / 10000; // Decimal format rounded to 4 places
           $('#edit-field-overall-x-perc-costs-0-value').val(overall_x_perc_costs);
         }
+      }
+
+      // Fields from sections IX and X to calculate overall_x_perc_costs.
+      if (!fieldIsInitialized('#edit-field-overall-x-perc-costs-0-value')) {
+        calculateOverallPercentageOfCosts();
+        markFieldInitialized('#edit-field-overall-x-perc-costs-0-value');
+      }
+      $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value").once('advCalcOverallXPercCosts').change(function() {
+        calculateOverallPercentageOfCosts();
       });
 
       // Fields from section VI A to calculate app_pend_end_yr.
