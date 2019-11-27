@@ -70,11 +70,6 @@
        *    The operation to be performed, "<" or ">".
        */
       function calcOverall(componentId, componentFieldName, overallFieldID, operator) {
-        var ops = {
-          '<': function(a, b) { return a < b },
-          '>': function(a, b) { return a > b },
-        };
-
         // Calculate the initial value of the field.
         var fields = $("input[id^='" + componentId + "']").filter("input[name*='" + componentFieldName + "']");
         if (!fieldIsInitialized('#' + overallFieldID)) {
