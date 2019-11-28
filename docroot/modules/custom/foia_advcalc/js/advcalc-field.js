@@ -150,17 +150,35 @@
         calculateOverallPercentageOfCosts();
       });
 
+      // Initialize VI.A. Number of Appeals Pending as of End of Fiscal Year
+      $("input[name*='field_admin_app_via']").once('initAdvCalcVIAppPendEndYr').filter("input[name*='field_app_pend_end_yr']").each(function() {
+        if (!fieldIsInitialized(this)) {
+          calculate_app_pend_end_yr(this);
+          markFieldInitialized(this);
+        }
+      });
+
       // VI.A. Number of Appeals Pending as of End of Fiscal Year
-      $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_start_yr'], input[name*='field_app_received_yr'], input[name*='field_app_processed_yr']").each(function() {
+      $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_start_yr'], input[name*='field_app_received_yr'], input[name*='field_app_processed_yr']").each(function() {
         $(this).once('advCalcVIAppPendEndYr').change(function() {
-          var component = $(this).parents('.paragraphs-subform');
-          var app_pend_start_yr = Number(component.find("input[name*='field_app_pend_start_yr']").val());
-          var app_received_yr = Number(component.find("input[name*='field_app_received_yr']").val());
-          var app_processed_yr = Number(component.find("input[name*='field_app_processed_yr']").val());
-          var app_pend_end_yr = app_pend_start_yr + app_received_yr - app_processed_yr;
-          component.find("input[name*='field_app_pend_end_yr']").val(app_pend_end_yr);
+          calculate_app_pend_end_yr(this);
         });
       });
+
+      /**
+       * Calculates VI.A. Number of Appeals Pending as of End of Fiscal Year.
+       *
+       * @param {jquery} element
+       *   jQuery object of field to trigger calculations for component.
+       */
+      function calculate_app_pend_end_yr(element) {
+        var component = $(element).parents('.paragraphs-subform');
+        var app_pend_start_yr = Number(component.find("input[name*='field_app_pend_start_yr']").val());
+        var app_received_yr = Number(component.find("input[name*='field_app_received_yr']").val());
+        var app_processed_yr = Number(component.find("input[name*='field_app_processed_yr']").val());
+        var app_pend_end_yr = app_pend_start_yr + app_received_yr - app_processed_yr;
+        component.find("input[name*='field_app_pend_end_yr']").val(app_pend_end_yr);
+      }
 
       // Section VI.A. Agency Overall Number of Appeals Pending as of End of Fiscal Year
       $("#edit-field-overall-via-app-pend-start-0-value, #edit-field-overall-via-app-recd-yr-0-value, #edit-field-overall-via-app-proc-yr-0-value").once('advCalcVIOverallAppPendEndYr').change(function() {
