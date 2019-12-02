@@ -153,22 +153,28 @@
       });
 
       /**
-       * Calculates V.A., VI.A., XII.B. Number of [type] Pending as of End of Fiscal Year.
+       * Calculates V.A., VI.A., XII.B. Number of [type] Pending as of End of Fiscal Year per agency/component.
        *
        * e.g. req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
        *
+       * @param {jquery} element
+       *  jQuery object of field to trigger calculations for component.
        * @param {string} start
+       *  Partial name attribute for selecting start year field.
        * @param {string} received
+       *  Partial name attribute for selecting received year field.
        * @param {string} processed
+       *  Partial name attribute for selecting processed year field.
        * @param {string} end
+       *  Partial name attribute for selecting calculated end year field.
        */
       function calculatePendEndYr(element, start, received, processed, end) {
         var component = $(element).parents('.paragraphs-subform');
-        var start_val = Number(component.find("input[name*='" + start + "']").val());
-        var received_val = Number(component.find("input[name*='" + received + "']").val());
-        var processed_val = Number(component.find("input[name*='" + processed + "']").val());
-        var end_val = start_val + received_val - processed_val;
-        component.find("input[name*='" + end + "']").val(end_val);
+        var startVal = Number(component.find("input[name*='" + start + "']").val());
+        var receivedVal = Number(component.find("input[name*='" + received + "']").val());
+        var processedVal = Number(component.find("input[name*='" + processed + "']").val());
+        var endVal = startVal + receivedVal - processedVal;
+        component.find("input[name*='" + end + "']").val(endVal);
       }
 
       /**
@@ -182,12 +188,16 @@
        * @param {string} end
        */
       function calculateOverallPendEndYr(start, received, processed, end) {
-        var start_val = Number($(start).val());
-        var received_val = Number($(received).val());
-        var processed_val = Number($(processed).val());
-        var end_val = start_val + received_val - processed_val;
-        $(end).val(end_val);
+        var startVal = Number($(start).val());
+        var receivedVal = Number($(received).val());
+        var processedVal = Number($(processed).val());
+        var endVal = startVal + receivedVal - processedVal;
+        $(end).val(endVal);
       }
+
+      /**
+       *  V.A. Number of Requests Pending as of End of Fiscal Year per agency/component
+       */
 
       // V.A. Number of Requests Pending as of End of Fiscal Year
       $("input[name*='field_foia_requests_va']")
@@ -237,8 +247,9 @@
         });
 
       /**
-       *  VI.A. Number of Requests Pending as of End of Fiscal Year
+       *  VI.A. Number of Requests Pending as of End of Fiscal Year per agency/component
        */
+
       // Initialize VI.A. Number of Appeals Pending as of End of Fiscal Year
       $("input[name*='field_admin_app_via']")
         .once('initAdvCalcVIAppPendEndYr')
