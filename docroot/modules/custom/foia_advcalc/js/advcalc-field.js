@@ -237,7 +237,7 @@
         });
 
       /**
-       *  V.A. Number of Requests Pending as of End of Fiscal Year
+       *  VI.A. Number of Requests Pending as of End of Fiscal Year
        */
       // Initialize VI.A. Number of Appeals Pending as of End of Fiscal Year
       $("input[name*='field_admin_app_via']")
