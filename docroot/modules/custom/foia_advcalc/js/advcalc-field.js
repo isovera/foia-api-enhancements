@@ -200,6 +200,61 @@
       }
 
       /**
+       * Calculates perc_costs from total_fees divided by proc_costs.
+       */
+      function calcPercCosts(proc_costs, total_fees, perc_costs) {
+        var perc_costs_val;
+        if(total_fees.val() > 0) {
+          //set value of target field
+          perc_costs_val = total_fees.val() / proc_costs.val();
+          perc_costs_val = Math.round(perc_costs_val * 10000) / 10000; // Decimal format rounded to 4 places
+          $(perc_costs).val(perc_costs_val);
+          return perc_costs;
+        }
+      }
+
+      /**
+       * Get input field based on changed field ID and agency_component value.
+       */
+      function getFieldByAgency(field, agency) {
+        var result;
+        var element;
+        var element_agency;
+        switch (field) {
+          case 'x_total_fees':
+            element = $( "input[name*='field_fees_x']").filter("input[name*='field_total_fees']");
+            $(element).each(function() {
+              element_agency = getAgencyComponent($(this));
+              if (agency == element_agency) {
+                result = $(this);
+              }
+            });
+            break;
+          case 'ix_proc_costs':
+            element = $( "input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
+            $(element).each(function() {
+              element_agency = getAgencyComponent($(this));
+              if (agency == element_agency) {
+                result = $(this);
+              }
+            });
+            break;
+          case 'x_perc_costs':
+            element = $( "input[name*='field_fees_x']").filter("input[name*='field_perc_costs']");
+            $(element).each(function() {
+              element_agency = getAgencyComponent($(this));
+              if (agency == element_agency) {
+                result = $(this);
+              }
+            });
+            break;
+          default:
+            result = false;
+        }
+        return $(result);
+      }
+
+      /**
        *  V.A. Number of Requests Pending as of End of Fiscal Year per agency/component
        */
 
@@ -437,57 +492,6 @@
             '#edit-field-overall-xiib-pend-end-yr-0-value'
             );
         });
-
-      // Calculates perc_costs from total_fees divided by proc_costs.
-      function calcPercCosts(proc_costs, total_fees, perc_costs) {
-        var perc_costs_val;
-        if(total_fees.val() > 0) {
-          //set value of target field
-          perc_costs_val = total_fees.val() / proc_costs.val();
-          perc_costs_val = Math.round(perc_costs_val * 10000) / 10000; // Decimal format rounded to 4 places
-          $(perc_costs).val(perc_costs_val);
-          return perc_costs;
-        }
-      }
-
-      // Get input field based on changed field ID and agency_component value.
-      function getFieldByAgency(field, agency) {
-        var result;
-        var element;
-        var element_agency;
-        switch (field) {
-          case 'x_total_fees':
-            element = $( "input[name*='field_fees_x']").filter("input[name*='field_total_fees']");
-            $(element).each(function() {
-              element_agency = getAgencyComponent($(this));
-              if (agency == element_agency) {
-                result = $(this);
-              }
-            });
-            break;
-          case 'ix_proc_costs':
-            element = $( "input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
-            $(element).each(function() {
-              element_agency = getAgencyComponent($(this));
-              if (agency == element_agency) {
-                result = $(this);
-              }
-            });
-            break;
-          case 'x_perc_costs':
-            element = $( "input[name*='field_fees_x']").filter("input[name*='field_perc_costs']");
-            $(element).each(function() {
-              element_agency = getAgencyComponent($(this));
-              if (agency == element_agency) {
-                result = $(this);
-              }
-            });
-            break;
-          default:
-            result = false;
-        }
-        return $(result);
-      }
     }
   }
 })(jQuery, drupalSettings, Drupal);
