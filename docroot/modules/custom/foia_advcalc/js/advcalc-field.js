@@ -182,10 +182,10 @@
        * @param {string} end
        */
       function calculateOverallPendEndYr(start, received, processed, end) {
-        var processed_val = Number($(start).val());
+        var start_val = Number($(start).val());
         var received_val = Number($(received).val());
         var processed_val = Number($(processed).val());
-        var end_val = processed_val + received_val - processed_val;
+        var end_val = start_val + received_val - processed_val;
         $(end).val(end_val);
       }
 
