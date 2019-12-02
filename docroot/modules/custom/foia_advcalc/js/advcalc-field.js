@@ -201,6 +201,15 @@
 
       /**
        * Calculates perc_costs from total_fees divided by proc_costs.
+       *
+       * @param {jquery} proc_costs
+       *   jQuery element for IX. Processing Costs.
+       * @param {jquery} total_fees
+       *   jQuery element for X. Total Amount of Fees Collected.
+       * @param {jquery} perc_costs
+       *   jQuery element for X. Percentage of Total Costs.
+       *
+       * @returns {jquery} perc_costs
        */
       function calcPercCosts(proc_costs, total_fees, perc_costs) {
         var perc_costs_val;
@@ -215,6 +224,14 @@
 
       /**
        * Get input field based on changed field ID and agency_component value.
+       *
+       * @param {string} field
+       *   String representation of field name, e.g. "x_total_fees".
+       * @param {string} agency
+       *   String representation of Agency/Component value, e.g. "8706".
+       *
+       * @returns {jquery}
+       *   jQuery element for input field.
        */
       function getFieldByAgency(field, agency) {
         var result;
