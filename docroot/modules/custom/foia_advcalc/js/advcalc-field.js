@@ -317,6 +317,34 @@
       // Fields from section VII.B. to calculate Highest Number of Days (expedited).
       calcOverall('edit-field-proc-req-viib', 'field_exp_high', 'edit-field-overall-viib-exp-high-0-value', '>');
 
+      // Fields from IX and X to calculate field_perc_costs per agency.
+      // FOIA Personnel and Costs IX. proc_costs / Fees X. total_fees  = Fees X. perc_costs
+      // If section IX proc_costs field changes.
+      $( "input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']").each(function() {
+        $(this).once('advCalcIXProcCosts').change(function() {
+          var proc_costs_agency_val = getAgencyComponent($(this));
+
+          if(proc_costs_agency_val != '_none') {
+            var total_fees = getFieldByAgency('x_total_fees', proc_costs_agency_val);
+            var target = getFieldByAgency('x_perc_costs', proc_costs_agency_val);
+            calcPercCosts($(this), total_fees, target);
+          }
+        });
+      });
+
+      // If section X total_fees field changes.
+      $( "input[name*='field_fees_x']").filter("input[name*='field_total_fees']").each(function() {
+        $(this).once('advCalcXPercCosts').change(function() {
+          var total_fees_agency_val = getAgencyComponent($(this));
+
+          if(total_fees_agency_val != '_none') {
+            var proc_costs = getFieldByAgency('ix_proc_costs', total_fees_agency_val);
+            var target = getFieldByAgency('x_perc_costs', total_fees_agency_val);
+            calcPercCosts(proc_costs, $(this), target);
+          }
+        });
+      });
+
       // Section XII B automatically calculate field_pend_end_yr.
       // pend_start_yr + con_during_yr - proc_start_yr = pend_end_yr
       var xiib = $('input[id^="edit-field-foia-xiib"]');
@@ -346,34 +374,6 @@
           var overall_processed_yr = Number($("#edit-field-overall-xiib-proc-start-yr-0-value").val());
           var overall_pend_end_yr = overall_pend_start_yr + overall_con_during_yr - overall_processed_yr;
           $('#edit-field-overall-xiib-pend-end-yr-0-value').val(overall_pend_end_yr);
-        });
-      });
-
-      // Fields from IX and X to calculate field_perc_costs per agency.
-      // FOIA Personnel and Costs IX. proc_costs / Fees X. total_fees  = Fees X. perc_costs
-      // If section IX proc_costs field changes.
-      $( "input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']").each(function() {
-        $(this).once('advCalcIXProcCosts').change(function() {
-          var proc_costs_agency_val = getAgencyComponent($(this));
-
-          if(proc_costs_agency_val != '_none') {
-            var total_fees = getFieldByAgency('x_total_fees', proc_costs_agency_val);
-            var target = getFieldByAgency('x_perc_costs', proc_costs_agency_val);
-            calcPercCosts($(this), total_fees, target);
-          }
-        });
-      });
-
-      // If section X total_fees field changes.
-      $( "input[name*='field_fees_x']").filter("input[name*='field_total_fees']").each(function() {
-        $(this).once('advCalcXPercCosts').change(function() {
-          var total_fees_agency_val = getAgencyComponent($(this));
-
-          if(total_fees_agency_val != '_none') {
-            var proc_costs = getFieldByAgency('ix_proc_costs', total_fees_agency_val);
-            var target = getFieldByAgency('x_perc_costs', total_fees_agency_val);
-            calcPercCosts(proc_costs, $(this), target);
-          }
         });
       });
 
