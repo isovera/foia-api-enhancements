@@ -157,18 +157,18 @@
        *
        * e.g. req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
        *
-       * @param {jquery} element
-       *   jQuery object of field to trigger calculations for component.
-       * @param {string} type
-       *   Type: 'req' (Request) or 'app' (Appeals).
+       * @param {string} start
+       * @param {string} received
+       * @param {string} processed
+       * @param {string} end
        */
-      function calculatePendEndYr(element, type) {
+      function calculatePendEndYr(element, start, received, processed, end) {
         var component = $(element).parents('.paragraphs-subform');
-        var pend_start_yr = Number(component.find("input[name*='field_" + type + "_pend_start_yr']").val());
-        var received_yr = Number(component.find("input[name*='field_" + type + "_received_yr']").val());
-        var processed_yr = Number(component.find("input[name*='field_" + type + "_processed_yr']").val());
-        var pend_end_yr = pend_start_yr + received_yr - processed_yr;
-        component.find("input[name*='field_" + type + "_pend_end_yr']").val(pend_end_yr);
+        var start_val = Number(component.find("input[name*='" + start + "']").val());
+        var received_val = Number(component.find("input[name*='" + received + "']").val());
+        var processed_val = Number(component.find("input[name*='" + processed + "']").val());
+        var end_val = start_val + received_val - processed_val;
+        component.find("input[name*='" + end + "']").val(end_val);
       }
 
       /**
@@ -194,7 +194,7 @@
         .filter("input[name*='field_req_pend_start_yr'], input[name*='field_req_received_yr'], input[name*='field_req_processed_yr']")
           .each(function() {
             $(this).once('advCalcVAReqPendEndYr').change(function() {
-              calculatePendEndYr(this, 'req');
+              calculatePendEndYr(this, 'field_req_pend_start_yr', 'field_req_received_yr', 'field_req_processed_yr', 'field_req_pend_end_yr');
             });
       });
 
@@ -204,7 +204,7 @@
         .filter("input[name*='field_req_pend_end_yr']")
         .each(function() {
           if (!fieldIsInitialized(this)) {
-            calculatePendEndYr(this, 'req');
+            calculatePendEndYr(this, 'field_req_pend_start_yr', 'field_req_received_yr', 'field_req_processed_yr', 'field_req_pend_end_yr');
             markFieldInitialized(this);
           }
       });
@@ -237,7 +237,7 @@
         });
 
       /**
-       *  V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
+       *  V.A. Number of Requests Pending as of End of Fiscal Year
        */
       // Initialize VI.A. Number of Appeals Pending as of End of Fiscal Year
       $("input[name*='field_admin_app_via']")
@@ -245,7 +245,7 @@
         .filter("input[name*='field_app_pend_end_yr']")
         .each(function() {
           if (!fieldIsInitialized(this)) {
-            calculatePendEndYr(this, 'app');
+            calculatePendEndYr(this, 'field_app_pend_start_yr', 'field_app_received_yr', 'field_app_processed_yr', 'field_app_pend_end_yr');
             markFieldInitialized(this);
           }
       });
@@ -256,7 +256,7 @@
         .each(function() {
           $(this).once('advCalcVIAppPendEndYr')
             .change(function() {
-              calculatePendEndYr(this, 'app');
+              calculatePendEndYr(this, 'field_app_pend_start_yr', 'field_app_received_yr', 'field_app_processed_yr', 'field_app_pend_end_yr');
             });
       });
 
