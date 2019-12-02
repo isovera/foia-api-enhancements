@@ -146,23 +146,31 @@
         calculateOverallPercentageOfCosts();
         markFieldInitialized('#edit-field-overall-x-perc-costs-0-value');
       }
-      $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value").once('advCalcOverallXPercCosts').change(function() {
-        calculateOverallPercentageOfCosts();
+      $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value")
+        .once('advCalcOverallXPercCosts')
+        .change(function() {
+          calculateOverallPercentageOfCosts();
       });
 
       // Initialize VI.A. Number of Appeals Pending as of End of Fiscal Year
-      $("input[name*='field_admin_app_via']").once('initAdvCalcVIAppPendEndYr').filter("input[name*='field_app_pend_end_yr']").each(function() {
-        if (!fieldIsInitialized(this)) {
-          calculate_app_pend_end_yr(this);
-          markFieldInitialized(this);
-        }
+      $("input[name*='field_admin_app_via']")
+        .once('initAdvCalcVIAppPendEndYr')
+        .filter("input[name*='field_app_pend_end_yr']")
+        .each(function() {
+          if (!fieldIsInitialized(this)) {
+            calculate_app_pend_end_yr(this);
+            markFieldInitialized(this);
+          }
       });
 
       // VI.A. Number of Appeals Pending as of End of Fiscal Year
-      $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_start_yr'], input[name*='field_app_received_yr'], input[name*='field_app_processed_yr']").each(function() {
-        $(this).once('advCalcVIAppPendEndYr').change(function() {
-          calculate_app_pend_end_yr(this);
-        });
+      $("input[name*='field_admin_app_via']")
+        .filter("input[name*='field_app_pend_start_yr'], input[name*='field_app_received_yr'], input[name*='field_app_processed_yr']")
+        .each(function() {
+          $(this).once('advCalcVIAppPendEndYr')
+            .change(function() {
+              calculate_app_pend_end_yr(this);
+            });
       });
 
       /**
@@ -181,12 +189,14 @@
       }
 
       // Section VI.A. Agency Overall Number of Appeals Pending as of End of Fiscal Year
-      $("#edit-field-overall-via-app-pend-start-0-value, #edit-field-overall-via-app-recd-yr-0-value, #edit-field-overall-via-app-proc-yr-0-value").once('advCalcVIOverallAppPendEndYr').change(function() {
-        var overall_app_pend_start_yr = Number($("#edit-field-overall-via-app-pend-start-0-value").val());
-        var overall_app_received_yr = Number($("#edit-field-overall-via-app-recd-yr-0-value").val());
-        var overall_app_processed_yr = Number($("#edit-field-overall-via-app-proc-yr-0-value").val());
-        var overall_app_pend_end_yr = overall_app_pend_start_yr + overall_app_received_yr - overall_app_processed_yr;
-        $('#edit-field-overall-via-app-pend-endyr-0-value').val(overall_app_pend_end_yr);
+      $("#edit-field-overall-via-app-pend-start-0-value, #edit-field-overall-via-app-recd-yr-0-value, #edit-field-overall-via-app-proc-yr-0-value")
+        .once('advCalcVIOverallAppPendEndYr')
+        .change(function() {
+          var overall_app_pend_start_yr = Number($("#edit-field-overall-via-app-pend-start-0-value").val());
+          var overall_app_received_yr = Number($("#edit-field-overall-via-app-recd-yr-0-value").val());
+          var overall_app_processed_yr = Number($("#edit-field-overall-via-app-proc-yr-0-value").val());
+          var overall_app_pend_end_yr = overall_app_pend_start_yr + overall_app_received_yr - overall_app_processed_yr;
+          $('#edit-field-overall-via-app-pend-endyr-0-value').val(overall_app_pend_end_yr);
       });
 
       // Fields from section VI.C.(4) to calculate Lowest Number of Days.
