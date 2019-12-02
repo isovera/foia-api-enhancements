@@ -266,7 +266,12 @@
 
       // Initialize on load: VI.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
       if (!fieldIsInitialized('#edit-field-overall-via-app-pend-endyr-0-value')) {
-        calculateOverallPendEndYr();
+        calculateOverallPendEndYr(
+          '#edit-field-overall-via-app-pend-start-0-value',
+          '#edit-field-overall-via-app-recd-yr-0-value',
+          '#edit-field-overall-via-app-proc-yr-0-value',
+          '#edit-field-overall-via-app-pend-endyr-0-value'
+          );
         markFieldInitialized('#edit-field-overall-via-app-pend-endyr-0-value');
       }
 
