@@ -153,7 +153,7 @@
       });
 
       /**
-       * Calculates V.A. and VI.A. Number of [type] Pending as of End of Fiscal Year.
+       * Calculates V.A., VI.A., XII.B. Number of [type] Pending as of End of Fiscal Year.
        *
        * e.g. req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
        *
@@ -172,7 +172,7 @@
       }
 
       /**
-       * Calculates V.A. and VI.A. Overall Number of [type] Pending as of End of Fiscal Year.
+       * Calculates V.A., VI.A., XII.B. Overall Number of [type] Pending as of End of Fiscal Year.
        *
        * e.g. req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
        *
@@ -350,37 +350,57 @@
         });
       });
 
-      // Section XII B automatically calculate field_pend_end_yr.
-      // pend_start_yr + con_during_yr - proc_start_yr = pend_end_yr
-      var xiib = $('input[id^="edit-field-foia-xiib"]');
-      xiib.once('advCalcXIIBPendEndYr').change(function() {
-        var xiib_count = $("table[id^='field-foia-xiib-values'] tbody" + " tr");
-        var xiib_vals = [];
+      /**
+       *  XII.B. Number of Consultations Received from Other Agencies that were Pending at the Agency as of End of the Fiscal Year
+       */
 
-        for (var i = 0; i < xiib_count.length; i++) {
-          var edit_pend_start_name = "[data-drupal-selector='edit-field-foia-xiib-" + i + "-subform-field-pend-start-yr-0-value'";
-          var edit_rec_name = "[data-drupal-selector='edit-field-foia-xiib-" + i + "-subform-field-con-during-yr-0-value'";
-          var edit_proc_name = "[data-drupal-selector='edit-field-foia-xiib-" + i + "-subform-field-proc-start-yr-0-value'";
-          var edit_pend_end_name = "[data-drupal-selector='edit-field-foia-xiib-" + i + "-subform-field-pend-end-yr-0-value'";
-          xiib_vals[i] = {
-              appPendStartYr: Number($(edit_pend_start_name).val()),
-              appReceivedYr: Number($(edit_rec_name).val()),
-              appProcessedYr: Number($(edit_proc_name).val()),
-              appPendEndYr: function() {
-                  return this.appPendStartYr + this.appReceivedYr - this.appProcessedYr;
-              }
-          };
-          $(edit_pend_end_name).val(xiib_vals[i].appPendEndYr());
-        }
-
-        $("#edit-field-overall-xiib-pend-start-yr-0-value, #edit-field-overall-xiib-con-during-yr-0-value, #edit-field-overall-xiib-proc-start-yr-0-value").once('advCalcXIIBOverallPendEndYr').change(function() {
-          var overall_pend_start_yr = Number($("#edit-field-overall-xiib-pend-start-yr-0-value").val());
-          var overall_con_during_yr = Number($("#edit-field-overall-xiib-con-during-yr-0-value").val());
-          var overall_processed_yr = Number($("#edit-field-overall-xiib-proc-start-yr-0-value").val());
-          var overall_pend_end_yr = overall_pend_start_yr + overall_con_during_yr - overall_processed_yr;
-          $('#edit-field-overall-xiib-pend-end-yr-0-value').val(overall_pend_end_yr);
-        });
+      // Initialize XII.B. Number of Consultations Received from Other Agencies that were Pending at the Agency as of End of the Fiscal Year
+      $("input[name*='field_foia_xiib']")
+        .once('initAdvCalcXIIBConPendEndYr')
+        .filter("input[name*='field_pend_end_yr']")
+        .each(function() {
+          if (!fieldIsInitialized(this)) {
+            calculatePendEndYr(this, 'field_pend_start_yr', 'field_con_during_yr', 'field_proc_start_yr', 'field_pend_end_yr');
+            markFieldInitialized(this);
+          }
       });
+
+      // XII.B. Number of Consultations Received from Other Agencies that were Pending at the Agency as of End of the Fiscal Year
+      $("input[name*='field_foia_xiib']")
+        .filter("input[name*='field_pend_start_yr'], input[name*='field_con_during_yr'], input[name*='field_proc_start_yr']")
+        .each(function() {
+          $(this).once('advCalcXIIBConPendEndYr')
+            .change(function() {
+              calculatePendEndYr(this, 'field_pend_start_yr', 'field_con_during_yr', 'field_proc_start_yr', 'field_pend_end_yr');
+            });
+      });
+
+      /**
+       *  XII.B. Agency Overall Number of Consultations Received from Other Agencies that were Pending at the Agency as of End of the Fiscal Year
+       */
+
+      // Initialize on load: XII.B. Agency Overall Number of Consultations Received from Other Agencies that were Pending at the Agency as of End of the Fiscal Year
+      if (!fieldIsInitialized('#edit-field-overall-xiib-pend-end-yr-0-value')) {
+        calculateOverallPendEndYr(
+          '#edit-field-overall-xiib-pend-start-yr-0-value',
+          '#edit-field-overall-xiib-con-during-yr-0-value',
+          '#edit-field-overall-xiib-proc-start-yr-0-value',
+          '#edit-field-overall-xiib-pend-end-yr-0-value'
+          );
+        markFieldInitialized('#edit-field-overall-xiib-pend-end-yr-0-value');
+      }
+
+      // Calculate on change: XII.B. Agency Overall Number of Consultations Received from Other Agencies that were Pending at the Agency as of End of the Fiscal Year
+      $("#edit-field-overall-xiib-pend-start-yr-0-value, #edit-field-overall-xiib-con-during-yr-0-value, #edit-field-overall-xiib-proc-start-yr-0-value")
+        .once('advCalcXIIBOverallAppPendEndYr')
+        .change(function() {
+          calculateOverallPendEndYr(
+            '#edit-field-overall-xiib-pend-start-yr-0-value',
+            '#edit-field-overall-xiib-con-during-yr-0-value',
+            '#edit-field-overall-xiib-proc-start-yr-0-value',
+            '#edit-field-overall-xiib-pend-end-yr-0-value'
+            );
+        });
 
       // Calculates perc_costs from total_fees divided by proc_costs.
       function calcPercCosts(proc_costs, total_fees, perc_costs) {
