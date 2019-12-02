@@ -171,6 +171,24 @@
         component.find("input[name*='field_" + type + "_pend_end_yr']").val(pend_end_yr);
       }
 
+      /**
+       * Calculates V.A. and VI.A. Overall Number of [type] Pending as of End of Fiscal Year.
+       *
+       * e.g. req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
+       *
+       * @param {string} start
+       * @param {string} received
+       * @param {string} processed
+       * @param {string} end
+       */
+      function calculateOverallPendEndYr(start, received, processed, end) {
+        var processed_val = Number($(start).val());
+        var received_val = Number($(received).val());
+        var processed_val = Number($(processed).val());
+        var end_val = processed_val + received_val - processed_val;
+        $(end).val(end_val);
+      }
+
       // V.A. Number of Requests Pending as of End of Fiscal Year
       $("input[name*='field_foia_requests_va']")
         .filter("input[name*='field_req_pend_start_yr'], input[name*='field_req_received_yr'], input[name*='field_req_processed_yr']")
@@ -191,16 +209,32 @@
           }
       });
 
-      // Section V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
+      /**
+       *  V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
+       */
+
+      // Initialize on load: V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
+      if (!fieldIsInitialized('#edit-field-overall-req-pend-end-yr-0-value')) {
+        calculateOverallPendEndYr(
+          '#edit-field-overall-req-pend-start-yr-0-value',
+          '#edit-field-overall-req-received-yr-0-value',
+          '#edit-field-overall-req-processed-yr-0-value',
+          '#edit-field-overall-req-pend-end-yr-0-value'
+          );
+        markFieldInitialized('#edit-field-overall-req-pend-end-yr-0-value');
+      }
+
+      // Calculate on change: V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
       $("#edit-field-overall-req-pend-start-yr-0-value, #edit-field-overall-req-received-yr-0-value, #edit-field-overall-req-processed-yr-0-value")
         .once('advCalcVAOverallReqPendEndYr')
         .change(function() {
-          var overall_app_pend_start_yr = Number($("#edit-field-overall-req-pend-start-yr-0-value").val());
-          var overall_app_received_yr = Number($("#edit-field-overall-req-received-yr-0-value").val());
-          var overall_app_processed_yr = Number($("#edit-field-overall-req-processed-yr-0-value").val());
-          var overall_app_pend_end_yr = overall_app_pend_start_yr + overall_app_received_yr - overall_app_processed_yr;
-          $('#edit-field-overall-req-pend-end-yr-0-value').val(overall_app_pend_end_yr);
-      });
+          calculateOverallPendEndYr(
+            '#edit-field-overall-req-pend-start-yr-0-value',
+            '#edit-field-overall-req-received-yr-0-value',
+            '#edit-field-overall-req-processed-yr-0-value',
+            '#edit-field-overall-req-pend-end-yr-0-value'
+            );
+        });
 
       /**
        *  V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
@@ -226,16 +260,27 @@
             });
       });
 
-      // VI.A. Agency Overall Number of Appeals Pending as of End of Fiscal Year
-      $("#edit-field-overall-via-app-pend-start-0-value, #edit-field-overall-via-app-recd-yr-0-value, #edit-field-overall-via-app-proc-yr-0-value")
+      /**
+       *  VI.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
+       */
+
+      // Initialize on load: VI.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
+      if (!fieldIsInitialized('#edit-field-overall-via-app-pend-endyr-0-value')) {
+        calculateOverallPendEndYr();
+        markFieldInitialized('#edit-field-overall-via-app-pend-endyr-0-value');
+      }
+
+      // Calculate on change: VI.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
+      $("#edit-field-overall-req-pend-start-yr-0-value, #edit-field-overall-req-received-yr-0-value, #edit-field-overall-req-processed-yr-0-value")
         .once('advCalcVIOverallAppPendEndYr')
         .change(function() {
-          var overall_app_pend_start_yr = Number($("#edit-field-overall-via-app-pend-start-0-value").val());
-          var overall_app_received_yr = Number($("#edit-field-overall-via-app-recd-yr-0-value").val());
-          var overall_app_processed_yr = Number($("#edit-field-overall-via-app-proc-yr-0-value").val());
-          var overall_app_pend_end_yr = overall_app_pend_start_yr + overall_app_received_yr - overall_app_processed_yr;
-          $('#edit-field-overall-via-app-pend-endyr-0-value').val(overall_app_pend_end_yr);
-      });
+          calculateOverallPendEndYr(
+            '#edit-field-overall-via-app-pend-start-0-value',
+            '#edit-field-overall-via-app-recd-yr-0-value',
+            '#edit-field-overall-via-app-proc-yr-0-value',
+            '#edit-field-overall-via-app-pend-endyr-0-value'
+            );
+        });
 
       // Fields from section VI.C.(4) to calculate Lowest Number of Days.
       calcOverall('edit-field-admin-app-vic4', 'field_low_num_days', 'edit-field-overall-vic4-low-num-days-0-value', '<');
