@@ -141,17 +141,6 @@
         }
       }
 
-      // Fields from sections IX and X to calculate overall_x_perc_costs.
-      if (!fieldIsInitialized('#edit-field-overall-x-perc-costs-0-value')) {
-        calculateOverallPercentageOfCosts();
-        markFieldInitialized('#edit-field-overall-x-perc-costs-0-value');
-      }
-      $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value")
-        .once('advCalcOverallXPercCosts')
-        .change(function() {
-          calculateOverallPercentageOfCosts();
-      });
-
       /**
        * Calculates V.A., VI.A., XII.B. Number of [type] Pending as of End of Fiscal Year per agency/component.
        *
@@ -456,6 +445,17 @@
             calcPercCosts(proc_costs, $(this), target);
           }
         });
+      });
+
+      // Fields from sections IX and X to calculate overall_x_perc_costs.
+      if (!fieldIsInitialized('#edit-field-overall-x-perc-costs-0-value')) {
+        calculateOverallPercentageOfCosts();
+        markFieldInitialized('#edit-field-overall-x-perc-costs-0-value');
+      }
+      $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value")
+        .once('advCalcOverallXPercCosts')
+        .change(function() {
+          calculateOverallPercentageOfCosts();
       });
 
       /**
