@@ -333,11 +333,32 @@
       // Fields from section VII.B. to calculate Highest Number of Days (expedited).
       calcOverall('edit-field-proc-req-viib', 'field_exp_high', 'edit-field-overall-viib-exp-high-0-value', '>');
 
-      // Fields from IX and X to calculate field_perc_costs per agency.
-      // FOIA Personnel and Costs IX. proc_costs / Fees X. total_fees  = Fees X. perc_costs
+      /**
+       * X. Percentage of Total Costs per agency/component.
+       *
+       * Fields from IX and X to calculate field_perc_costs per agency.
+       * FOIA Personnel and Costs IX. proc_costs / Fees X. total_fees  = Fees X. perc_costs
+       */
+
+      // Initialize on load: X. Percentage of Total Costs
+      $("input[name*='field_fees_x']")
+        .once('initAdvCalcIXPercCosts')
+        .filter("input[name*='field_total_fees']")
+        .each(function() {
+          if (!fieldIsInitialized(this)) {
+            var proc_costs_agency_val = getAgencyComponent($(this));
+            if(proc_costs_agency_val != '_none') {
+              var total_fees = getFieldByAgency('ix_proc_costs', proc_costs_agency_val);
+              var target = getFieldByAgency('x_perc_costs', proc_costs_agency_val);
+              calcPercCosts($(this), total_fees, target);
+            }
+            markFieldInitialized(this);
+          }
+      });
+
       // If section IX proc_costs field changes.
       $( "input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']").each(function() {
-        $(this).once('advCalcIXProcCosts').change(function() {
+        $(this).once('advCalcIXPercCosts').change(function() {
           var proc_costs_agency_val = getAgencyComponent($(this));
 
           if(proc_costs_agency_val != '_none') {
