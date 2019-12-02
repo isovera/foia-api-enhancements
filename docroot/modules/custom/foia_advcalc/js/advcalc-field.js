@@ -183,9 +183,13 @@
        * e.g. req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
        *
        * @param {string} start
+       *  Partial name attribute for selecting start year field.
        * @param {string} received
+       *  Partial name attribute for selecting received year field.
        * @param {string} processed
+       *  Partial name attribute for selecting processed year field.
        * @param {string} end
+       *  Partial name attribute for selecting calculated end year field.
        */
       function calculateOverallPendEndYr(start, received, processed, end) {
         var startVal = Number($(start).val());
