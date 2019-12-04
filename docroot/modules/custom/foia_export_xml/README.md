@@ -9,29 +9,27 @@ can be found documented on [github](https://github.com/usdoj/foia-api/blob/devel
 #### Exporting Annual FOIA Report Data nodes
 
 The module defines a route with the pattern `/node/[nid]/xml` and a menu link
-on node pages to that route.  This route builds the XML from node data, sets
-the export as the contents of the response, sets content headers to send the
-response as an attachment for download as a file titled `annual-report.xml`.
-To access this route, go to an annual report node at `/node/[nid]` and click
-the tab titled `XML`.
+on node pages to that route.  This route builds the XML from node data which
+is returned in the response as a file attachment for download, titled
+`annual-report.xml`. To access this route, go to an annual report node at
+`/node/[nid]` and click the tab titled `XML`.
 
 #### The export class 
 
 The bulk of the work in this module is done in the class 
-`\Drupal\foia_export_xml\ExportXml`.  The constructor of the `ExportXml` class
-creates a new `\DOMDocument`, then proceeds to add each section of the
-annual report to the document, conforming to the FOIA Annual Report schema
-extension.  The `__toString()` method is used to convert that
-`DOMDocument` to a string.  In this method, a new export can be created,
-then cast to a string as the body of the response object.
+`\Drupal\foia_export_xml\ExportXml`.  This class builds an XML document from
+ node data that conforms to the FOIA Annual Report schema extension.  The
+`__toString()` method is used to convert the XML document to a string.  In
+this method, a new export can be created, then cast to a string as the body
+of the response object.
 
 #### Export Structure
 
 The export is structured in sections.  Within the `ExportXml` class, a method
-is created for exporting each section.  These methods do things like setting
-the correct tags for that section based on the defined schema and handling
-any complexities of exporting that specific section of data.  The resulting
-section, at a high level, will look something like the following:
+exists for exporting each section.  In these, the export continues to be
+built up based on the defined schema, handling any complexities of
+exporting that specific section of data.  The resulting sections, at a high
+level, will look something like the following:
 
 ```
 <foia:Exemption3StatuteSection>
