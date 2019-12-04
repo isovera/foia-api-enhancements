@@ -26,9 +26,7 @@ of the response object.
 #### Export Structure
 
 The export is structured in sections.  Within the `ExportXml` class, a method
-exists for exporting each section.  In these, the export continues to be
-built up based on the defined schema, handling any complexities of
-exporting that specific section of data.  The resulting sections, at a high
+exists for exporting each section.  The resulting sections, at a high
 level, will look something like the following:
 
 ```
