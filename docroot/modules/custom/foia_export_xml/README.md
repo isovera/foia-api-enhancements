@@ -9,10 +9,9 @@ can be found documented on [github](https://github.com/usdoj/foia-api/blob/devel
 #### Exporting Annual FOIA Report Data nodes
 
 The module defines a route with the pattern `/node/[nid]/xml` and a menu link
-on node pages to that route.  This route builds the XML from node data which
-is returned in the response as a file attachment for download, titled
-`annual-report.xml`. To access this route, go to an annual report node at
-`/node/[nid]` and click the tab titled `XML`.
+that displays on node pages.  The route's controller builds the XML from node
+data and returns a response with the export contents as a file attachment for
+download.
 
 #### The export class 
 
@@ -25,8 +24,8 @@ of the response object.
 
 #### Export Structure
 
-The export is structured in sections.  Within the `ExportXml` class, a method
-exists for exporting each section.  The resulting sections, at a high
+The export schema is structured in sections.  Within the `ExportXml` class, a
+method exists for exporting each section.  The resulting sections, at a high
 level, will look something like the following:
 
 ```
@@ -59,10 +58,11 @@ with a specific organizational subunit.
 
 ##### Organizations
 
-In the export, this exists by defining each `OrganizationSubUnit`, along
-with a reference id, such as `ORG1`.  The following example shows the
-organizations section of the export, where subunits are defined within the
-agency overall (`ORG0`) and given reference id values in the attribute `s:id`.
+In the export, this exists by defining each `OrganizationSubUnit` (Agency
+Component node), along with a reference id, such as `ORG1`.  The following
+example shows the organizations section of the export, where subunits are
+defined within the agency overall (`ORG0`) and given reference id values in
+the attribute `s:id`.
   
 ```
 <nc:Organization s:id="ORG0">
@@ -112,8 +112,8 @@ which, if continuing with our example from above, corresponds to the
 
 In order to properly reference component data to organizations, organization
 identifiers are maintained in the `ExportXml` class's `componentMap` property.
-This property is an array that maps an Agency Component node id to an
-organizational identifier such as `ORG1`.  For example,
+This property maps an Agency Component node id to an organizational
+identifier such as `ORG1`.  For example:
 
 ```
 [
