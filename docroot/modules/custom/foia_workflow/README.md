@@ -27,7 +27,7 @@ state of the node.
 
 ### Additional access grants
 
- * Users with the role Agency Manager are a allowed to edit or delete a
+ * Users with the role Agency Manager are allowed to edit or delete a
   report that has been authored by a user in their agency, if the report is
   in the `draft` or `back_with_agency` state.
 
@@ -35,11 +35,11 @@ state of the node.
 REQUIREMENTS
 -------------
 
- * Workflows: Access restrictions are based on workflow states defined by the
-  "Annual Report Workflow".
+ * Core Workflows module: Access restrictions are based on workflow states
+  defined by the "Annual Report Workflow".
  * Access rules are for the `annual_foia_report_data` content type.
- * Some access rules are based on a user and report's agency, as defined by
-  the Agency vocabulary.
+ * Some access rules are based on a user and report's `field_agency`, which
+  references taxonomy terms defined in the Agency vocabulary.
  * Access rules are based on the roles `agency_administrator` and
   `agency_manager`.
 
