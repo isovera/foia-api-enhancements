@@ -39,7 +39,7 @@ REQUIREMENTS
   defined by the "Annual Report Workflow".
  * Access rules are for the `annual_foia_report_data` content type.
  * Some access rules are based on a user and report's `field_agency`, which
-  references taxonomy terms defined in the Agency vocabulary.
+  references a taxonomy term defined in the Agency vocabulary.
  * Access rules are based on the roles `agency_administrator` and
   `agency_manager`.
 
