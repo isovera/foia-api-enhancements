@@ -12,9 +12,9 @@ CONTENTS OF THIS FILE
 INTRODUCTION
 ------------
 
-The FOIA Workflow module adds custom access requirement to Annual FOIA Report
-Data nodes based on a user's agency and role, and the workflow state of the
-node.
+The FOIA Workflow module adds custom access restrictions and grants to Annual
+FOIA Report Data nodes based on a user's agency and role, and the workflow
+state of the node.
 
 
 ### Additional access restrictions
