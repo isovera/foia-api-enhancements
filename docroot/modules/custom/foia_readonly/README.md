@@ -1,3 +1,12 @@
+CONTENTS OF THIS FILE
+---------------------
+
+ * Introduction
+ * Recommended modules
+ * Installation
+ * Configuration
+
+
 INTRODUCTION
 ------------
 The FOIA Readonly module adds a [readonly attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly)
