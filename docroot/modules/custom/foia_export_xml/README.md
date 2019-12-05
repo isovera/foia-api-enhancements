@@ -184,8 +184,7 @@ CONFIGURATION
 -------------
 
 Any user with permission to view an Annual FOIA Report Data node, also has
-permission to export that node to XML.  Access depends on whether or not the 
-node is published.
+permission to export that node to XML.
 
 Configure the user permissions in Administration » People » Permissions:
 
