@@ -4,7 +4,7 @@ The FOIA Autocalc module allows administrators to configure a field to
 automatically calculate its value as the sum of one or more fields existing
 on the same node.
 
-## Calculations
+## Events Triggering Calculations
 
 Calculations are done in javascript on the following events:
 
@@ -14,6 +14,91 @@ calculated field.
 * Change: When a field that is an addend for any auto-calculated field is
 changed, the calculations will be run again, summing any fields that are
 dependent on the changed field.
+
+## Settings Structure and Calculations
+
+In order to auto-calculate values in javascript, auto-calculation settings
+are exported to `drupalSettings.foiaAutocalc.autocalcSettings` as a js object of
+field machine names as keys whose value is an array of all fields that can be
+used to calculate a field with that machine name. The structure will look
+something like the following:
+
+```
+{
+  'field_overall_viic1_1_20_days': [
+    {
+      "field": "field_proc_req_viic1",
+      "subfield": {
+        "field": "field_1_20_days"
+      },
+     "this_entity": 0
+    },
+  ],
+  'field_total': [
+    {
+      "field": "field_admin_app_vib",
+      "subfield": {
+        "field": "field_affirmed_on_app"
+      },
+     "this_entity": "1"
+    },
+    {
+      "field": "field_admin_app_vib",
+      "subfield": {
+        "field": "field_part_on_app"
+      },
+     "this_entity": "1"
+    },
+    {
+      "field": "field_foia_requests_vb1",
+      "subfield": {
+        "field": "field_rec_ref_to_an_comp"
+      },
+     "this_entity": "1"
+    },
+    {
+      "field": "field_foia_requests_vb1",
+      "subfield": {
+        "field": "field_dup_request"
+      },
+     "this_entity": "1"
+    },
+    ...
+  ]
+}
+```
+
+## Calculations Constrained to "This Entity"
+
+Consider the section of the above example that displays the `field_total`
+configurations. This is a partial example of the configuration for
+`field_total` fields on an Annual FOIA Report Data node.  The following is
+true of this example:
+
+* `field_admin_app_vib` is a unlimited cardinality reference field to a
+ paragraph item entity that contains the fields `field_affirmed_on_app`,
+`field_part_on_app`, and `field_total`.
+* `field_foia_requests_vb1` is a unlimited cardinality reference field to a
+ paragraph item entity that contains the fields `field_rec_ref_to_an_comp`,
+`field_dup_request`, and `field_total`.
+* Each field configured as an addend for `field_total` has a `this_entity` value
+of 1 (or true), so the `field_total` values should only be calculated from
+field values that are contained on the same entity, granular to the paragraph
+item level, as the `field_total` field.
+
+When the auto-calculations are run for `field_total` the following
+calculations will occur in this example.
+
+* The value of each `field_total` field that is a child of a
+`field_admin_app_vib` paragraph item will be calculated as the sum of that
+same paragraph item's `field_affirmed_on_app` and `field_part_on_app` fields.
+* The value of each `field_total` field that is a child of a
+`field_foia_requests_vb1` paragraph item will be calculated as the sum of that
+same paragraph item's `field_rec_ref_to_an_comp` and `field_dup_request` fields.
+
+## Calculations Not Constrained to "This Entity"
+
+
 
 RECOMMENDED MODULES
 -------------------
