@@ -2,6 +2,8 @@ CONTENTS OF THIS FILE
 ---------------------
 
  * Introduction
+   * Additional access restrictions
+   * Additional access grants
  * Requirements
  * Installation
  * Configuration
@@ -23,7 +25,7 @@ node.
   that is not in either the `draft` or `back_with_agency` state.
 
 
-### Additional access granted
+### Additional access grants
 
  * Users with the role Agency Manager are a allowed to edit or delete a
   report that has been authored by a user in their agency, if the report is
