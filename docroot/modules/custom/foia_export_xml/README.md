@@ -7,12 +7,14 @@ extension of the NIEM IEPD schema.  A representation of this extension schema
 can be found documented on
 [GitHub](https://github.com/usdoj/foia-api/blob/develop/docs/FoiaAnnualReportExtensions.xsd).
 
+
 #### Exporting "Annual FOIA Report Data" nodes
 
 The module defines a route with the pattern `/node/[nid]/xml` and a menu link
 that displays on node pages.  The route's controller builds the XML from node
 data and returns a response with the export contents as a file attachment for
 download.
+
 
 #### The export class 
 
@@ -22,6 +24,7 @@ The bulk of the work in this module is done in the class
 `__toString()` method is used to convert the XML document to a string.  In
 this method, a new export can be created, then cast to a string as the body
 of the response object.
+
 
 #### Export structure
 
@@ -49,6 +52,7 @@ agency.
 \* This is not a complete example.  For exact specifications, reference the
 [FOIA Annual Report](https://github.com/usdoj/foia-api/blob/develop/docs/FoiaAnnualReportExtensions.xsd)
 schema.
+
   
 #### Agency components
 
@@ -57,6 +61,7 @@ exist in Drupal as Agency Component nodes.  When creating an Annual FOIA
 Report Data node, paragraph items containing component data will reference
 one of the Agency's components, associating the data in that paragraph item
 with a specific organizational subunit.
+
 
 ##### Organizations
 
@@ -77,6 +82,7 @@ the attribute `s:id`.
     ...
 </nc:Organization>
 ```  
+
 
 ##### Component data
 
@@ -111,6 +117,7 @@ which, if continuing with our example from above, corresponds to the
 </foia:Exemption3StatuteSection>
 ```
 
+
 ##### The component map
 
 In order to properly reference component data to organizations, organization
@@ -134,6 +141,7 @@ $agency_component = $component->field_agency_component->referencedEntities()[0];
 $identifier = $this->componentMap[$agency_component->id()]
 ```
 
+
 #### Centralized vs non-centralized agencies
 
 A centralized agency is one with only one component, corresponding to the
@@ -147,6 +155,7 @@ REQUIREMENTS
 This module depends on the `annual_foia_report_data` and `agency_component`
 content types.
 
+
 INSTALLATION
 ------------
 
@@ -155,6 +164,7 @@ codebase is not installed via composer. Enable as you would normally enable a
 contributed Drupal module. Visit
 https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules#s-step-2-enable-the-module
 for further information.
+
 
 CONFIGURATION
 -------------
