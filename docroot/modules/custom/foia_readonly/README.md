@@ -22,6 +22,7 @@ field's machine name to the list.  Readonly fields defined in paragraph items
 are disabled per paragraph type in the function
 `foia_readonly_field_widget_multivalue_entity_reference_paragraphs_form_alter`.
 
+
 RECOMMENDED MODULES
 -------------------
 
@@ -41,6 +42,7 @@ is not installed via composer. Install as you would normally install a
 contributed Drupal module. Visit
 https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules#s-step-2-enable-the-module
 for further information.
+
 
 CONFIGURATION
 -------------
