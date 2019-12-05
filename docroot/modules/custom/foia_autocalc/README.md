@@ -4,7 +4,7 @@ The FOIA Autocalc module allows administrators to configure a field to
 automatically calculate its value as the sum of one or more fields existing
 on the same node.
 
-## Events Triggering Calculations
+## Events triggering calculations
 
 Calculations are done in javascript on the following events:
 
@@ -15,7 +15,7 @@ calculated field.
 changed, the calculations will be run again, summing any fields that are
 dependent on the changed field.
 
-## Settings Structure and Calculations
+## Settings structure and calculations
 
 In order to auto-calculate values in javascript, auto-calculation settings
 are exported to `drupalSettings.foiaAutocalc.autocalcSettings` as a js object of
@@ -68,7 +68,7 @@ something like the following:
 }
 ```
 
-### Calculations Constrained to "This Entity"
+### Calculations constrained to "this_entity"
 
 Consider this section of the above example that contains the `field_total`
 configurations.
@@ -134,7 +134,7 @@ same paragraph item's `field_affirmed_on_app` and `field_part_on_app` fields.
 `field_foia_requests_vb1` paragraph item will be calculated as the sum of that
 same paragraph item's `field_rec_ref_to_an_comp` and `field_dup_request` fields.
 
-### Calculations Not Constrained to "This Entity"
+### Calculations not constrained to "this_entity"
 
 Consider this section of the above example that contains the
 `field_overall_viic1_1_20_days` configurations.
