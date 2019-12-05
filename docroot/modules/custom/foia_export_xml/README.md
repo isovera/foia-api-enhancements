@@ -4,7 +4,8 @@ INTRODUCTION
 The main task of the FOIA Export XML module is to transform an Annual FOIA
 Report Data node into an XML file that conforms to the FOIA Annual Report
 extension of the NIEM IEPD schema.  A representation of this extension schema
-can be found documented on [github](https://github.com/usdoj/foia-api/blob/develop/docs/FoiaAnnualReportExtensions.xsd).
+can be found documented on
+[GitHub](https://github.com/usdoj/foia-api/blob/develop/docs/FoiaAnnualReportExtensions.xsd).
 
 #### Exporting "Annual FOIA Report Data" nodes
 
