@@ -137,8 +137,8 @@ Annual FOIA Report Data node.  The following is true of this example:
  * Each field configured as an addend for `field_total` has a `this_entity
  ` value
 of 1 (or true), so the `field_total` values should only be calculated from
-field values that are contained on the same entity, granular to the paragraph
-item level, as the `field_total` field.
+field values that are contained on the same entity as the `field_total` field,
+granular to the paragraph item level.
 
 When the auto-calculations are run for `field_total` the following
 calculations will occur in this example.
