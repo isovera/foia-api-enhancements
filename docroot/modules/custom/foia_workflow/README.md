@@ -30,6 +30,16 @@ node.
   in the `draft` or `back_with_agency` state.
 
 
+REQUIREMENTS
+-------------
+
+ * Workflows: Access restrictions are based on workflow states defined by the
+  "Annual Report Workflow".
+ * Access rules are for the `annual_foia_report_data` content type.
+ * Some access rules are based on a user and report's agency, as defined by
+  the Agency vocabulary.
+ * Access rules are based on the roles `agency_administrator` and
+  `agency_manager`.
 
 
 INSTALLATION
