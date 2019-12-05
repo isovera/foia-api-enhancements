@@ -23,7 +23,7 @@ are disabled per paragraph type in the function
 `foia_readonly_field_widget_multivalue_entity_reference_paragraphs_form_alter`.
 
 RECOMMENDED MODULES
-------------
+-------------------
 
 The following modules enable or define calculations on Annual FOIA Report Data
 fields that make it desirable for these fields to be marked as read only.
