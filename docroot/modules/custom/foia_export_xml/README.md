@@ -8,7 +8,7 @@ can be found documented on
 [GitHub](https://github.com/usdoj/foia-api/blob/develop/docs/FoiaAnnualReportExtensions.xsd).
 
 
-#### Exporting "Annual FOIA Report Data" nodes
+### Exporting annual report nodes
 
 The module defines a route with the pattern `/node/[nid]/xml` and a menu link
 that displays on node pages.  The route's controller builds the XML from node
@@ -16,7 +16,7 @@ data and returns a response with the export contents as a file attachment for
 download.
 
 
-#### The export class 
+### The export class
 
 The bulk of the work in this module is done in the class 
 `\Drupal\foia_export_xml\ExportXml`.  This class builds an XML document from
