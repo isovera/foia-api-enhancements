@@ -1,3 +1,13 @@
+CONTENTS OF THIS FILE
+---------------------
+
+ * Introduction
+   * Events Triggering Calculations
+   * Settings structure and calculations
+ * Recommended modules
+ * Installation
+ * Configuration
+
 INTRODUCTION
 ------------
 The FOIA Autocalc module allows administrators to configure a field to
