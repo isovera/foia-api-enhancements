@@ -22,8 +22,8 @@ on the same node.
 Calculations are done in javascript on the following events:
 
  * Page load: When the add or edit form is first loaded and behaviors are
-attached, the module will attempt to calculate the value of any auto
-calculated field.
+attached, the module will attempt to calculate the value of any auto-calculated
+field.
  * Change: When a field that is an addend for any auto-calculated field is
 changed, the calculations will be run again, summing any fields that are
 dependent on the changed field.
@@ -206,14 +206,14 @@ for futher information.
 CONFIGURATION
 -------------
 
-In order to configure autocalculated fields, users must have permission to
+In order to configure auto-calculated fields, users must have permission to
 administer fields for a given entity. Configure the following or similar user
 permissions in Administration » People » Permissions:
 
  * Content: Administer fields
  * Paragraph: Administer fields
 
-To configure a field as autocalculated, edit or create a field on an entity.
+To configure a field as auto-calculated, edit or create a field on an entity.
 At the bottom of the field form, there will be a section titled
 "Automatically Calculated Value" where one or more fields can be configured as
 addends for calculating the value of the field being configured.  The parts
