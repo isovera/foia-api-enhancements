@@ -70,10 +70,48 @@ something like the following:
 
 ### Calculations Constrained to "This Entity"
 
-Consider the section of the above example that displays the `field_total`
-configurations. This is a partial example of the configuration for
-`field_total` fields on an Annual FOIA Report Data node.  The following is
-true of this example:
+Consider this section of the above example that contains the `field_total`
+configurations.
+
+```
+{
+  ...
+  'field_total': [
+    {
+      "field": "field_admin_app_vib",
+      "subfield": {
+        "field": "field_affirmed_on_app"
+      },
+     "this_entity": "1"
+    },
+    {
+      "field": "field_admin_app_vib",
+      "subfield": {
+        "field": "field_part_on_app"
+      },
+     "this_entity": "1"
+    },
+    {
+      "field": "field_foia_requests_vb1",
+      "subfield": {
+        "field": "field_rec_ref_to_an_comp"
+      },
+     "this_entity": "1"
+    },
+    {
+      "field": "field_foia_requests_vb1",
+      "subfield": {
+        "field": "field_dup_request"
+      },
+     "this_entity": "1"
+    },
+    ...
+  ]
+}
+```
+
+This is a partial example of the configuration for `field_total` fields on an
+Annual FOIA Report Data node.  The following is true of this example:
 
 * `field_admin_app_vib` is a unlimited cardinality reference field to a
  paragraph item entity that contains the fields `field_affirmed_on_app`,
@@ -98,10 +136,25 @@ same paragraph item's `field_rec_ref_to_an_comp` and `field_dup_request` fields.
 
 ### Calculations Not Constrained to "This Entity"
 
-Consider the section of the above example that displays the
-`field_overall_viic1_1_20_days` configurations. This is an example of
-calculating an agency overall field value on an Annual FOIA Report Data node.
-The following is true of the example:
+Consider this section of the above example that contains the
+`field_overall_viic1_1_20_days` configurations.
+
+```
+{
+  'field_overall_viic1_1_20_days': [
+    {
+      "field": "field_proc_req_viic1",
+      "subfield": {
+        "field": "field_1_20_days"
+      },
+     "this_entity": 0
+    },
+  ],
+  ...
+```
+
+This is an example of the configuration to calculate an agency overall field
+value on an Annual FOIA Report Data node. The following is true of the example:
 
 * `field_overall_viic1_1_20_days` is a single cardinality field that exists
 directly on the Annual FOIA Report Data node form.
