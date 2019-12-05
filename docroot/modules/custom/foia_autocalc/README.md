@@ -68,7 +68,7 @@ something like the following:
 }
 ```
 
-## Calculations Constrained to "This Entity"
+### Calculations Constrained to "This Entity"
 
 Consider the section of the above example that displays the `field_total`
 configurations. This is a partial example of the configuration for
@@ -96,8 +96,26 @@ same paragraph item's `field_affirmed_on_app` and `field_part_on_app` fields.
 `field_foia_requests_vb1` paragraph item will be calculated as the sum of that
 same paragraph item's `field_rec_ref_to_an_comp` and `field_dup_request` fields.
 
-## Calculations Not Constrained to "This Entity"
+### Calculations Not Constrained to "This Entity"
 
+Consider the section of the above example that displays the
+`field_overall_viic1_1_20_days` configurations. This is an example of
+calculating an agency overall field value on an Annual FOIA Report Data node.
+The following is true of the example:
+
+* `field_overall_viic1_1_20_days` is a single cardinality field that exists
+directly on the Annual FOIA Report Data node form.
+* `field_proc_req_viic1` is an unlimited cardinality reference field to
+a paragraph item entity that contains the field `field_1_20_days`.
+* The configured addend field's `this_entity` property value is 0, not
+ restricting this calculation to field values from the same entity.  It will
+therefore sum all the value of all `field_1_20_days` fields.
+
+When auto-calculations are run for `field_overall_viic1_1_20_days`, the
+following calculations will occur in this example:
+
+* The value of `field_overall_viic1_1_20_days` will be calculated as the
+ sum of the values of all `field_1_20_days` fields that exist on the form.
 
 
 RECOMMENDED MODULES
