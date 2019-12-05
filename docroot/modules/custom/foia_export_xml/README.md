@@ -38,10 +38,11 @@ level, will look something like the following:
 ```  
 
 In this example, the elements are*:
-* `Exemption3StatuteSection`: A single section of the report.
-* `ReliedUponStatute`: A single component data element, which can contain
+
+ * `Exemption3StatuteSection`: A single section of the report.
+ * `ReliedUponStatute`: A single component data element, which can contain
   multiple types of data.
-* `ReliedUponStatuteOrganizationAssociation`: An organization association
+ * `ReliedUponStatuteOrganizationAssociation`: An organization association
 which maps component data to a specific organization within the reporting
 agency.
 
@@ -164,5 +165,5 @@ node is published.
 
 Configure the user permissions in Administration » People » Permissions:
 
-* View published content
-* View unpublished content
+ * View published content
+ * View unpublished content
