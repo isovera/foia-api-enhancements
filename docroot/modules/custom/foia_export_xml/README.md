@@ -6,7 +6,7 @@ Report Data node into an XML file that conforms to the FOIA Annual Report
 extension of the NIEM IEPD schema.  A representation of this extension schema
 can be found documented on [github](https://github.com/usdoj/foia-api/blob/develop/docs/FoiaAnnualReportExtensions.xsd).
 
-#### Exporting Annual FOIA Report Data nodes
+#### Exporting "Annual FOIA Report Data" nodes
 
 The module defines a route with the pattern `/node/[nid]/xml` and a menu link
 that displays on node pages.  The route's controller builds the XML from node
@@ -22,7 +22,7 @@ The bulk of the work in this module is done in the class
 this method, a new export can be created, then cast to a string as the body
 of the response object.
 
-#### Export Structure
+#### Export structure
 
 The export schema is structured in sections.  Within the `ExportXml` class, a
 method exists for exporting each section.  The resulting sections, at a high
@@ -48,7 +48,7 @@ agency.
 [FOIA Annual Report](https://github.com/usdoj/foia-api/blob/develop/docs/FoiaAnnualReportExtensions.xsd)
 schema.
   
-#### Agency Components
+#### Agency components
 
 Agencies can consist of one or more subunits, referred to as components. These
 exist in Drupal as Agency Component nodes.  When creating an Annual FOIA
@@ -76,7 +76,8 @@ the attribute `s:id`.
 </nc:Organization>
 ```  
 
-##### Component Data
+##### Component data
+
 While building each section of the export, component data elements are given
 ids as well. This uses a section prefix and a numeric identifier.  In the below
 example, the displayed `ReliedUponStatute` section has an id of `ES2` set in
@@ -131,7 +132,7 @@ $agency_component = $component->field_agency_component->referencedEntities()[0];
 $identifier = $this->componentMap[$agency_component->id()]
 ```
 
-#### Centralized vs Non-Centralized Agencies
+#### Centralized vs non-centralized agencies
 
 A centralized agency is one with only one component, corresponding to the
 agency itself. For such agencies, agency-overall data is not exported to XML
