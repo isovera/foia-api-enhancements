@@ -179,7 +179,7 @@ directly on the Annual FOIA Report Data node form.
 a paragraph item entity that contains the field `field_1_20_days`.
  * The configured addend field's `this_entity` property value is 0, not
  restricting this calculation to field values from the same entity.  It will
-therefore sum all the value of all `field_1_20_days` fields.
+therefore sum the values of all `field_1_20_days` fields.
 
 When auto-calculations are run for `field_overall_viic1_1_20_days`, the
 following calculations will occur in this example:
