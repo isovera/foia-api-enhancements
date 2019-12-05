@@ -4,6 +4,23 @@ The FOIA Autocalc module allows administrators to configure a field to
 automatically calculate its value as the sum of one or more fields existing
 on the same node.
 
+## Calculations
+
+Calculations are done in javascript on the following events:
+
+* Page load: When the add or edit form is first loaded and behaviors are
+attached, the module will attempt to calculate the value of any auto
+calculated field.
+* Change: When a field that is an addend for any auto-calculated field is
+changed, the calculations will be run again, summing any fields that are
+dependent on the changed field.
+
+RECOMMENDED MODULES
+-------------------
+
+* Field UI: When enabled, auto-calculation settings can be configured on field
+forms.
+
 INSTALLATION
 ------------
 
