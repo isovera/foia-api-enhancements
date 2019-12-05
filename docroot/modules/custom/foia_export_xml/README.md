@@ -76,6 +76,10 @@ Report Data node, paragraph items containing component data will reference
 one of the Agency's components, associating the data in that paragraph item
 with a specific organizational subunit.
 
+In some cases, an agency will not have multiple subunits.  In these cases the
+paragraph data will reference the agency itself.  See the "Centralized vs
+non-centralized agencies" section of this readme for more information.
+
 
 #### Organizations
 
