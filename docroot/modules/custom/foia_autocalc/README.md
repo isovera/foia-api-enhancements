@@ -8,11 +8,14 @@ CONTENTS OF THIS FILE
  * Installation
  * Configuration
 
+
 INTRODUCTION
 ------------
+
 The FOIA Autocalc module allows administrators to configure a field to
 automatically calculate its value as the sum of one or more fields existing
 on the same node.
+
 
 ## Events triggering calculations
 
@@ -24,6 +27,7 @@ calculated field.
 * Change: When a field that is an addend for any auto-calculated field is
 changed, the calculations will be run again, summing any fields that are
 dependent on the changed field.
+
 
 ## Settings structure and calculations
 
@@ -187,6 +191,7 @@ RECOMMENDED MODULES
 * Field UI: When enabled, auto-calculation settings can be configured on field
 forms.
 
+
 INSTALLATION
 ------------
 
@@ -195,6 +200,7 @@ is not installed via composer. Enable as you would normally enable a
 contributed Drupal module. Visit
 https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules#s-step-2-enable-the-module
 for futher information.
+
 
 CONFIGURATION
 -------------
