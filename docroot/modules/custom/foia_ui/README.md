@@ -1,4 +1,13 @@
-# FOIA UI custom module
+# FOIA UI CUSTOM MODULE
+
+## CONTENTS OF THIS FILE
+
+- Introduction
+- Requirements
+- Installation
+- Documentation
+
+## INTRODUCTION
 
 The FOIA UI module contains custom user interface modifications for the DOJ FOIA
 project. This includes the following:
@@ -8,11 +17,26 @@ project. This includes the following:
 - Utility JavaScript functions
 - Admin theme overrides
 
-## Open API Docs
+## REQUIREMENTS
+
+The jQuery Validation library is an NPM dependency added to the DOJ FOIA
+site composer.json via [Asset Packagist](https://asset-packagist.org/).
+
+## INSTALLATION
+
+FOIA UI is a custom Drupal module so unlike contrib modules, the codebase is not
+installed via composer. Enable as you would normally enable a contributed Drupal
+module. Visit
+https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules#s-step-2-enable-the-module
+for further information.
+
+## DOCUMENTATION
+
+### Open API Docs
 
 // @todo Document FOIA UI API Docs
 
-## Client-side validation of annual report fields
+### Client-side validation of annual report fields
 
 The "Annual FOIA Report Data" content type makes heavy use of client-side
 validation using the [jQuery Validation](https://jqueryvalidation.org/) library.
@@ -21,7 +45,8 @@ form to be saved with invalid fields.
 
 Validation rules in `foia_ui.validation.js` follow the sequential order of
 fields on the annual report content type. Most (if not all) of the rules are
-constructed using [custom methods](https://jqueryvalidation.org/jQuery.validator.addMethod/).
+constructed using custom methods. For more information on custom methods, see
+https://jqueryvalidation.org/jQuery.validator.addMethod/.
 
 A common convention used to select fields within a specific paragraph instance
 is via the name attribute, e.g. for the following markup:
@@ -43,10 +68,7 @@ Where:
 - `[0]` indicates the first, and typically only, instance of the field on the
 paragraph instance.
 
-Note: the jQuery Validation library is an NPM dependency added to the DOJ FOIA
-site composer.json via [Asset Packagist](https://asset-packagist.org/).
-
-## Utility JavaScript functions
+### Utility JavaScript functions
 
 Several JavaScript text-processing functions are used in common between
 `foia_ui` validation and `foia_advcalc` auto-calculation. They can be accessed
@@ -57,7 +79,7 @@ Drupal.FoiaUI.specialNumber("<1");
 // returns 0.1
 ````
 
-## Admin theme overrides
+### Admin theme overrides
 
 The DOJ FOIA project uses the Drupal core Seven administration theme. FOIA UI
 adds a stylesheet containing various CSS overrides for accessibility and
