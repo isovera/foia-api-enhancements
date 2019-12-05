@@ -1,28 +1,36 @@
-# FOIA UI CUSTOM MODULE
+FOIA UI CUSTOM MODULE
+=====================
 
-## CONTENTS OF THIS FILE
+CONTENTS OF THIS FILE
+---------------------
 
-- Introduction
-- Requirements
-- Installation
-- Documentation
+* Introduction
+* Requirements
+* Installation
+* Documentation
 
-## INTRODUCTION
+
+INTRODUCTION
+------------
 
 The FOIA UI module contains custom user interface modifications for the DOJ FOIA
 project. This includes the following:
 
-- OpenAPI Docs generation and configuration
-- Client-side validation of annual report fields
-- Utility JavaScript functions
-- Admin theme overrides
+ * OpenAPI Docs generation and configuration
+ * Client-side validation of annual report fields
+ * Utility JavaScript functions
+ * Admin theme overrides
 
-## REQUIREMENTS
+
+REQUIREMENTS
+------------
 
 The jQuery Validation library is an NPM dependency added to the DOJ FOIA
 site composer.json via [Asset Packagist](https://asset-packagist.org/).
 
-## INSTALLATION
+
+INSTALLATION
+------------
 
 FOIA UI is a custom Drupal module so unlike contrib modules, the codebase is not
 installed via composer. Enable as you would normally enable a contributed Drupal
@@ -30,11 +38,15 @@ module. Visit
 https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules#s-step-2-enable-the-module
 for further information.
 
-## DOCUMENTATION
+
+DOCUMENTATION
+-------------
+
 
 ### Open API Docs
 
 // @todo Document FOIA UI API Docs
+
 
 ### Client-side validation of annual report fields
 
@@ -69,6 +81,7 @@ The jQuery selector for all instances of the field is:
 $("input[name*='field_foia_requests_va']").filter("input[name*='field_req_pend_start_yr'])
 ```
 
+
 ### Utility JavaScript functions
 
 Several JavaScript text-processing functions are used in common between
@@ -78,7 +91,7 @@ as methods on the `Drupal.FoiaUI` object, e.g.
 ```js
 Drupal.FoiaUI.specialNumber("<1");
 // returns 0.1
-````
+```
 
 ### Admin theme overrides
 
