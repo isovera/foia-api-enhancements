@@ -28,9 +28,10 @@ RECOMMENDED MODULES
 The following modules enable or define calculations on Annual FOIA Report Data
 fields that make it desirable for these fields to be marked as read only.
 
-* `foia_autocalc`: Allows a field to define the numeric fields that should be
+ * `foia_autocalc`: Allows a field to define the numeric fields that should be
  used to auto-calculate its value.
-* `foia_advcalc`:  Defines custom calculations for specific fields.
+ * `foia_advcalc`:  Defines custom calculations for specific fields.
+
 
 INSTALLATION
 ------------
