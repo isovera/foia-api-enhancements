@@ -55,3 +55,11 @@ for futher information.
 CONFIGURATION
 -------------
 
+The custom access grants and restrictions in this module are partly based on a
+user's role and agency. To grant or restrict access based on the rules in
+this module:
+
+ * Assign roles to users at Administration » People:
+   * Agency Administrator
+   * Agency Manager
+ * Assign an Agency to users at `/user/[uid]/edit` in the Agency field.
