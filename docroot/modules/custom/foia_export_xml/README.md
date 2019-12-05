@@ -26,7 +26,7 @@ this method, a new export can be created, then cast to a string as the body
 of the response object.
 
 
-#### Export structure
+### Export structure
 
 The export schema is structured in sections.  Within the `ExportXml` class, a
 method exists for exporting each section.  The resulting sections, at a high
@@ -54,7 +54,7 @@ agency.
 schema.
 
   
-#### Agency components
+### Agency components
 
 Agencies can consist of one or more subunits, referred to as components. These
 exist in Drupal as Agency Component nodes.  When creating an Annual FOIA
@@ -63,7 +63,7 @@ one of the Agency's components, associating the data in that paragraph item
 with a specific organizational subunit.
 
 
-##### Organizations
+#### Organizations
 
 In the export, this exists by defining each `OrganizationSubUnit` (Agency
 Component node), along with a reference id, such as `ORG1`.  The following
@@ -84,7 +84,7 @@ the attribute `s:id`.
 ```  
 
 
-##### Component data
+#### Component data
 
 While building each section of the export, component data elements are given
 ids as well. This uses a section prefix and a numeric identifier.  In the below
@@ -118,7 +118,7 @@ which, if continuing with our example from above, corresponds to the
 ```
 
 
-##### The component map
+#### The component map
 
 In order to properly reference component data to organizations, organization
 identifiers are maintained in the `ExportXml` class's `componentMap` property.
@@ -142,7 +142,7 @@ $identifier = $this->componentMap[$agency_component->id()]
 ```
 
 
-#### Centralized vs non-centralized agencies
+### Centralized vs non-centralized agencies
 
 A centralized agency is one with only one component, corresponding to the
 agency itself. For such agencies, agency-overall data is not exported to XML
