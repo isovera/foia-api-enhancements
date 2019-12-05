@@ -9,11 +9,12 @@ CONTENTS OF THIS FILE
 
 INTRODUCTION
 ------------
+
 The FOIA Readonly module adds a [readonly attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly)
-to input elements of fields that are autocalculated and therefore should be
-not be editable by the user.  The module adds this attribute to
-auto-calculated fields on Annual FOIA Report Data node forms and any child
-widgets such as paragraph items.
+to input elements of fields that are autocalculated and therefore should not be
+editable by the user.  The module adds this attribute to auto-calculated
+fields on Annual FOIA Report Data node forms and any child widgets such as
+paragraph items.
 
 Auto-calculated fields are marked readonly based on the list of field machine
 names maintained in this module.  In order to make a field readonly, add a
