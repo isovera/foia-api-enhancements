@@ -55,11 +55,6 @@ is via the name attribute, e.g. for the following markup:
 <input … name="field_foia_requests_va[1][subform][field_req_pend_start_yr][0][value]" …>
 ```
 
-The jQuery selector for all instances of the field is:
-
-```js
-$("input[name*='field_foia_requests_va']").filter("input[name*='field_req_pend_start_yr'])
-```
 Where:
 
 - `field_foia_requests_va` is the paragraph type machine name.
@@ -67,6 +62,12 @@ Where:
 - `field_req_pend_start_yr` is the field machine name.
 - `[0]` indicates the first, and typically only, instance of the field on the
 paragraph instance.
+
+The jQuery selector for all instances of the field is:
+
+```js
+$("input[name*='field_foia_requests_va']").filter("input[name*='field_req_pend_start_yr'])
+```
 
 ### Utility JavaScript functions
 
