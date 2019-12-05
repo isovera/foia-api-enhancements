@@ -36,7 +36,9 @@ fields that make it desirable for these fields to be marked as read only.
 INSTALLATION
 ------------
 
-Install as you would normally install a contributed Drupal module. Visit
+FOIA Readonly is a custom Drupal module so unlike contrib modules, the codebase
+is not installed via composer. Install as you would normally install a
+contributed Drupal module. Visit
 https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules#s-step-2-enable-the-module
 for further information.
 
