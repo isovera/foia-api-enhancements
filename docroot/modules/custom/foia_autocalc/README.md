@@ -221,7 +221,10 @@ addends for calculating the value of the field being configured.  The parts
 of the configuration are:
 
  * Field: The machine name of a field that should be summed to create the
-current field's value.
+current field's value.  Occasionally the autocomplete list will not include
+the field you are looking for.  Continue by manually entering the machine
+name of the field you intend to add if you do not find it in the autocomplete
+list.
  * This entity: A checkbox indicating whether the calculation should only use
 this field value if it exists on the same entity as the field being
 configured.  For example, if the field being calculated is attached to a
