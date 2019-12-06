@@ -129,9 +129,10 @@
       }
 
       /**
-       * Calculates V.A., VI.A., XII.B. Number of [type] Pending as of End of Fiscal Year per agency/component.
+       * Calculates V.A., VI.A., XII.B. Number of [type] Pending as of End of
+       * Fiscal Year per agency/component.
        *
-       * e.g. req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
+       * e.g. req_pend_end_yr = req_pend_start_yr + req_received_yr - req_processed_yr
        *
        * @param {jquery} element
        *  jQuery object of field to trigger calculations for component.
@@ -154,9 +155,10 @@
       }
 
       /**
-       * Calculates V.A., VI.A., XII.B. Overall Number of [type] Pending as of End of Fiscal Year.
+       * Calculates V.A., VI.A., XII.B. Overall Number of [type] Pending as of
+       * End of Fiscal Year.
        *
-       * e.g. req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
+       * e.g. req_pend_end_yr = req_pend_start_yr + req_received_yr - req_processed_yr
        *
        * @param {string} start
        *  Partial name attribute for selecting start year field.
