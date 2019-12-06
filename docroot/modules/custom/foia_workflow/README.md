@@ -2,8 +2,8 @@ CONTENTS OF THIS FILE
 ---------------------
 
  * Introduction
-   * Additional access restrictions
-   * Additional access grants
+   * Access restrictions
+   * Access grants
  * Requirements
  * Installation
  * Configuration
@@ -17,7 +17,7 @@ FOIA Report Data nodes based on a user's agency and role, and the workflow
 state of the node.
 
 
-### Additional access restrictions
+### Access restrictions
 
  * Users with the role Agency Administrator are not allowed to edit a report
   that is authored by another user if it is still in a `draft` state.
@@ -25,7 +25,7 @@ state of the node.
   that is not in either the `draft` or `back_with_agency` state.
 
 
-### Additional access grants
+### Access grants
 
  * Users with the role Agency Manager are allowed to edit or delete a
   report that has been authored by a user in their agency, if the report is
