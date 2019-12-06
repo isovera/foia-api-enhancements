@@ -66,8 +66,10 @@ CONFIGURATION
 
 ### Contents
 
- * Post-Installation Configuration
- * Updating and Adding Report Sections
+ * Post-installation configuration
+ * Updating and adding report sections
+ * Handling a new section
+ * Special sections
 
 
 ### Post-installation configuration
