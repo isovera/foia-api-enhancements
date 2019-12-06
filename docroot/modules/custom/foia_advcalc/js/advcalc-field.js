@@ -409,11 +409,13 @@
           });
       });
 
-      // Fields from sections IX and X to calculate overall_x_perc_costs.
+      // Initialize on load: X. Agency Overall Percentage of Total Costs
       if (!fieldIsInitialized('#edit-field-overall-x-perc-costs-0-value')) {
         calculateOverallPercentageOfCosts();
         markFieldInitialized('#edit-field-overall-x-perc-costs-0-value');
       }
+
+      // X. Agency Overall Percentage of Total Costs
       $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value")
         .once('advCalcOverallXPercCosts')
         .change(function() {
