@@ -19,7 +19,7 @@ on the same node.
 
 ### Events triggering calculations
 
-Calculations are done in javascript on the following events:
+Calculations are done in JavaScript on the following events:
 
  * Page load: When the add or edit form is first loaded and behaviors are
 attached, the module will attempt to calculate the value of any auto-calculated
@@ -31,7 +31,7 @@ dependent on the changed field.
 
 ### Settings structure and calculations
 
-In order to auto-calculate values in javascript, auto-calculation settings
+In order to auto-calculate values in JavaScript, auto-calculation settings
 are exported to `drupalSettings.foiaAutocalc.autocalcSettings` as a js object of
 field machine names as keys whose value is an array of all fields that can be
 used to calculate a field with that machine name. The structure will look
