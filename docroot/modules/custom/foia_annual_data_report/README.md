@@ -1,6 +1,6 @@
 CONTENTS OF THIS FILE
 ---------------------
-   
+
  * Introduction
  * Requirements
  * Installation
@@ -8,10 +8,11 @@ CONTENTS OF THIS FILE
  * Troubleshooting
  * FAQ
  * Maintainers
- 
- 
+
+
 INTRODUCTION
 ------------
+
 The FOIA Annual Data Report module is a utility module that implements form 
 tweaks for the Annual Data Report add/edit form and custom configuration, 
 including Annual Report Memory Limit, that aid in editing to the annual report 
@@ -20,6 +21,7 @@ data.
 
 REQUIREMENTS
 ------------
+
 FOIA Annual Data Report has no contrib or custom module requirements.
 It does have library dependencies on:
  * core/jquery
@@ -28,6 +30,7 @@ It does have library dependencies on:
 
 INSTALLATION
 ------------
+
 FOIA Annual Report Data is a custom Drupal module so unlike contrib modules, the codebase is not
 installed via composer.
 
@@ -39,8 +42,9 @@ for futher information.
 
 CONFIGURATION
 -------------
+
 No configuration required for the node edit form updates.
- 
+
 To configure the Annual Report Memory limit go to:
 /admin/config/system/foia_annual_data_report_memory_limit
 
