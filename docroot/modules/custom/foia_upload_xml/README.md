@@ -70,7 +70,7 @@ CONFIGURATION
  * Updating and Adding Report Sections
 
 
-### Post-Installation Configuration
+### Post-installation configuration
 
 Upon installation of the FOIA Upload XML module users with 
 `create annual_foia_report_data content` permission will be able to upload XML 
@@ -82,7 +82,7 @@ report migration mappings are currently setup and how new mappings might be
 added should new report sections and/or fields be added.
 
 
-### Updating and Adding Report Sections
+### Updating and adding report sections
 
 #### Overview
 
@@ -117,7 +117,7 @@ IV, V.B.2, and VI.C.3 per component.
 
 #### Beginning and end
 
-##### Main Report Migration - `foia_agency_report`
+##### Main report migration - `foia_agency_report`
 
 The file `migrate_plus.migration.foia_agency_report.yml` defines the main report
 import and creates a single `annual_foia_report_data` node from the XML report. 
@@ -125,7 +125,7 @@ It depends on all the other migrations, so it will only run when they are
 complete.
 
 
-##### Agency Component Mapping - `component`
+##### Agency component mapping - `component`
 
 The XML file has a section that associates internal identifiers to each of the
 component abbreviations. It looks something like this:
@@ -163,7 +163,7 @@ For each paragraph field (and associated "overall" fields) we add two
 migrations.
 
 
-##### Component Data Mapping
+##### Component data mapping
 
 The first is similar to the `component` migration, and depends directly on it.
 For example, Section V.A of the report contains a section like this:
@@ -191,7 +191,7 @@ section-specific identifiers "PS0" and "PS19" and so on to the corresponding
 `agency_component` nodes.
 
 
-##### Component Data Import
+##### Component data import
 
 The second migration for this section is defined by the file
 `migrate_plus.migration.foia_requests_va.yml`. This migration creates
@@ -393,7 +393,7 @@ definitions will need to be added to their corresponding grouping in the
 ```
 
 
-### Special Sections
+### Special sections
 
 Note that for certain sections, a sub-paragraph is implemented to capture data 
 provided within the section.
