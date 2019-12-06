@@ -229,5 +229,5 @@ list.
 this field value if it exists on the same entity as the field being
 configured.  For example, if the field being calculated is attached to a
 paragraph item and the addend field's "This entity" checkbox is checked, the
-auto-calculation will only use the addend field value that exists on the same
+auto-calculation will only use addend field values that exist on the same
 paragraph item as the calculated field.
