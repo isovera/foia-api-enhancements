@@ -101,7 +101,7 @@
       }
 
       /**
-       * Calculates overall value for a given component.
+       * Calculate overall value for a given component.
        *
        * @param {string} componentId
        *    The node edit paragraph component HTML fragment ID.
@@ -112,7 +112,7 @@
        * @param {string} operator
        *    The operation to be performed, "<" or ">".
        */
-      function calcOverall(componentId, componentFieldName, overallFieldID, operator) {
+      function calculateOverall(componentId, componentFieldName, overallFieldID, operator) {
         // Calculate the initial value of the field.
         var fields = $("input[id^='" + componentId + "']").filter("input[name*='" + componentFieldName + "']");
         if (!fieldIsInitialized('#' + overallFieldID)) {
@@ -130,7 +130,7 @@
       }
 
       /**
-       * Calculates V.A., VI.A., XII.B. Number of [type] Pending as of End of
+       * Calculate V.A., VI.A., XII.B. Number of [type] Pending as of End of
        * Fiscal Year per agency/component.
        *
        * e.g. req_pend_end_yr = req_pend_start_yr + req_received_yr - req_processed_yr
@@ -156,7 +156,7 @@
       }
 
       /**
-       * Calculates V.A., VI.A., XII.B. Overall Number of [type] Pending as of
+       * Calculate V.A., VI.A., XII.B. Overall Number of [type] Pending as of
        * End of Fiscal Year.
        *
        * e.g. req_pend_end_yr = req_pend_start_yr + req_received_yr - req_processed_yr
@@ -201,12 +201,12 @@
       }
 
       /**
-       * Calculates X. Percentage of Total Costs
+       * Calculate X. Percentage of Total Costs
        *
        * @param {string} agency
        *   String representing an agency/component option value.
        */
-      function calcPercentTotalCosts(agency) {
+      function calculatePercentTotalCosts(agency) {
         var procCostsElements = $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
         var totalFeesElements = $("input[name*='field_fees_x']").filter("input[name*='field_total_fees']");
         $("input[name*='field_fees_x']").filter("input[name*='field_perc_costs']").each(function() {
@@ -226,7 +226,7 @@
       /**
        * Calculate X. Agency Overall Percentage of Total Costs
        */
-      function calculateOverallPercentageOfCosts() {
+      function calculateOverallPercentCosts() {
         var overallXTotalFees = Number($("#edit-field-overall-x-total-fees-0-value").val());
         if (overallXTotalFees > 0 ) {
           var overallIXProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
@@ -340,39 +340,39 @@
         });
 
       // Fields from section VI.C.(4) to calculate Lowest Number of Days.
-      calcOverall('edit-field-admin-app-vic4', 'field_low_num_days', 'edit-field-overall-vic4-low-num-days-0-value', '<');
+      calculateOverall('edit-field-admin-app-vic4', 'field_low_num_days', 'edit-field-overall-vic4-low-num-days-0-value', '<');
       // Fields from section VI.C.(4) to calculate Highest Number of Days.
-      calcOverall('edit-field-admin-app-vic4', 'field_high_num_days', 'edit-field-overall-vic4-high-num-days-0-value', '>');
+      calculateOverall('edit-field-admin-app-vic4', 'field_high_num_days', 'edit-field-overall-vic4-high-num-days-0-value', '>');
 
       // Fields from section VII.A. to calculate Lowest Number of Days.
-      calcOverall('edit-field-proc-req-viia', 'field_sim_low', 'edit-field-overall-viia-sim-low-0-value', '<');
+      calculateOverall('edit-field-proc-req-viia', 'field_sim_low', 'edit-field-overall-viia-sim-low-0-value', '<');
       // Fields from section VII.A. to calculate Highest Number of Days.
-      calcOverall('edit-field-proc-req-viia', 'field_sim_high', 'edit-field-overall-viia-sim-high-0-value', '>');
+      calculateOverall('edit-field-proc-req-viia', 'field_sim_high', 'edit-field-overall-viia-sim-high-0-value', '>');
 
       // Fields from section VII.A. to calculate Lowest Number of Days (complex).
-      calcOverall('edit-field-proc-req-viia', 'field_comp_low', 'edit-field-overall-viia-comp-low-0-value', '<');
+      calculateOverall('edit-field-proc-req-viia', 'field_comp_low', 'edit-field-overall-viia-comp-low-0-value', '<');
       // Fields from section VII.A. to calculate Highest Number of Days (complex).
-      calcOverall('edit-field-proc-req-viia', 'field_comp_high', 'edit-field-overall-viia-comp-high-0-value', '>');
+      calculateOverall('edit-field-proc-req-viia', 'field_comp_high', 'edit-field-overall-viia-comp-high-0-value', '>');
 
       // Fields from section VII.A. to calculate Lowest Number of Days (expedited).
-      calcOverall('edit-field-proc-req-viia', 'field_exp_low', 'edit-field-overall-viia-exp-low-0-value', '<');
+      calculateOverall('edit-field-proc-req-viia', 'field_exp_low', 'edit-field-overall-viia-exp-low-0-value', '<');
       // Fields from section VII.A. to calculate Highest Number of Days (expedited).
-      calcOverall('edit-field-proc-req-viia', 'field_exp_high', 'edit-field-overall-viia-exp-high-0-value', '>');
+      calculateOverall('edit-field-proc-req-viia', 'field_exp_high', 'edit-field-overall-viia-exp-high-0-value', '>');
 
       // Fields from section VII.B. to calculate Lowest Number of Days.
-      calcOverall('edit-field-proc-req-viib', 'field_sim_low', 'edit-field-overall-viib-sim-low-0-value', '<');
+      calculateOverall('edit-field-proc-req-viib', 'field_sim_low', 'edit-field-overall-viib-sim-low-0-value', '<');
       // Fields from section VII.B. to calculate Highest Number of Days.
-      calcOverall('edit-field-proc-req-viib', 'field_sim_high', 'edit-field-overall-viib-sim-high-0-value', '>');
+      calculateOverall('edit-field-proc-req-viib', 'field_sim_high', 'edit-field-overall-viib-sim-high-0-value', '>');
 
       // Fields from section VII.B. to calculate Lowest Number of Days (complex).
-      calcOverall('edit-field-proc-req-viib', 'field_comp_low', 'edit-field-overall-viib-comp-low-0-value', '<');
+      calculateOverall('edit-field-proc-req-viib', 'field_comp_low', 'edit-field-overall-viib-comp-low-0-value', '<');
       // Fields from section VII.B. to calculate Highest Number of Days (complex).
-      calcOverall('edit-field-proc-req-viib', 'field_comp_high', 'edit-field-overall-viib-comp-high-0-value', '>');
+      calculateOverall('edit-field-proc-req-viib', 'field_comp_high', 'edit-field-overall-viib-comp-high-0-value', '>');
 
       // Fields from section VII.B. to calculate Lowest Number of Days (expedited).
-      calcOverall('edit-field-proc-req-viib', 'field_exp_low', 'edit-field-overall-viib-exp-low-0-value', '<');
+      calculateOverall('edit-field-proc-req-viib', 'field_exp_low', 'edit-field-overall-viib-exp-low-0-value', '<');
       // Fields from section VII.B. to calculate Highest Number of Days (expedited).
-      calcOverall('edit-field-proc-req-viib', 'field_exp_high', 'edit-field-overall-viib-exp-high-0-value', '>');
+      calculateOverall('edit-field-proc-req-viib', 'field_exp_high', 'edit-field-overall-viib-exp-high-0-value', '>');
 
       /**
        * X. Percentage of Total Costs per agency/component.
@@ -389,7 +389,7 @@
           if (!fieldIsInitialized(this)) {
             var percCostsAgency = getAgencyComponent($(this));
             if (percCostsAgency !== '_none') {
-              calcPercentTotalCosts(percCostsAgency);
+              calculatePercentTotalCosts(percCostsAgency);
             }
             markFieldInitialized(this);
           }
@@ -405,14 +405,14 @@
           $(this).once('advCalcXPercCosts').change(function() {
             var processingCostsAgency = getAgencyComponent($(this));
             if (processingCostsAgency !== '_none') {
-              calcPercentTotalCosts(processingCostsAgency);
+              calculatePercentTotalCosts(processingCostsAgency);
             }
           });
       });
 
       // Initialize on load: X. Agency Overall Percentage of Total Costs
       if (!fieldIsInitialized('#edit-field-overall-x-perc-costs-0-value')) {
-        calculateOverallPercentageOfCosts();
+        calculateOverallPercentCosts();
         markFieldInitialized('#edit-field-overall-x-perc-costs-0-value');
       }
 
@@ -420,14 +420,16 @@
       $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value")
         .once('advCalcOverallXPercCosts')
         .change(function() {
-          calculateOverallPercentageOfCosts();
+          calculateOverallPercentCosts();
       });
 
       /**
-       *  XII.B. Number of Consultations Received from Other Agencies that were Pending at the Agency as of End of the Fiscal Year
+       * XII.B. Number of Consultations Received from Other Agencies that were
+       * Pending at the Agency as of End of the Fiscal Year
        */
 
-      // Initialize XII.B. Number of Consultations Received from Other Agencies that were Pending at the Agency as of End of the Fiscal Year
+      // Initialize XII.B. Number of Consultations Received from Other Agencies
+      // that were Pending at the Agency as of End of the Fiscal Year
       $("input[name*='field_foia_xiib']")
         .once('initAdvCalcXIIBConPendEndYr')
         .filter("input[name*='field_pend_end_yr']")
