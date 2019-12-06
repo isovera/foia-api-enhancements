@@ -8,7 +8,7 @@ TABLE OF CONTENTS
  * Usage
  * Configuration
  * Troubleshooting
- * FAQ
+ * Running the migrations
 
 
 INTRODUCTION
@@ -453,7 +453,8 @@ configuration directory. There are at least two advantages to this redundancy:
    configuration directory.
 
 
-#### Running the migrations
+RUNNING THE MIGRATIONS
+----------------------
 
 One option is to run the migrations through the admin UI. The upload form at
 `/report/upload` has a link to the relevant page, and it also redirects there
