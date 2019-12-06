@@ -8,7 +8,7 @@
 
   'use strict';
 
-  Drupal.behaviors.advcalc_field = {
+  Drupal.behaviors.advcalcField = {
     attach: function attach() {
 
       /**
@@ -20,8 +20,9 @@
       /**
        * Converts number back to "<1" if between 0 and 1.
        *
-       * @param {number}
-       * @returns {value}
+       * @param {number} number
+       *
+       * @returns {string}
        */
       function displayLessThan(number) {
         if (number > 0 && number < 1) {
@@ -68,8 +69,8 @@
        */
       function calculateBoundaryOfSet(fields, operator) {
         var ops = {
-          '<': function(a, b) { return a < b },
-          '>': function(a, b) { return a > b },
+          '<': function(a, b) { return a < b; },
+          '>': function(a, b) { return a > b; },
         };
         var output = null;
         var isOverallNA = true;
@@ -189,7 +190,7 @@
        *   jQuery element for input field.
        */
       function getElementByAgency(elements, agency) {
-        var result;
+        var result = null;
         $(elements).each(function() {
           var element_agency = getAgencyComponent($(this));
           if (agency === element_agency) {
@@ -474,5 +475,5 @@
             );
         });
     }
-  }
+  };
 })(jQuery, drupalSettings, Drupal);
