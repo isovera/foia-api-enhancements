@@ -211,17 +211,19 @@
       function calculatePercentTotalCosts(agency) {
         var procCostsElements = $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
         var totalFeesElements = $("input[name*='field_fees_x']").filter("input[name*='field_total_fees']");
-        $("input[name*='field_fees_x']").filter("input[name*='field_perc_costs']").each(function() {
-          var percCostsElement = $(this);
-          var element_agency = getAgencyComponent($(this));
-          if (agency === element_agency) {
-            var procCosts = getElementByAgency(procCostsElements, agency).val();
-            var totalFees = getElementByAgency(totalFeesElements, agency).val();
-            if (totalFees > 0) {
-              var percentageCosts = Math.round(totalFees/procCosts * 10000) / 10000; // Decimal format rounded to 4 places
+        $("input[name*='field_fees_x']")
+          .filter("input[name*='field_perc_costs']")
+          .each(function() {
+            var elementAgency = getAgencyComponent($(this));
+            if (agency === elementAgency) {
+              var totalFees = getElementByAgency(totalFeesElements, agency).val();
+              if (totalFees > 0) {
+                var procCosts = getElementByAgency(procCostsElements, agency).val();
+                // Convert to decimal format rounded to 4 places
+                var percentageCosts = Math.round(totalFees/procCosts * 10000) / 10000;
+              }
+              $(this).val(percentageCosts);
             }
-            percCostsElement.val(percentageCosts);
-          }
         });
       }
 
@@ -406,12 +408,12 @@
           }
       });
 
-      // X. Percentage of Total Costs per agency/component.
+      // Calculate on change: X. Percentage of Total Costs per agency/component.
       var processingCostsElements = $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
       $("input[name*='field_fees_x']")
-      .filter("input[name*='field_total_fees']")
-      .add(processingCostsElements)
-      .each(function() {
+        .filter("input[name*='field_total_fees']")
+        .add(processingCostsElements)
+        .each(function() {
           // If X. Total Fees or IX. Processing Costs change, calculate % costs.
           $(this).once('advCalcXPercCosts').change(function() {
             var processingCostsAgency = getAgencyComponent($(this));
