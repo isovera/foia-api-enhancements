@@ -21,6 +21,7 @@ REQUIREMENTS
 
 FOIA Annual Data Report has no contrib or custom module requirements.
 It does have library dependencies on:
+
  * core/jquery
  * core/drupalSettings
 
