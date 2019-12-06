@@ -362,6 +362,7 @@ The `FoiaUploadXMLMigrationsProcessor.php` defines the function
 processor. The new component-to-data mapping and component data import migration
 definitions will need to be added to their corresponding grouping in the 
 `$migrations_list`: 
+
 ```php
 // NOTE: Inline comments added.
   /**
@@ -419,6 +420,7 @@ TROUBLESHOOTING
 In general, updating or adding a new migration can be tested using the admin UI.
 
 After making changes in the `config/install/` directory, the usual workflow is
+
 ```
 drush cr
 drush cim --partial --source=modules/custom/foia_upload_xml/config/install
@@ -454,6 +456,7 @@ drush @foia.local ms; drush @foia.local mim -vvv --debug component; drush @foia.
 ```
 
 This combines the running of the following import commands with the checking of the migration status before and after:
+
 ```
 drush @foia.local mim -vvv --debug component
 drush @foia.local mim -vvv --debug --group=foia_component_data_mapping
