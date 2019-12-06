@@ -455,7 +455,8 @@ The other option is to use the command line:
 drush @foia.local ms; drush @foia.local mim -vvv --debug component; drush @foia.local mim -vvv --debug --group=foia_component_data_mapping; drush @foia.local mim -vvv --debug --group=foia_component_data_import_subs; drush @foia.local mim -vvv --debug --group=foia_component_data_import; drush @foia.local mim -vvv --debug foia_agency_report --update; drush @foia.local ms
 ```
 
-This combines the running of the following import commands with the checking of the migration status before and after:
+This combines the running of the following import commands with the checking of
+the migration status before and after:
 
 ```
 drush @foia.local mim -vvv --debug component
