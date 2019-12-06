@@ -208,7 +208,7 @@ Paragraphs of type `foia_req_va`. These Paragraphs are then referenced in
 Each section of the annual report has a corresponding section of the XML file,
 and we should be able to handle them all as described in the previous section.
 There are some nested Paragraphs, and handling those will be a little
-different (see `Special Sections` below).
+different (see `Special sections` below).
 
 In addition to adding two migrations, you will have to update the
 `foia_agency_report` migration:
