@@ -35,15 +35,11 @@ recommended.
 INSTALLATION
 -------------
 
- * FOIA Upload XML is a custom Drupal module so unlike contrib modules, it is 
- included with the FOIA Annual Report codebase and is not installed via 
- composer.
-   
- * Enable the foia_upload_xml module as you would normally install 
- modules to your platform. 
- 
- * For more information about module installation in Drupal 8 see: 
- https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules
+FOIA Upload XML is a custom Drupal module so unlike contrib modules, the
+codebase is not installed via composer. Enable as you would normally enable a
+contributed Drupal module. Visit
+https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules#s-step-2-enable-the-module
+for further information.
 
 
 USAGE
