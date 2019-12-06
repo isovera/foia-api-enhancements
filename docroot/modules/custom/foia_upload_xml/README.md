@@ -64,13 +64,13 @@ their Agency Managers or Agency Administrators.
 CONFIGURATION
 -------------
 
-# Contents
+### Contents
 
  * Post-Installation Configuration
  * Updating and Adding Report Sections
 
 
-# Post-Installation Configuration
+### Post-Installation Configuration
 
 Upon installation of the FOIA Upload XML module users with 
 `create annual_foia_report_data content` permission will be able to upload XML 
@@ -82,9 +82,9 @@ report migration mappings are currently setup and how new mappings might be
 added should new report sections and/or fields be added.
 
 
-# Updating and Adding Report Sections
+### Updating and Adding Report Sections
 
-## Overview
+#### Overview
 
 This module defines multiple migrations for importing a full annual report. It 
 is built on Drupal's Migrate API and leverages Migrate Plus and Migrate Tools.
@@ -100,7 +100,7 @@ Additional files in the module implement batch processing of the custom
 migrations and the import queue.
 
 
-### Custom migrations
+#### Custom migrations
 
 There are a lot of files in the `/config/install/` directory, but it is not
 too complicated once you understand how they are organized.
@@ -411,7 +411,7 @@ or section V.B.2 where:
 TROUBLESHOOTING
 ---------------
 
-# Import data from agency annual reports in NIEM-XML format
+### Import data from agency annual reports in NIEM-XML format
 
 In general, updating or adding a new migration can be tested using the admin UI.
 
@@ -438,7 +438,7 @@ configuration directory. There are at least two advantages to this redundancy:
    configuration directory.
 
 
-## Running the migrations
+#### Running the migrations
 
 One option is to run the migrations through the admin UI. The upload form at
 `/report/upload` has a link to the relevant page, and it also redirects there
