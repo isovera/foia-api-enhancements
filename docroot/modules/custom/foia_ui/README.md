@@ -4,10 +4,10 @@ FOIA UI CUSTOM MODULE
 CONTENTS OF THIS FILE
 ---------------------
 
-* Introduction
-* Requirements
-* Installation
-* Documentation
+ * Introduction
+ * Requirements
+ * Installation
+ * Documentation
 
 
 INTRODUCTION
