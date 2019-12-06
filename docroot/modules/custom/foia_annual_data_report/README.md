@@ -43,6 +43,8 @@ No configuration required for the node edit form updates.
 To configure the Annual Report Memory limit go to:
 /admin/config/system/foia_annual_data_report_memory_limit
 
-Fill in the `Annual Report Memory Limit` field  if you wish to override the 
-default PHP Memory Limit set for the platform. For debugging, check the 
-`Debug Annual Report memory limit.` checkbox.
+ * Fill in the `Annual Report Memory Limit` field  if you wish to override the
+default PHP Memory Limit set for the platform. The value set in the `Annual
+Report Memory Limit` field must be in the form of a numeric value and a
+capitalized unit symbol, with no space between the two, e.g. `1024M`.
+ * For debugging, check the `Debug Annual Report memory limit.` checkbox.
