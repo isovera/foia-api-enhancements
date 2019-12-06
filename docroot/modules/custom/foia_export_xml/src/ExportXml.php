@@ -281,7 +281,7 @@ EOS;
         $raw_date = $component->get("field_date_$index")->value;
         $date = $this->convertDateForExport($raw_date);
         $days = $component->get("field_num_days_$index")->value;
-        if (preg_match('/^\<1|\d+/', $days)) {
+        if ($this->isValidOldItem($date, $days)) {
           $old_item = $this->addElementNs('foia:OldItem', $item);
           $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
           $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
@@ -297,13 +297,32 @@ EOS;
         $raw_date = $this->node->get($overall_date . $index)->value;
         $date = $this->convertDateForExport($raw_date);
         $days = $this->node->get($overall_days . $index)->value;
-        if (preg_match('/^\<1|\d+/', $days)) {
+        if ($this->isValidOldItem($date, $days)) {
           $old_item = $this->addElementNs('foia:OldItem', $item);
           $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
           $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
         }
       }
     }
+  }
+
+  /**
+   * Check if a date and days pair is a valid value for an OldItem element.
+   *
+   * @param string $date
+   *   A formatted date as YYYY-MM-DD or a string indicating the date is
+   *   invalid or does not exist.
+   * @param string $days
+   *   A string representing the number of days an item has been pending.
+   *   Valid values are numeric or the value <1.
+   *
+   * @return bool
+   *   Return TRUE if the date is not 'N/A' or 'Invalid date entered' and the
+   *   number of days is numeric or '<1'.
+   */
+  protected function isValidOldItem($date, $days) {
+    return !in_array(strtolower($date), ['n/a', 'invalid date entered'])
+      && preg_match('/^\<1|\d+/', $days);
   }
 
   /**
