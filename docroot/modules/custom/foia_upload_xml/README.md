@@ -3,6 +3,7 @@ Table of Contents
 
  * Introduction
  * Requirements
+ * Recommended modules
  * Installation
  * Usage
  * Configuration
@@ -30,6 +31,15 @@ modules:
  
 For development, maintenance, and troubleshooting installing Drush is strongly 
 recommended.
+
+
+RECOMMENDED MODULES
+-------------------
+
+ * FOIA Migrate: Custom module in this codebase.  When enabled, FOIA Migrate
+can be used to import and create Agencies and Agency Components that may
+be referenced in the migrations run during upload of a report file from
+this module.
 
 
 INSTALLATION
