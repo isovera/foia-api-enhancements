@@ -58,35 +58,6 @@
       }
 
       /**
-       * Calculates overall value for a given component.
-       *
-       * @param {string} componentId
-       *    The node edit paragraph component HTML fragment ID.
-       * @param {string} componentFieldName
-       *    The paragraph component field machine name.
-       * @param {string} overallFieldID
-       *    The calculated overall field HTML fragment ID.
-       * @param {string} operator
-       *    The operation to be performed, "<" or ">".
-       */
-      function calcOverall(componentId, componentFieldName, overallFieldID, operator) {
-        // Calculate the initial value of the field.
-        var fields = $("input[id^='" + componentId + "']").filter("input[name*='" + componentFieldName + "']");
-        if (!fieldIsInitialized('#' + overallFieldID)) {
-          var value = calculateBoundaryOfSet(fields, operator);
-          $('#' + overallFieldID).val(value);
-          markFieldInitialized('#' + overallFieldID);
-        }
-
-        fields.each(function() {
-          $(this).once('advCalcOverall').on('change', {overallFieldID: overallFieldID, operator: operator}, function(event) {
-            var output = calculateBoundaryOfSet(fields, event.data.operator);
-            $('#' + event.data.overallFieldID).val(output);
-          });
-        });
-      }
-
-      /**
        * Compares the values of a set of fields, returning either the upper or lower bound of the set.
        *
        * @param fields
@@ -126,6 +97,35 @@
         }
 
         return output;
+      }
+
+      /**
+       * Calculates overall value for a given component.
+       *
+       * @param {string} componentId
+       *    The node edit paragraph component HTML fragment ID.
+       * @param {string} componentFieldName
+       *    The paragraph component field machine name.
+       * @param {string} overallFieldID
+       *    The calculated overall field HTML fragment ID.
+       * @param {string} operator
+       *    The operation to be performed, "<" or ">".
+       */
+      function calcOverall(componentId, componentFieldName, overallFieldID, operator) {
+        // Calculate the initial value of the field.
+        var fields = $("input[id^='" + componentId + "']").filter("input[name*='" + componentFieldName + "']");
+        if (!fieldIsInitialized('#' + overallFieldID)) {
+          var value = calculateBoundaryOfSet(fields, operator);
+          $('#' + overallFieldID).val(value);
+          markFieldInitialized('#' + overallFieldID);
+        }
+
+        fields.each(function() {
+          $(this).once('advCalcOverall').on('change', {overallFieldID: overallFieldID, operator: operator}, function(event) {
+            var output = calculateBoundaryOfSet(fields, event.data.operator);
+            $('#' + event.data.overallFieldID).val(output);
+          });
+        });
       }
 
       /**
@@ -178,6 +178,28 @@
       }
 
       /**
+       * Get input field based on changed field ID and agency_component value.
+       *
+       * @param {jquery} elements
+       *   jQuery element collection for field selectors.
+       * @param {string} agency
+       *   String representation of Agency/Component value, e.g. "8706".
+       *
+       * @returns {jquery}
+       *   jQuery element for input field.
+       */
+      function getElementByAgency(elements, agency) {
+        var result;
+        $(elements).each(function() {
+          var element_agency = getAgencyComponent($(this));
+          if (agency === element_agency) {
+            result = $(this);
+          }
+        });
+        return result;
+      }
+
+      /**
        * Calculates X. Percentage of Total Costs
        *
        * @param {string} agency
@@ -198,28 +220,6 @@
             percCostsElement.val(percentageCosts);
           }
         });
-      }
-
-      /**
-       * Get input field based on changed field ID and agency_component value.
-       *
-       * @param {jquery} elements
-       *   jQuery element collection for field selectors.
-       * @param {string} agency
-       *   String representation of Agency/Component value, e.g. "8706".
-       *
-       * @returns {jquery}
-       *   jQuery element for input field.
-       */
-      function getElementByAgency(elements, agency) {
-        var result;
-        $(elements).each(function() {
-          var element_agency = getAgencyComponent($(this));
-          if (agency === element_agency) {
-            result = $(this);
-          }
-        });
-        return result;
       }
 
       /**
