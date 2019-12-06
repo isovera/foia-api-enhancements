@@ -653,7 +653,10 @@ EOS;
           ->setAttribute('s:ref', $local_id);
         $this->addElementNs('nc:OrganizationReference', $item)
           ->setAttribute('s:ref', $this->componentMap[$agency_component->id()]);
-        $this->addElementNs('foia:ReliedUponStatuteQuantity', $item, $component_info->field_num_relied_by_agency_comp->value);
+        $quantity = !is_null($component_info->field_num_relied_by_agency_comp->value)
+          ? $component_info->field_num_relied_by_agency_comp->value
+          : 0;
+        $this->addElementNs('foia:ReliedUponStatuteQuantity', $item, $quantity);
       }
       // Add agency overall data for the statute.
       $item = $this->addElementNs('foia:ReliedUponStatuteOrganizationAssociation', $statuteSection);
@@ -661,7 +664,10 @@ EOS;
         ->setAttribute('s:ref', $local_id);
       $this->addElementNs('nc:OrganizationReference', $item)
         ->setAttribute('s:ref', 'ORG0');
-      $this->addElementNs('foia:ReliedUponStatuteQuantity', $item, $statute->field_total_num_relied_by_agency->value);
+      $quantity = !is_null($statute->field_total_num_relied_by_agency->value)
+        ? $statute->field_total_num_relied_by_agency->value
+        : 0;
+      $this->addElementNs('foia:ReliedUponStatuteQuantity', $item, $quantity);
     }
 
     // Add footnote.
