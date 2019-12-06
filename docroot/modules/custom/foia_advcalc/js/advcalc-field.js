@@ -110,7 +110,7 @@
               // Set output for the first valid value.
               output = displayLessThan(specialNumber(value));
             }
-            else if(value != '' && value != undefined && ops[operator](specialNumber(value), specialNumber(output))) {
+            else if (value != '' && value != undefined && ops[operator](specialNumber(value), specialNumber(output))) {
               // Override output if operation criterion is met.
               output = displayLessThan(specialNumber(value));
             }
@@ -192,7 +192,7 @@
           if (agency === element_agency) {
             var procCosts = getElementByAgency(procCostsElements, agency).val();
             var totalFees = getElementByAgency(totalFeesElements, agency).val();
-            if(totalFees > 0) {
+            if (totalFees > 0) {
               var percentageCosts = Math.round(totalFees/procCosts * 10000) / 10000; // Decimal format rounded to 4 places
             }
             percCostsElement.val(percentageCosts);
@@ -227,7 +227,7 @@
        */
       function calculateOverallPercentageOfCosts() {
         var overallXTotalFees = Number($("#edit-field-overall-x-total-fees-0-value").val());
-        if ( overallXTotalFees > 0 ) {
+        if (overallXTotalFees > 0 ) {
           var overallIXProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
           var overallXPercCosts = overallXTotalFees /overallIXProcCosts;
           overallXPercCosts = Math.round(overallXPercCosts * 10000) / 10000; // Decimal format rounded to 4 places
@@ -387,7 +387,7 @@
         .each(function() {
           if (!fieldIsInitialized(this)) {
             var percCostsAgency = getAgencyComponent($(this));
-            if(percCostsAgency != '_none') {
+            if (percCostsAgency != '_none') {
               calcPercentageCosts(percCostsAgency);
             }
             markFieldInitialized(this);
@@ -400,7 +400,7 @@
       sectionXElements.add(totalFeesElements).each(function() {
         $(this).once('advCalcXPercCosts').change(function() {
           var procCostsAgency = getAgencyComponent($(this));
-          if(procCostsAgency != '_none') {
+          if (procCostsAgency != '_none') {
             calcPercentageCosts(procCostsAgency);
           }
         });
