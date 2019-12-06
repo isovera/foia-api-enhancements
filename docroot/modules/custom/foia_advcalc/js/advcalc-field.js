@@ -183,7 +183,7 @@
        * @param {string} agency
        *   String representing an agency/component option value.
        */
-      function calcPercentageCosts(agency) {
+      function calcPercentTotalCosts(agency) {
         var procCostsElements = $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
         var totalFeesElements = $("input[name*='field_fees_x']").filter("input[name*='field_total_fees']");
         $("input[name*='field_fees_x']").filter("input[name*='field_perc_costs']").each(function() {
@@ -388,22 +388,25 @@
           if (!fieldIsInitialized(this)) {
             var percCostsAgency = getAgencyComponent($(this));
             if (percCostsAgency !== '_none') {
-              calcPercentageCosts(percCostsAgency);
+              calcPercentTotalCosts(percCostsAgency);
             }
             markFieldInitialized(this);
           }
       });
 
       // X. Percentage of Total Costs per agency/component.
-      var sectionXElements = $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
-      var totalFeesElements = $("input[name*='field_fees_x']").filter("input[name*='field_total_fees']");
-      sectionXElements.add(totalFeesElements).each(function() {
-        $(this).once('advCalcXPercCosts').change(function() {
-          var procCostsAgency = getAgencyComponent($(this));
-          if (procCostsAgency !== '_none') {
-            calcPercentageCosts(procCostsAgency);
-          }
-        });
+      var processingCostsElements = $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
+      $("input[name*='field_fees_x']")
+      .filter("input[name*='field_total_fees']")
+      .add(processingCostsElements)
+      .each(function() {
+          // If X. Total Fees or IX. Processing Costs change, calculate % costs.
+          $(this).once('advCalcXPercCosts').change(function() {
+            var processingCostsAgency = getAgencyComponent($(this));
+            if (processingCostsAgency !== '_none') {
+              calcPercentTotalCosts(processingCostsAgency);
+            }
+          });
       });
 
       // Fields from sections IX and X to calculate overall_x_perc_costs.
