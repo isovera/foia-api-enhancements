@@ -93,10 +93,11 @@ is built on Drupal's Migrate API and leverages Migrate Plus and Migrate Tools.
 
 The migrations are defined by the following:
 
-- `config/install/*.yml`: configuration files defining custom migrations
-- `src/Form/AgencyXmlUploadForm.php`: define a custom form for uploading the XML
+ * `config/install/*.yml`: configuration files defining custom migrations
+ * `src/Form/AgencyXmlUploadForm.php`: define a custom form for uploading the
+  XML
   report
-- `Plugin/migrate/process/*.php`: custom process plugins used by the migrations
+ * `Plugin/migrate/process/*.php`: custom process plugins used by the migrations
 
 Additional files in the module implement batch processing of the custom 
 migrations and the import queue.
@@ -108,13 +109,13 @@ There are a lot of files in the `/config/install/` directory, but it is not
 too complicated once you understand how they are organized.
 
 By group they are:
-- `foia_xml`: Main migrations - annual report node (`foia_agency_report`) with 
+ * `foia_xml`: Main migrations - annual report node (`foia_agency_report`) with 
 overall data and the agency components (`component`) import.
-- `foia_component_data_mapping`: agency component data mappings - maps the 
+ * `foia_component_data_mapping`: agency component data mappings - maps the 
 agency component identifiers from the import file to the report section data.
-- `foia_component_data_import_subs`: data import for sub-sections of sections 
+ * `foia_component_data_import_subs`: data import for sub-sections of sections 
 IV, V.B.2, and VI.C.3 per component. 
-- `foia_component_data_import`: data import for report sections per component.
+ * `foia_component_data_import`: data import for report sections per component.
 
 
 #### Beginning and end
@@ -402,12 +403,12 @@ provided within the section.
 
 Each case will be different so for examples look at the migrations for 
 section IV where:
-- sub-import: foia_iv_details
-- main-import: foia_iv_statute
+ * sub-import: foia_iv_details
+ * main-import: foia_iv_statute
 
 or section V.B.2 where:
-- sub-import: foia_vb2_other
-- main-import: foia_vb2
+ * sub-import: foia_vb2_other
+ * main-import: foia_vb2
 
 
 TROUBLESHOOTING
