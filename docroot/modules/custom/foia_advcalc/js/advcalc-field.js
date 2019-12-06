@@ -129,19 +129,6 @@
       }
 
       /**
-       * Calculate section X's overall percentage of total costs field.
-       */
-      function calculateOverallPercentageOfCosts() {
-        var overall_x_total_fees = Number($("#edit-field-overall-x-total-fees-0-value").val());
-        if ( overall_x_total_fees > 0 ) {
-          var overall_ix_proc_costs = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
-          var overall_x_perc_costs =  overall_x_total_fees /overall_ix_proc_costs;
-          var overall_x_perc_costs = Math.round(overall_x_perc_costs * 10000) / 10000; // Decimal format rounded to 4 places
-          $('#edit-field-overall-x-perc-costs-0-value').val(overall_x_perc_costs);
-        }
-      }
-
-      /**
        * Calculates V.A., VI.A., XII.B. Number of [type] Pending as of End of Fiscal Year per agency/component.
        *
        * e.g. req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
@@ -189,75 +176,61 @@
       }
 
       /**
-       * Calculates perc_costs from total_fees divided by proc_costs.
+       * Calculates X. Percentage of Total Costs
        *
-       * @param {jquery} proc_costs
-       *   jQuery element for IX. Processing Costs.
-       * @param {jquery} total_fees
-       *   jQuery element for X. Total Amount of Fees Collected.
-       * @param {jquery} perc_costs
-       *   jQuery element for X. Percentage of Total Costs.
-       *
-       * @returns {jquery} perc_costs
+       * @param {string} agency
+       *   String representing an agency/component option value.
        */
-      function calcPercCosts(proc_costs, total_fees, perc_costs) {
-        var perc_costs_val;
-        if(total_fees.val() > 0) {
-          //set value of target field
-          perc_costs_val = total_fees.val() / proc_costs.val();
-          perc_costs_val = Math.round(perc_costs_val * 10000) / 10000; // Decimal format rounded to 4 places
-          $(perc_costs).val(perc_costs_val);
-          return perc_costs;
-        }
+      function calcPercentageCosts(agency) {
+        var procCostsElements = $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
+        var totalFeesElements = $("input[name*='field_fees_x']").filter("input[name*='field_total_fees']");
+        $("input[name*='field_fees_x']").filter("input[name*='field_perc_costs']").each(function() {
+          var percCostsElement = $(this);
+          var element_agency = getAgencyComponent($(this));
+          if (agency === element_agency) {
+            var procCosts = getElementByAgency(procCostsElements, agency).val();
+            var totalFees = getElementByAgency(totalFeesElements, agency).val();
+            if(totalFees > 0) {
+              var percentageCosts = Math.round(totalFees/procCosts * 10000) / 10000; // Decimal format rounded to 4 places
+            }
+            percCostsElement.val(percentageCosts);
+          }
+        });
       }
 
       /**
        * Get input field based on changed field ID and agency_component value.
        *
-       * @param {string} field
-       *   String representation of field name, e.g. "x_total_fees".
+       * @param {jquery} elements
+       *   jQuery element collection for field selectors.
        * @param {string} agency
        *   String representation of Agency/Component value, e.g. "8706".
        *
        * @returns {jquery}
        *   jQuery element for input field.
        */
-      function getFieldByAgency(field, agency) {
+      function getElementByAgency(elements, agency) {
         var result;
-        var element;
-        var element_agency;
-        switch (field) {
-          case 'x_total_fees':
-            element = $( "input[name*='field_fees_x']").filter("input[name*='field_total_fees']");
-            $(element).each(function() {
-              element_agency = getAgencyComponent($(this));
-              if (agency == element_agency) {
-                result = $(this);
-              }
-            });
-            break;
-          case 'ix_proc_costs':
-            element = $( "input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
-            $(element).each(function() {
-              element_agency = getAgencyComponent($(this));
-              if (agency == element_agency) {
-                result = $(this);
-              }
-            });
-            break;
-          case 'x_perc_costs':
-            element = $( "input[name*='field_fees_x']").filter("input[name*='field_perc_costs']");
-            $(element).each(function() {
-              element_agency = getAgencyComponent($(this));
-              if (agency == element_agency) {
-                result = $(this);
-              }
-            });
-            break;
-          default:
-            result = false;
+        $(elements).each(function() {
+          var element_agency = getAgencyComponent($(this));
+          if (agency === element_agency) {
+            result = $(this);
+          }
+        });
+        return result;
+      }
+
+      /**
+       * Calculate X. Agency Overall Percentage of Total Costs
+       */
+      function calculateOverallPercentageOfCosts() {
+        var overallXTotalFees = Number($("#edit-field-overall-x-total-fees-0-value").val());
+        if ( overallXTotalFees > 0 ) {
+          var overallIXProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
+          var overallXPercCosts = overallXTotalFees /overallIXProcCosts;
+          overallXPercCosts = Math.round(overallXPercCosts * 10000) / 10000; // Decimal format rounded to 4 places
+          $('#edit-field-overall-x-perc-costs-0-value').val(overallXPercCosts);
         }
-        return $(result);
       }
 
       /**
@@ -408,41 +381,25 @@
       // Initialize on load: X. Percentage of Total Costs
       $("input[name*='field_fees_x']")
         .once('initAdvCalcIXPercCosts')
-        .filter("input[name*='field_total_fees']")
+        .filter("input[name*='field_perc_costs']")
         .each(function() {
           if (!fieldIsInitialized(this)) {
-            var total_fees_agency_val = getAgencyComponent($(this));
-            if(total_fees_agency_val != '_none') {
-              var proc_costs = getFieldByAgency('ix_proc_costs', total_fees_agency_val);
-              var target = getFieldByAgency('x_perc_costs', total_fees_agency_val);
-              calcPercCosts(proc_costs, $(this), target);
+            var percCostsAgency = getAgencyComponent($(this));
+            if(percCostsAgency != '_none') {
+              calcPercentageCosts(percCostsAgency);
             }
             markFieldInitialized(this);
           }
       });
 
-      // If section IX proc_costs field changes.
-      $( "input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']").each(function() {
-        $(this).once('advCalcIXPercCosts').change(function() {
-          var proc_costs_agency_val = getAgencyComponent($(this));
-
-          if(proc_costs_agency_val != '_none') {
-            var total_fees = getFieldByAgency('x_total_fees', proc_costs_agency_val);
-            var target = getFieldByAgency('x_perc_costs', proc_costs_agency_val);
-            calcPercCosts($(this), total_fees, target);
-          }
-        });
-      });
-
-      // If section X total_fees field changes.
-      $( "input[name*='field_fees_x']").filter("input[name*='field_total_fees']").each(function() {
+      // X. Percentage of Total Costs per agency/component.
+      var sectionXElements = $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
+      var totalFeesElements = $("input[name*='field_fees_x']").filter("input[name*='field_total_fees']");
+      sectionXElements.add(totalFeesElements).each(function() {
         $(this).once('advCalcXPercCosts').change(function() {
-          var total_fees_agency_val = getAgencyComponent($(this));
-
-          if(total_fees_agency_val != '_none') {
-            var proc_costs = getFieldByAgency('ix_proc_costs', total_fees_agency_val);
-            var target = getFieldByAgency('x_perc_costs', total_fees_agency_val);
-            calcPercCosts(proc_costs, $(this), target);
+          var procCostsAgency = getAgencyComponent($(this));
+          if(procCostsAgency != '_none') {
+            calcPercentageCosts(procCostsAgency);
           }
         });
       });
