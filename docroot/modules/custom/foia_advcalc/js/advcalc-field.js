@@ -104,13 +104,13 @@
         var isOverallNA = true;
         fields.each(function () {
           var value = $(this).val();
-          if (String(value).toLowerCase() != 'n/a') {
+          if (String(value).toLowerCase() !== 'n/a') {
             isOverallNA = false;
-            if (value != '' && value !== null && (output == null || output == "n/a")) {
+            if (value !== '' && value !== null && (output === null || output === "n/a")) {
               // Set output for the first valid value.
               output = displayLessThan(specialNumber(value));
             }
-            else if (value != '' && value != undefined && ops[operator](specialNumber(value), specialNumber(output))) {
+            else if (value !== '' && value !== undefined && ops[operator](specialNumber(value), specialNumber(output))) {
               // Override output if operation criterion is met.
               output = displayLessThan(specialNumber(value));
             }
@@ -387,7 +387,7 @@
         .each(function() {
           if (!fieldIsInitialized(this)) {
             var percCostsAgency = getAgencyComponent($(this));
-            if (percCostsAgency != '_none') {
+            if (percCostsAgency !== '_none') {
               calcPercentageCosts(percCostsAgency);
             }
             markFieldInitialized(this);
@@ -400,7 +400,7 @@
       sectionXElements.add(totalFeesElements).each(function() {
         $(this).once('advCalcXPercCosts').change(function() {
           var procCostsAgency = getAgencyComponent($(this));
-          if (procCostsAgency != '_none') {
+          if (procCostsAgency !== '_none') {
             calcPercentageCosts(procCostsAgency);
           }
         });
