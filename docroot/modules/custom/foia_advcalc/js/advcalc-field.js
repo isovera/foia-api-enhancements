@@ -188,15 +188,15 @@
        * @param {string} agency
        *   String representation of Agency/Component value, e.g. "8706".
        *
-       * @returns {jquery}
-       *   jQuery element for input field.
+       * @returns {number}
+       *   Numeric value of element field.
        */
-      function getElementByAgency(elements, agency) {
+      function getElementValByAgency(elements, agency) {
         var result = null;
         $(elements).each(function() {
           var element_agency = getAgencyComponent($(this));
           if (agency === element_agency) {
-            result = $(this);
+            result = Number($(this).val());
           }
         });
         return result;
@@ -216,9 +216,9 @@
           .each(function() {
             var elementAgency = getAgencyComponent($(this));
             if (agency === elementAgency) {
-              var totalFees = getElementByAgency(totalFeesElements, agency).val();
+              var totalFees = getElementValByAgency(totalFeesElements, agency);
               if (totalFees > 0) {
-                var procCosts = getElementByAgency(procCostsElements, agency).val();
+                var procCosts = getElementValByAgency(procCostsElements, agency);
                 // Convert to decimal format rounded to 4 places
                 var percentageCosts = Math.round(totalFees/procCosts * 10000) / 10000;
               }
