@@ -2,7 +2,7 @@ CONTENTS OF THIS FILE
 ---------------------
 
  * Introduction
-   * Events Triggering Calculations
+   * Events triggering calculations
    * Settings structure and calculations
  * Recommended modules
  * Installation
