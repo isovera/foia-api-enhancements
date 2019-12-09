@@ -39,7 +39,11 @@ for further information.
 CONFIGURATION
 -------------
 
-No configuration required for the node edit form updates.
+In order to change this module's configuration, users must have permission to
+administer site configuration. Configure permissions in Administration
+» People » Permissions:
+
+ * Administer site configuration
 
 To configure the Annual Report Memory limit go to:
 /admin/config/system/foia_annual_data_report_memory_limit
