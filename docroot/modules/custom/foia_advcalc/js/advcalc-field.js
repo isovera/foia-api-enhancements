@@ -231,13 +231,13 @@
        * Calculate X. Agency Overall Percentage of Total Costs
        */
       function calculateOverallPercentCosts() {
-        var overallXTotalFees = Number($("#edit-field-overall-x-total-fees-0-value").val());
-        if (overallXTotalFees > 0 ) {
-          var overallIXProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
-          var overallXPercCosts = overallXTotalFees /overallIXProcCosts;
+        var overallTotalFees = Number($("#edit-field-overall-x-total-fees-0-value").val());
+        if (overallTotalFees > 0 ) {
+          var overallProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
+          var overallPercCosts = overallTotalFees /overallProcCosts;
           // Convert to decimal format rounded to 4 places
-          overallXPercCosts = Math.round(overallXPercCosts * 10000) / 10000;
-          $('#edit-field-overall-x-perc-costs-0-value').val(overallXPercCosts);
+          overallPercCosts = Math.round(overallPercCosts * 10000) / 10000;
+          $('#edit-field-overall-x-perc-costs-0-value').val(overallPercCosts);
         }
       }
 
