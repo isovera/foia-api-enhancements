@@ -8,6 +8,9 @@ CONTENTS OF THIS FILE
  * Requirements
  * Installation
  * Documentation
+   - General structure
+   - jQuery selector reference
+   - Utility JavaScript functions
 
 
 INTRODUCTION
@@ -59,6 +62,7 @@ DOCUMENTATION
 The FOIA Advanced Auto Calculations module attaches the `advcalc-fields.js` file
 to the "Annual FOIA Report Data" edit/add form.
 
+
 ### General structure
 
 `advcalc-fields.js` is organized as follows:
@@ -68,6 +72,7 @@ to the "Annual FOIA Report Data" edit/add form.
  * Annual Report field jQuery selector calculation bindings
    * Initialize on load (for each binding)
    * Calculate on change (for each binding)
+
 
 ### jQuery selector reference
 
