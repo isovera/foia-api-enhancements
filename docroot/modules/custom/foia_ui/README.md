@@ -69,10 +69,10 @@ is via the name attribute, e.g. for the following markup:
 
 Where:
 
-- `field_foia_requests_va` is the paragraph type machine name.
-- `[1]` indicates that it's the second instance of the paragraph component.
-- `field_req_pend_start_yr` is the field machine name.
-- `[0]` indicates the first, and typically only, instance of the field on the
+ * `field_foia_requests_va` is the paragraph type machine name.
+ * `[1]` indicates that it's the second instance of the paragraph component.
+ * `field_req_pend_start_yr` is the field machine name.
+ * `[0]` indicates the first, and typically only, instance of the field on the
 paragraph instance.
 
 The jQuery selector for all instances of the field is:
@@ -92,6 +92,7 @@ as methods on the `Drupal.FoiaUI` object, e.g.
 Drupal.FoiaUI.specialNumber("<1");
 // returns 0.1
 ```
+
 
 ### Admin theme overrides
 
