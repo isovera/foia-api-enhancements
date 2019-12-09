@@ -56,7 +56,6 @@ for further information.
 DOCUMENTATION
 -------------
 
-
 The FOIA Advanced Auto Calculations module attaches the `advcalc-fields.js` file
 to the "Annual FOIA Report Data" edit/add form.
 
