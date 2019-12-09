@@ -52,6 +52,6 @@ To configure the Annual Report Memory limit go to:
 default PHP Memory Limit set for the platform. The value set in the `Annual
 Report Memory Limit` field must be in the form of a numeric value and a
 capitalized M as the unit symbol, with no space between the two, e.g. `1024M`.
- * Check the `Debug Annual Report memory limit`. checkbox to log the memory
+ * Check the `Debug Annual Report memory limit` checkbox to log the memory
 limit before the node is saved, while it is being saved, and after it has been
 saved.
