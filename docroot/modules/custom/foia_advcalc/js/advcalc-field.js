@@ -181,7 +181,7 @@
       }
 
       /**
-       * Get input field based on changed field ID and agency_component value.
+       * Get input field based on changed field ID and Agency/Component value.
        *
        * @param {jquery} elements
        *   jQuery element collection for field selectors.
@@ -194,8 +194,8 @@
       function getElementValByAgency(elements, agency) {
         var result = null;
         $(elements).each(function() {
-          var element_agency = getAgencyComponent($(this));
-          if (agency === element_agency) {
+          var elementAgency = getAgencyComponent($(this));
+          if (agency === elementAgency) {
             result = Number($(this).val());
           }
         });
