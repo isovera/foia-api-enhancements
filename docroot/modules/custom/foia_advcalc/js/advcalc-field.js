@@ -236,7 +236,7 @@
           var overallProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
           var overallPercentCosts = overallTotalFees /overallProcCosts;
           // Convert to decimal format rounded to 4 places
-          overallPercentCosts = Math.round(overallPercCosts * 10000) / 10000;
+          overallPercentCosts = Math.round(overallPercentCosts * 10000) / 10000;
           $('#edit-field-overall-x-perc-costs-0-value').val(overallPercentCosts);
         }
       }
