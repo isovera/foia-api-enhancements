@@ -117,13 +117,13 @@
   /**
    * Helper function to check if a value is numeric.
    *
-   * @param n
+   * @param value
    *   The value to check.
    *
    * @returns {boolean}
    */
-  function isNumeric(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
+  function isNumeric(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
   }
 
 })(jQuery, drupalSettings, Drupal);
