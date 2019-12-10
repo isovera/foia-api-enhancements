@@ -227,10 +227,11 @@ the section's "agency overall" data and attach the imported paragraph items to
 the annual report node. The basic process looks like the following:
 
  1. Add fields in the `source/fields` section.
- 2. Map those fields in the `process` section. Remember that most destination
-   fields have the prefix `field_`.
- 3. Use the `migration_lookup` process plugin, referencing your Paragraph
-   migration, to populate the relevant field.
+ 2. Map agency overall fields in the `process` section. Remember that most
+   destination fields have the prefix `field_`.
+ 3. Attach component data to the annual report node, using the
+   `migration_lookup` process plugin to find and reference Paragraph's
+   imported in the section migration.
  4. Add your Paragraph migration to the list of dependencies at the end of the
    file.
 
@@ -307,11 +308,11 @@ looks like the following:
 ```
 
 
-#### 2. Map those fields in the `process` section
+#### 2. Map agency overall fields
 
-Continuing with the example of adding component data from section V.A to the
-`foia_agency_report`, the component data and agency overall data must be
-mapped in the migration's `process` section.
+Continuing with the example of adding data from section V.A to the
+`foia_agency_report`, there is some agency overall data that needs to be
+ mapped in the migration's `process` section.
 
 Agency overall data can be mapped relatively simply. Often the data can be
 set directly as the field value like so:
@@ -322,6 +323,9 @@ field_overall_req_pend_start_yr: overall_req_pend_start_yr
 
 More processing of overall data can be done if required. A common option is
 to set the field value along with a default value.
+
+
+#### 3. Map Paragraph fields using the `migration_lookup` process plugin
 
 Mapping component data is slightly more complex. The processing pipeline
 that attaches the paragraph items imported in
@@ -386,9 +390,6 @@ The `foia_array_pad` plugin is custom: it adds the source fields listed under
 ```
 [[2018, "USDA", "PS1"], [2018, "USDA", "PS2"], ... ]
 ```
-
-
-#### 3. Populate Paragraph fields using the `migration_lookup` process plugin
 
 The next step in the process pipeline is to apply `migration_lookup` to each
 of those triples created by the `foia_array_pad` plugin:
