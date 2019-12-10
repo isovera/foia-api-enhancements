@@ -431,7 +431,7 @@ Still within the`sub_process` plugin, we have
             - '1'
 ```
 
-These processes extract their respective values as from the migration
+These processes extract their respective values from the migration
 lookup. At this point, the original array of values from the `component_va
 ` source field:
 
