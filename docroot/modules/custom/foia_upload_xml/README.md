@@ -6,8 +6,8 @@ TABLE OF CONTENTS
  * Recommended modules
  * Installation
  * Usage
- * Configuration
  * The queue
+ * Configuration
  * Troubleshooting
 
 
@@ -71,6 +71,16 @@ progress a message indicating `Your report has been queued...` will appear.
 Once complete navigate to the Content section to find new or updated report. 
 Should any errors or other issues occur with the upload, users should contact 
 their Agency Managers or Agency Administrators.
+
+
+THE QUEUE
+---------
+
+In the event that an import process is already running when a user uploads a
+report file, the new report will be added to the
+`foia_xml_report_import_worker` queue. The queue worker for this queue is
+defined in `FoiaXmlReportImportWorker.php`. It will run on cron, processing
+as many queued reports as possible in 10 minutes.
 
 
 CONFIGURATION
@@ -536,16 +546,6 @@ section IV where:
 or section V.B.2 where:
  * sub-import: foia_vb2_other
  * main-import: foia_vb2
-
-
-THE QUEUE
----------
-
-In the event that an import process is already running when a user uploads a
-report file, the new report will be added to the
-`foia_xml_report_import_worker` queue. The queue worker for this queue is
-defined in `FoiaXmlReportImportWorker.php`. It will run on cron, processing
-as many queued reports as possible in 10 minutes.
 
 
 TROUBLESHOOTING
