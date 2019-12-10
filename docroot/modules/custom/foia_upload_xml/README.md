@@ -78,7 +78,7 @@ CONFIGURATION
 
  * Post-installation configuration
  * Updating and adding report sections
- * Handling a new section
+ * Adding a section to the foia_agency_report migration
  * Special sections
 
 
@@ -213,7 +213,7 @@ Paragraphs of type `foia_req_va`. These Paragraphs are then referenced in
 `migration_lookup` process plugin.
 
 
-### Handling a new section
+### Adding a section to the foia_agency_report migration
 
 Each section of the annual report has a corresponding section of the XML file,
 and we should be able to handle them all as described in the previous section.
