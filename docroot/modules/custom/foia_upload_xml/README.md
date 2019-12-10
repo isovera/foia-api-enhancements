@@ -220,8 +220,10 @@ and we should be able to handle them all as described in the previous section.
 There are some nested Paragraphs, and handling those will be a little
 different (see `Special sections` below).
 
-In addition to adding two migrations, you will have to update the
-`foia_agency_report` migration:
+In addition to adding two migrations as described in the section
+[The middle](#the-middle), you will have to update the`foia_agency_report`
+migration in`migrate_plus.migration.foia_agency_report.yml` by doing the
+following:
 
  1. Add fields in the `source/fields` section.
  2. Map those fields in the `process` section. Remember that most destination
@@ -231,10 +233,21 @@ In addition to adding two migrations, you will have to update the
  4. Add your Paragraph migration to the list of dependencies at the end of the
    file.
 
+Continuing with the example section
+`migrate_plus.migration.foia_requests_va.yml`, let's look at how that
+section would be added and processed in the `foia_agency_report` migration.
+
+#### 1. Add fields in the `source/fields` section
+
 Step 1 is a little tricky, since you have to find the correct XPath
-expressions to extract the data from the XML. The "overall" fields are closely
-related to the corresponding per-component fields. For example,
-`migrate_plus.migration.foia_requests_va.yml` includes the following:
+expressions to extract the data from the XML. Since the `foia_agency_report`
+migration includes both component specific data and agency overall data, you
+will likely have to add both overall data and references to component
+data as sources in the `foia_agency_report` migration.
+
+The "overall" fields are closely related to the corresponding per-component
+fields. For example, `migrate_plus.migration.foia_requests_va.yml` includes
+the following:
 
 ```
 source:
@@ -246,8 +259,8 @@ source:
       selector: 'foia:ProcessingStatisticsPendingAtStartQuantity'
 ```
 
-Combining the `item_selector` and the selector for this field gives (adding
-line breaks for readability)
+The full XPath selector, when combining the `item_selector` and the `selector`
+for this field, gives (adding line breaks for readability)
 
 ```
   /iepd:FoiaAnnualReport
@@ -256,8 +269,8 @@ line breaks for readability)
   /foia:ProcessingStatisticsPendingAtStartQuantity
 ```
 
-Compare this with the corresponding lines in
-`migrate_plus.migration.foia_agency_report.yml`:
+Compare this to selecting the agency overall data for this same element
+in `migrate_plus.migration.foia_agency_report.yml`:
 
 ```
 source:
@@ -269,7 +282,7 @@ source:
       selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsPendingAtStartQuantity'
 ```
 
-Combining these two selectors gives
+The full XPath selector for this field's agency overall data is:
 
 ```
   /iepd:FoiaAnnualReport
@@ -280,8 +293,74 @@ Combining these two selectors gives
 
 The only difference is the additional selector `[@s:id="PS0"]`.
 
-The third part (migration lookup) is the most complicated, so let's break it
-down. The process pipeline starts with
+In addition to the section's agency overall fields, the section's component
+data must also be added as a source field in the `foia_agency_report`
+migration.  In this example, adding section V.A's component data as a source
+looks like the following:
+
+```
+  name: component_va
+  label: 'Internal index of the agency component'
+  selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics/@s:id'
+```
+
+
+#### 2. Map those fields in the `process` section
+
+Continuing with the example of adding component data from section V.A to the
+`foia_agency_report`, the component data and agency overall data must be
+mapped in the migration's `process` section.
+
+Agency overall data can be mapped relatively simply.  Often the data can be
+set directly as the field value like so:
+
+```
+field_overall_req_pend_start_yr: overall_req_pend_start_yr
+```
+
+More processing of overall data can be done if required.  A common option is
+to set the field value along with a default value.
+
+Mapping component data is slightly more complex.  The processing pipeline
+that attaches the paragraph items imported in
+`migrate_plus.migration.foia_requests_va.yml` to the agency report node looks
+like this:
+
+```
+  field_foia_requests_va:
+    -
+      plugin: foia_array_pad
+      source: component_va
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_va_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+```
+
+This first part of the process pipeline gets data from the source field
+`component_va` and transforms it to array values that can be used to in the
+ migration lookup sub-process.
 
 ```
   field_foia_requests_va:
@@ -306,8 +385,11 @@ The `foia_array_pad` plugin is custom: it adds the source fields listed under
 [[2018, "USDA", "PS1"], [2018, "USDA", "PS2"], ... ]
 ```
 
+
+#### 3. Populate Paragraph fields using the `migration_lookup` process plugin
+
 The next step in the process pipeline is to apply `migration_lookup` to each
-of those triples:
+of those triples created by the `foia_array_pad` plugin:
 
 ```
     -
@@ -345,20 +427,47 @@ Still within the`sub_process` plugin, we have
             - '1'
 ```
 
-At this point, we have an array of arrays. One of the inner arrays looks
-something like this:
+These processes extract their respective values as from the migration
+lookup. At this point, the original array of values from the `component_va
+` source field:
 
 ```
+["PS1", "PS2", ... ]
+```
+
+Has been processed into an array that can be used to set the value, or values,
+of the `field_foia_requests_va` paragraph reference field:
+
+```
+[
   [
     'combined' => [123, 456],
     'target_id' => 123,
     'target_revision_id' => 456,
   ]
+  [
+    'combined' => [678, 789],
+    'target_id' => 678,
+    'target_revision_id' => 789,
+  ]
+]
 ```
 
-This field expects a `target_id` and a `target_revision_id`, and the
-`combined` value is ignored.
+As the `field_foia_requests_va` field is a reference field to paragraph
+entities, the migration expects a `target_id` and a `target_revision_id` in
+order to set the field value, and the `combined` value is ignored.
 
+
+#### 4. Add the section migration to the agency report migration's dependencies
+
+Add the new section's migration to the `foia_agency_report` migration's
+dependencies:
+
+```
+migration_dependencies:
+  required:
+    - foia_va_requests
+```
 
 #### Adding new section to batch process
 
