@@ -215,15 +215,16 @@ Paragraphs of type `foia_req_va`. These Paragraphs are then referenced in
 
 ### Adding a section to the foia_agency_report migration
 
-Each section of the annual report has a corresponding section of the XML file,
-and we should be able to handle them all as described in the previous section.
-There are some nested Paragraphs, and handling those will be a little
-different (see `Special sections` below).
+[The middle](#the-middle) describes how a section's component data is
+imported into paragraph items from a corresponding section of the XML file.  In
+addition to this, we also need to attach the imported paragraphs to the annual
+report node. There are some nested Paragraphs, and handling those will be a
+little different (see `Special sections` below).
 
-In addition to adding two migrations as described in the section
-[The middle](#the-middle), you will have to update the`foia_agency_report`
-migration in`migrate_plus.migration.foia_agency_report.yml` by doing the
-following:
+To do this, the `foia_agency_report` migration in
+`migrate_plus.migration.foia_agency_report.yml` needs to be updated to import
+the section's "agency overall" data and attach the imported paragraph items to
+the annual report node.  The basic process looks like the following:
 
  1. Add fields in the `source/fields` section.
  2. Map those fields in the `process` section. Remember that most destination
@@ -233,9 +234,10 @@ following:
  4. Add your Paragraph migration to the list of dependencies at the end of the
    file.
 
-Continuing with the example section
-`migrate_plus.migration.foia_requests_va.yml`, let's look at how that
-section would be added and processed in the `foia_agency_report` migration.
+Continuing with the example section V.A and the component data imported in the
+migration `migrate_plus.migration.foia_requests_va.yml`, the following
+details how that section would be added and processed in the
+`foia_agency_report` migration.
 
 #### 1. Add fields in the `source/fields` section
 
