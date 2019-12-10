@@ -56,6 +56,50 @@ class ExportXml {
   protected $componentMap = [];
 
   /**
+   * The names of all elements the schema defines as integers.
+   *
+   * @var array
+   */
+  protected $integerElements = [
+    'AdjudicationWithinTenDaysQuantity',
+    'AppealDispositionAffirmedQuantity',
+    'AppealDispositionOtherQuantity',
+    'AppealDispositionPartialQuantity',
+    'AppealDispositionReversedQuantity',
+    'AppealDispositionTotalQuantity',
+    'AppliedExemptionQuantity',
+    'BacklogCurrentYearQuantity',
+    'BackloggedAppealQuantity',
+    'BackloggedRequestQuantity',
+    'BacklogLastYearQuantity',
+    'ComponentOtherDenialReasonQuantity',
+    'ItemsProcessedCurrentYearQuantity',
+    'ItemsProcessedLastYearQuantity',
+    'ItemsReceivedCurrentYearQuantity',
+    'ItemsReceivedLastYearQuantity',
+    'NonExemptionDenialQuantity',
+    'OldItemPendingDaysQuantity',
+    'OtherDenialReasonQuantity',
+    'PendingRequestQuantity',
+    'PostedbyFOIAQuantity',
+    'PostedbyProgramQuantity',
+    'ProcessingStatisticsPendingAtEndQuantity',
+    'ProcessingStatisticsPendingAtStartQuantity',
+    'ProcessingStatisticsProcessedQuantity',
+    'ProcessingStatisticsReceivedQuantity',
+    'ReliedUponStatuteQuantity',
+    'RequestDeniedQuantity',
+    'RequestDispositionFullExemptionDenialQuantity',
+    'RequestDispositionFullGrantQuantity',
+    'RequestDispositionPartialGrantQuantity',
+    'RequestDispositionTotalQuantity',
+    'RequestGrantedQuantity',
+    'TimeIncrementProcessedQuantity',
+    'TimeIncrementTotalQuantity',
+    'TimesUsedQuantity',
+  ];
+
+  /**
    * Cast an ExportXml object to string.
    *
    * @return string
@@ -157,6 +201,12 @@ EOS;
     if (empty($namespaces[$prefix])) {
       throw new \Exception("Unrecognized prefix: $prefix");
     }
+    if ($parent === FALSE) {
+      return FALSE;
+    }
+    if ($this->isIntegerElement($tag) && !$this->isValidInteger($value)) {
+      return FALSE;
+    }
     $element = $this->document->createElementNS($namespaces[$prefix], $local_name);
     if (!is_null($value)) {
       $element->appendChild($this->document->createTextNode($value));
@@ -251,6 +301,43 @@ EOS;
         unset($value);
       }
     }
+  }
+
+  /**
+   * Check if an xml element is defined as an integer element in the schema.
+   *
+   * @param string $tag
+   *   An xml element name.
+   *
+   * @return bool
+   *   TRUE if the tag is defined as a nonNegativeInteger in the xml schema.
+   */
+  protected function isIntegerElement($tag) {
+    $tag = str_replace('foia:', '', $tag);
+
+    return in_array($tag, $this->integerElements);
+  }
+
+  /**
+   * Checks if a value is an integer.
+   *
+   * @param mixed $value
+   *   The value being checked if it is an integer.
+   *
+   * @return bool
+   *   Whether or not the given value is an integer.
+   */
+  protected function isValidInteger($value) {
+    if (!is_numeric($value)) {
+      return FALSE;
+    }
+
+    // If the value is numeric, but is a string, this will transform it to
+    // it's numeric value.  This properly transforms the value to a float or
+    // integer depending on the string value.
+    $value = $value + 0;
+
+    return is_int($value);
   }
 
   /**
