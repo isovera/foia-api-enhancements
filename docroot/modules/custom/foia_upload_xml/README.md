@@ -37,10 +37,12 @@ RECOMMENDED MODULES
 -------------------
 
  * FOIA Migrate: Custom module in this codebase. When enabled, FOIA Migrate
-can be used to import and create Agencies and Agency Components that may
-be referenced in the migrations run during upload of a report file from
-this module.
-
+ can be used to import and create Agencies and Agency Components that may
+ be referenced in the migrations run during upload of a report file from
+ this module.
+ * Queue UI (https://www.drupal.org/project/queue_ui): When enabled, users
+ with the permission Administer queues can inspect items in a queue, remove
+ leases on items in a queue, or clear a queue.
 
 INSTALLATION
 -------------
@@ -86,8 +88,9 @@ CONFIGURATION
 
 Upon installation of the FOIA Upload XML module users with 
 `create annual_foia_report_data content` permission will be able to upload XML 
-report files for their assigned agency. No further configuration will be 
-required.
+report files for their assigned agency. If using the Queue UI module, users
+with the `Administer queues` permission will be able to inspect and alter
+queues and queue items. No further configuration will be required.
 
 Should the report format be updated the following section will describe how the 
 report migration mappings are currently setup and how new mappings might be 
@@ -448,7 +451,7 @@ of the `field_foia_requests_va` paragraph reference field:
     'combined' => [123, 456],
     'target_id' => 123,
     'target_revision_id' => 456,
-  ]
+  ],
   [
     'combined' => [678, 789],
     'target_id' => 678,
@@ -569,11 +572,16 @@ configuration directory. There are at least two advantages to this redundancy:
 RUNNING THE MIGRATIONS
 ----------------------
 
+### Via the UI
+
 One option is to run the migrations through the admin UI. The upload form at
 `/report/upload` has a link to the relevant page, and it also redirects there
 after uploading the file.
 
-The other option is to use the command line:
+
+### Via the migration import commands
+
+The other option is to use the drush migrate commands on the command line:
 
 ```
 drush @foia.local ms; drush @foia.local mim -vvv --debug component; drush @foia.local mim -vvv --debug --group=foia_component_data_mapping; drush @foia.local mim -vvv --debug --group=foia_component_data_import_subs; drush @foia.local mim -vvv --debug --group=foia_component_data_import; drush @foia.local mim -vvv --debug foia_agency_report --update; drush @foia.local ms
@@ -592,3 +600,13 @@ drush @foia.local mim -vvv --debug foia_agency_report --update
 
  * Use `drush ms --group=foia_xml` to check the status of the migrations.
  * To see available import options, use `drush help mim`.
+
+
+### Via the queue
+
+In the event that import process is already when a user uploads a report file,
+the new report will be added to a queue for processing on cron.
+
+This queue can be run via the command line:
+
+`drush @foia.local core:cron`
