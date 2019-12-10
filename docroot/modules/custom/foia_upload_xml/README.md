@@ -8,6 +8,10 @@ TABLE OF CONTENTS
  * Usage
  * The queue
  * Configuration
+   - Post-installation configuration
+   - Updating and adding report sections
+   - Adding a section to the foia_agency_report migration
+   - Special sections
  * Troubleshooting
 
 
@@ -85,13 +89,6 @@ as many queued reports as possible in 10 minutes.
 
 CONFIGURATION
 -------------
-
-### Contents
-
- * Post-installation configuration
- * Updating and adding report sections
- * Adding a section to the foia_agency_report migration
- * Special sections
 
 
 ### Post-installation configuration
