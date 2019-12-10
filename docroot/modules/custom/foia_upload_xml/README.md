@@ -36,7 +36,7 @@ recommended.
 RECOMMENDED MODULES
 -------------------
 
- * FOIA Migrate: Custom module in this codebase.  When enabled, FOIA Migrate
+ * FOIA Migrate: Custom module in this codebase. When enabled, FOIA Migrate
 can be used to import and create Agencies and Agency Components that may
 be referenced in the migrations run during upload of a report file from
 this module.
@@ -216,7 +216,7 @@ Paragraphs of type `foia_req_va`. These Paragraphs are then referenced in
 ### Adding a section to the foia_agency_report migration
 
 [The middle](#the-middle) describes how a section's component data is
-imported into paragraph items from a corresponding section of the XML file.  In
+imported into paragraph items from a corresponding section of the XML file. In
 addition to this, we also need to attach the imported paragraphs to the annual
 report node. There are some nested Paragraphs, and handling those will be a
 little different (see `Special sections` below).
@@ -224,7 +224,7 @@ little different (see `Special sections` below).
 To do this, the `foia_agency_report` migration in
 `migrate_plus.migration.foia_agency_report.yml` needs to be updated to import
 the section's "agency overall" data and attach the imported paragraph items to
-the annual report node.  The basic process looks like the following:
+the annual report node. The basic process looks like the following:
 
  1. Add fields in the `source/fields` section.
  2. Map those fields in the `process` section. Remember that most destination
@@ -297,7 +297,7 @@ The only difference is the additional selector `[@s:id="PS0"]`.
 
 In addition to the section's agency overall fields, the section's component
 data must also be added as a source field in the `foia_agency_report`
-migration.  In this example, adding section V.A's component data as a source
+migration. In this example, adding section V.A's component data as a source
 looks like the following:
 
 ```
@@ -313,17 +313,17 @@ Continuing with the example of adding component data from section V.A to the
 `foia_agency_report`, the component data and agency overall data must be
 mapped in the migration's `process` section.
 
-Agency overall data can be mapped relatively simply.  Often the data can be
+Agency overall data can be mapped relatively simply. Often the data can be
 set directly as the field value like so:
 
 ```
 field_overall_req_pend_start_yr: overall_req_pend_start_yr
 ```
 
-More processing of overall data can be done if required.  A common option is
+More processing of overall data can be done if required. A common option is
 to set the field value along with a default value.
 
-Mapping component data is slightly more complex.  The processing pipeline
+Mapping component data is slightly more complex. The processing pipeline
 that attaches the paragraph items imported in
 `migrate_plus.migration.foia_requests_va.yml` to the agency report node looks
 like this:
