@@ -361,8 +361,8 @@ like this:
 ```
 
 This first part of the process pipeline gets data from the source field
-`component_va` and transforms it to array values that can be used to in the
- migration lookup sub-process.
+`component_va` and transforms it to array values that can be used in the
+migration lookup sub-process.
 
 ```
   field_foia_requests_va:
