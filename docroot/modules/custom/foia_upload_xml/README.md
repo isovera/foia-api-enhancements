@@ -7,8 +7,8 @@ TABLE OF CONTENTS
  * Installation
  * Usage
  * Configuration
+ * The queue
  * Troubleshooting
- * Running the migrations
 
 
 INTRODUCTION
@@ -538,6 +538,16 @@ or section V.B.2 where:
  * main-import: foia_vb2
 
 
+THE QUEUE
+---------
+
+In the event that an import process is already running when a user uploads a
+report file, the new report will be added to the
+`foia_xml_report_import_worker` queue. The queue worker for this queue is
+defined in `FoiaXmlReportImportWorker.php`. It will run on cron, processing
+as many queued reports as possible in 10 minutes.
+
+
 TROUBLESHOOTING
 ---------------
 
@@ -569,17 +579,16 @@ configuration directory. There are at least two advantages to this redundancy:
    configuration directory.
 
 
-RUNNING THE MIGRATIONS
-----------------------
+### Running the migrations
 
-### Via the UI
+#### Via the UI
 
 One option is to run the migrations through the admin UI. The upload form at
 `/report/upload` has a link to the relevant page, and it also redirects there
 after uploading the file.
 
 
-### Via the migration import commands
+#### Via the migrate import commands
 
 The other option is to use the drush migrate commands on the command line:
 
@@ -602,11 +611,21 @@ drush @foia.local mim -vvv --debug foia_agency_report --update
  * To see available import options, use `drush help mim`.
 
 
-### Via the queue
+### Processing the queue
 
-In the event that import process is already when a user uploads a report file,
-the new report will be added to a queue for processing on cron.
 
-This queue can be run via the command line:
+#### Via the Queue UI module
+
+Issues with the queue may not be obvious when run in the production environment.
+In addition to information found in the logs, the Queue UI module defines
+admin screens that can be used to inspect and clear queues, or remove leases
+on queue items.  This is useful if there are items that are stuck in the
+queue and need to be cleared out and re-processed or re-uploaded.  This can be
+found at `/admin/config/system/queue-ui`.
+
+
+#### Via the command line
+
+The queue can be run by running cron on the command line:
 
 `drush @foia.local core:cron`
