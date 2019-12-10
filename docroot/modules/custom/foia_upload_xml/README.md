@@ -218,9 +218,9 @@ Paragraphs of type `foia_req_va`. These Paragraphs are then referenced in
 [The middle](#the-middle) describes how a section's component data is
 imported into paragraph items from a corresponding section of the XML file. In
 addition to this, we also need to ensure that the section data gets properly
-imported in the `foia_agency_report` migration. There are some nested
-Paragraphs, and handling those will be a little different (see `Special
-sections` below).
+imported in the `foia_agency_report` migration. (There are some nested
+Paragraphs, and handling those will be a little different.  See `Special
+sections` below.)
 
 To do this, the `foia_agency_report` migration in
 `migrate_plus.migration.foia_agency_report.yml` needs to be updated to import
