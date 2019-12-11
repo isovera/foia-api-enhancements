@@ -8,7 +8,7 @@ CONTENTS OF THIS FILE
  * Requirements
  * Installation
  * Documentation
-   - OpenAPI docs generation and configuration
+   - OpenAPI docs
    - Client-side validation of annual report fields
    - Utility JavaScript functions
    - Admin theme overrides
