@@ -20,7 +20,7 @@ INTRODUCTION
 The FOIA UI module contains custom user interface modifications for the DOJ FOIA
 project. This includes the following:
 
- * OpenAPI Docs generation and configuration
+ * OpenAPI docs generation and configuration
  * Client-side validation of annual report fields
  * Utility JavaScript functions
  * Admin theme overrides
@@ -47,9 +47,9 @@ DOCUMENTATION
 -------------
 
 
-### Open API Docs
+### Open API docs
 
-// @todo Document FOIA UI API Docs
+// @todo Document FOIA UI API docs
 
 
 ### Client-side validation of annual report fields
