@@ -201,12 +201,7 @@ EOS;
     if (empty($namespaces[$prefix])) {
       throw new \Exception("Unrecognized prefix: $prefix");
     }
-    if ($parent === FALSE) {
-      return FALSE;
-    }
-    if ($this->isIntegerElement($tag) && !$this->isValidInteger($value)) {
-      return FALSE;
-    }
+    $value = $this->handleIntegerElementDefault($value, $tag);
     $element = $this->document->createElementNS($namespaces[$prefix], $local_name);
     if (!is_null($value)) {
       $element->appendChild($this->document->createTextNode($value));
@@ -319,25 +314,33 @@ EOS;
   }
 
   /**
-   * Checks if a value is an integer.
+   * Sets a default value for integer elements if the value passed in invalid.
+   *
+   * Integer values cannot be null or 'n/a', however there are certain
+   * strings that are acceptable to be exported for various reasons, such as
+   * '<1' or 'Invalid Date Entered'.  This purposefully only returns a
+   * default value of 0 if the value given is NULL or 'n/a'.
    *
    * @param mixed $value
    *   The value being checked if it is an integer.
+   * @param string $tag
+   *   The name of the element being exported.
    *
-   * @return bool
-   *   Whether or not the given value is an integer.
+   * @return mixed
+   *   A value that can be exported in a nonNegativeInteger element.
    */
-  protected function isValidInteger($value) {
-    if (!is_numeric($value)) {
-      return FALSE;
+  protected function handleIntegerElementDefault($value, $tag) {
+    if (!$this->isIntegerElement($tag)) {
+      return $value;
     }
 
-    // If the value is numeric, but is a string, this will transform it to
-    // it's numeric value.  This properly transforms the value to a float or
-    // integer depending on the string value.
-    $value = $value + 0;
-
-    return is_int($value);
+    // Integer values cannot be null or 'n/a', however there are certain
+    // strings that are acceptable to be exported for various reasons, such as
+    // '<1' or 'Invalid Date Entered'.  This purposefully only returns a
+    // default value of 0 if the value given is NULL or 'n/a'.
+    return !is_null($value) && !in_array(strtolower($value), ['n/a'])
+      ? $value
+      : 0;
   }
 
   /**
