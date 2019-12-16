@@ -415,10 +415,11 @@ EOS;
     // Decimal values cannot be null or 'n/a', however there are certain
     // strings that may be acceptable to be exported for various reasons,
     // such as '<1'.  This purposefully only returns a
-    // default value if the value given is NULL or 'n/a'.
+    // default value if the value given is NULL or 'n/a'.  The default value
+    // is a string so that the proper precision can be exported.
     return !is_null($value) && !in_array(strtolower($value), ['n/a'])
       ? $value
-      : 0.0000;
+      : '0.0000';
   }
 
   /**
