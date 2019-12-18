@@ -1,4 +1,3 @@
-uuid: 857a5163-79c1-414d-996d-f37aae6a947d
 langcode: en
 status: open
 dependencies:
@@ -80,6 +79,7 @@ settings:
   wizard_progress_pages: false
   wizard_progress_percentage: false
   wizard_progress_link: false
+  wizard_progress_states: false
   wizard_start_label: ''
   wizard_preview_link: false
   wizard_confirmation: true
@@ -127,6 +127,7 @@ settings:
   purge_days: null
   results_disabled: false
   results_disabled_ignore: false
+  token_view: false
   token_update: false
 access:
   create:
@@ -210,3 +211,4 @@ handlers:
       exclude_empty_checkbox: false
       twig: false
       theme_name: ''
+uuid: 857a5163-79c1-414d-996d-f37aae6a947d
