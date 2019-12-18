@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "15d0f4a555b89a1b47755ec5c12826c6",
+    "content-hash": "23ca61780d3c158ddc93ebd9c6ee7580",
     "packages": [
         {
             "name": "acquia/blt",
@@ -9860,17 +9860,17 @@
         },
         {
             "name": "drupal/views_data_export",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/views_data_export.git",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-1.0-beta3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/views_data_export-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "f698c1072169017f28e58a4b026d3f3cff904c96"
+                "url": "https://ftp.drupal.org/files/projects/views_data_export-8.x-1.0-beta3.zip",
+                "reference": "8.x-1.0-beta3",
+                "shasum": "4a6f5660e6d6258edee61b59c89d8dee01c9fcca"
             },
             "require": {
                 "drupal/core": "*",
@@ -9882,16 +9882,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1569361684",
+                    "version": "8.x-1.0-beta3",
+                    "datestamp": "1569365482",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Views Data export format path": "https://www.drupal.org/files/issues/2018-04-20/views_data_export_format_path-2957085-19.patch",
-                    "Generate a batch": "https://www.drupal.org/files/issues/2789531-116.patch"
+                    "Views Data export format path": "https://www.drupal.org/files/issues/2018-04-20/views_data_export_format_path-2957085-19.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
