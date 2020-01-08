@@ -33,13 +33,13 @@ class FoiaApiResponseSubscriber implements EventSubscriberInterface {
     $response = $event->getResponse();
     $content = json_decode($response->getContent(), TRUE);
 
-    // Gather ids for the agency components that have been requested via the
+    // Gather ids for the agency components that have not been requested via the
     // componentFilter value.  The array will ultimately be a map of the
     // component's key value in the `included` section of the jsonapi response
     // and the id assigned to the entity by jsonapi.  Having the id will allow
     // checking relationship data in included paragraph entities to build a list
     // of references to component data for the requested components.
-    $requested_agency_components = array_filter($content['included'], function($include) use ($components) {
+    $filtered_agency_components = array_filter($content['included'], function($include) use ($components) {
       if ($include['type'] !== 'agency_component') {
         return false;
       }
@@ -49,18 +49,18 @@ class FoiaApiResponseSubscriber implements EventSubscriberInterface {
         return false;
       }
 
-      return in_array(strtolower($abbreviation), array_map('strtolower', $components));
+      return !in_array(strtolower($abbreviation), array_map('strtolower', $components));
     });
-    $requested_agency_components = array_column($requested_agency_components, 'id');
+    $filtered_agency_components = array_column($filtered_agency_components, 'id');
 
-    // Gather the component data that references any requested agency component
+    // Gather the component data that references any filtered agency component
     // based on the componentFilter values. The array will ultimately
     // be a map of the entity's key value in the `included` section of the jsonapi response
     // and the id assigned to the entity by jsonapi.  Having the id will allow
     // checking relationship data in annual report node relationship fields to
     // remove references to component data that is not related to a requested
     // component.
-    $requested_component_data = array_filter($content['included'], function($include) use ($requested_agency_components) {
+    $filtered_component_data = array_filter($content['included'], function($include) use ($filtered_agency_components) {
       if ($include['type'] === 'agency_component' || $include['type'] == 'agency') {
         return false;
       }
@@ -70,21 +70,21 @@ class FoiaApiResponseSubscriber implements EventSubscriberInterface {
         return false;
       }
 
-      return in_array($agency_component, $requested_agency_components);
+      return in_array($agency_component, $filtered_agency_components);
     });
-    $requested_component_data = array_column($requested_component_data, 'id');
-    $requested_data_ids = array_merge($requested_agency_components, $requested_component_data);
+    $filtered_component_data = array_column($filtered_component_data, 'id');
+    $filtered_data_ids = array_merge($filtered_agency_components, $filtered_component_data);
 
     // Filter the `included` section of the response based on the data ids that
     // are related to requested content.
-    $content['included'] = array_values(array_filter($content['included'], function($include) use ($requested_data_ids) {
-      return in_array($include['id'], $requested_data_ids);
+    $content['included'] = array_values(array_filter($content['included'], function($include) use ($filtered_component_data) {
+      return !in_array($include['id'], $filtered_component_data);
     }));
     if (empty($content['included'])) {
       unset($content['included']);
     }
 
-
+    $requested_data_ids = array_column($content['included'], 'id');
 
     foreach ($content['data'] as $delta => $report) {
       // Remove fields from node data that are not relationship fields.
