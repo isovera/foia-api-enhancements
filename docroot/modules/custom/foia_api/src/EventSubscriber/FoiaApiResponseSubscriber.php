@@ -34,31 +34,15 @@ class FoiaApiResponseSubscriber implements EventSubscriberInterface {
     $content = json_decode($response->getContent(), TRUE);
 
     $filtered_data_ids = $this->gatherIdsToRemove($content, $components);
-
-    // Filter the `included` section of the response based on the data ids that
-    // are related to requested content.
-    $content['included'] = array_values(array_filter($content['included'], function($include) use ($filtered_data_ids) {
-      return !in_array($include['id'], $filtered_data_ids);
-    }));
-    if (empty($content['included'])) {
-      unset($content['included']);
-    }
+    $content = $this->filterIncludes($content, $filtered_data_ids);
 
     foreach ($content['data'] as $delta => $report) {
       // Remove fields from node data that are not relationship fields.
       $content['data'][$delta]['attributes'] = array_intersect_key($report['attributes'], array_flip(['title']));
       foreach ($report['relationships'] as $field_name => $field) {
-        if (isset($field['data']['id']) && in_array($field['data']['id'], $filtered_data_ids)) {
-          $content['data'][$delta]['relationships'][$field_name]['data'] = [];
-        }
-        else if (!isset($field['data']['id'])) {
-          $content['data'][$delta]['relationships'][$field_name]['data'] = array_values(array_filter($field['data'], function($component) use ($filtered_data_ids) {
-            return !in_array($component['id'], $filtered_data_ids);
-          }));
-        }
+        $content['data'][$delta]['relationships'][$field_name]['data'] = $this->filterById($field['data'], $filtered_data_ids);
       }
     }
-
 
     $response = $response->setContent(json_encode($content));
     $event->setResponse($response);
@@ -158,6 +142,58 @@ class FoiaApiResponseSubscriber implements EventSubscriberInterface {
       return in_array($agency_component, $agency_components_to_remove);
     });
     return array_column($filtered_component_data, 'id');
+  }
+
+  /**
+   * Filter the `included` section of the response.
+   *
+   * @param array $content
+   *   The response body of a jsonapi response.
+   *
+   * @param array $filtered_data_ids
+   *   An array of jsonapi entity ids that are being removed from a response.
+   *
+   * @return array
+   *   The response body after having removed includes that are being filtered
+   *   out of the response.
+   */
+  protected function filterIncludes($content, array $filtered_data_ids) {
+    $content['included'] = $this->filterById($content['included'], $filtered_data_ids);
+    if (empty($content['included'])) {
+      unset($content['included']);
+    }
+    return $content;
+  }
+
+  /**
+   * Filter out values from a data array that may have an id or multiple values.
+   *
+   * @param array $data
+   *   A piece of data from a jsonapi response such as an `included` item like
+   *   an agency_component or a `data.[].relationships` field such as
+   *   field_agency_components.  The data
+   * @param array $filtered_data_ids
+   *   An array of jsonapi entity ids that are being removed from a response.
+   *
+   * @return array
+   *   The data array after having removed references to entities that should
+   *   not be in the jsonapi response.
+   */
+  protected function filterById($data, $filtered_data_ids) {
+    // Return the data as is if an id does not exist directly on the passed
+    // array or the if it is not a multidimensional array of data that each has
+    // an 'id' column.
+    if (!isset($data['id']) && (empty(array_column($data, 'id'))) || count(array_column($data, 'id')) !== count($data)) {
+      return $data;
+    }
+
+    if (isset($data['id'])) {
+      return !in_array($data['id'], $filtered_data_ids) ? $data : [];
+    }
+
+    return array_values(array_filter($data, function($component) use ($filtered_data_ids) {
+      return !in_array($component['id'], $filtered_data_ids);
+    }));
   }
 
 }
