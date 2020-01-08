@@ -77,25 +77,23 @@ class FoiaApiResponseSubscriber implements EventSubscriberInterface {
 
     // Filter the `included` section of the response based on the data ids that
     // are related to requested content.
-    $content['included'] = array_values(array_filter($content['included'], function($include) use ($filtered_component_data) {
-      return !in_array($include['id'], $filtered_component_data);
+    $content['included'] = array_values(array_filter($content['included'], function($include) use ($filtered_data_ids) {
+      return !in_array($include['id'], $filtered_data_ids);
     }));
     if (empty($content['included'])) {
       unset($content['included']);
     }
 
-    $requested_data_ids = array_column($content['included'], 'id');
-
     foreach ($content['data'] as $delta => $report) {
       // Remove fields from node data that are not relationship fields.
       $content['data'][$delta]['attributes'] = array_intersect_key($report['attributes'], array_flip(['title']));
       foreach ($report['relationships'] as $field_name => $field) {
-        if (isset($field['data']['id']) && !in_array($field['data']['id'], $requested_data_ids)) {
+        if (isset($field['data']['id']) && in_array($field['data']['id'], $filtered_data_ids)) {
           $content['data'][$delta]['relationships'][$field_name]['data'] = [];
         }
         else if (!isset($field['data']['id'])) {
-          $content['data'][$delta]['relationships'][$field_name]['data'] = array_values(array_filter($field['data'], function($component) use ($requested_data_ids) {
-            return in_array($component['id'], $requested_data_ids);
+          $content['data'][$delta]['relationships'][$field_name]['data'] = array_values(array_filter($field['data'], function($component) use ($filtered_data_ids) {
+            return !in_array($component['id'], $filtered_data_ids);
           }));
         }
       }
