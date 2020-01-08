@@ -1,0 +1,6 @@
+services:
+  # Event subscribers.
+  foia_api.response_subscriber:
+    class: Drupal\foia_api\EventSubscriber\FoiaApiResponseSubscriber
+    tags:
+      - { name: event_subscriber }
