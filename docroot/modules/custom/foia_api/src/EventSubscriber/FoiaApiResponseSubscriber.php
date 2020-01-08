@@ -33,47 +33,7 @@ class FoiaApiResponseSubscriber implements EventSubscriberInterface {
     $response = $event->getResponse();
     $content = json_decode($response->getContent(), TRUE);
 
-    // Gather ids for the agency components that have not been requested via the
-    // componentFilter value.  The array will ultimately be a map of the
-    // component's key value in the `included` section of the jsonapi response
-    // and the id assigned to the entity by jsonapi.  Having the id will allow
-    // checking relationship data in included paragraph entities to build a list
-    // of references to component data for the requested components.
-    $filtered_agency_components = array_filter($content['included'], function($include) use ($components) {
-      if ($include['type'] !== 'agency_component') {
-        return false;
-      }
-
-      $abbreviation = $include['attributes']['abbreviation'] ?? FALSE;
-      if (!$abbreviation) {
-        return false;
-      }
-
-      return !in_array(strtolower($abbreviation), array_map('strtolower', $components));
-    });
-    $filtered_agency_components = array_column($filtered_agency_components, 'id');
-
-    // Gather the component data that references any filtered agency component
-    // based on the componentFilter values. The array will ultimately
-    // be a map of the entity's key value in the `included` section of the jsonapi response
-    // and the id assigned to the entity by jsonapi.  Having the id will allow
-    // checking relationship data in annual report node relationship fields to
-    // remove references to component data that is not related to a requested
-    // component.
-    $filtered_component_data = array_filter($content['included'], function($include) use ($filtered_agency_components) {
-      if ($include['type'] === 'agency_component' || $include['type'] == 'agency') {
-        return false;
-      }
-
-      $agency_component = $include['relationships']['field_agency_component']['data']['id'] ?? FALSE;
-      if (!$agency_component) {
-        return false;
-      }
-
-      return in_array($agency_component, $filtered_agency_components);
-    });
-    $filtered_component_data = array_column($filtered_component_data, 'id');
-    $filtered_data_ids = array_merge($filtered_agency_components, $filtered_component_data);
+    $filtered_data_ids = $this->gatherIdsToRemove($content, $components);
 
     // Filter the `included` section of the response based on the data ids that
     // are related to requested content.
@@ -97,14 +57,107 @@ class FoiaApiResponseSubscriber implements EventSubscriberInterface {
           }));
         }
       }
-
-      // Remove the agency_components_to_omit from report `relationship` fields.
-      // Remove component data references from report `relationship` fields.
     }
 
 
     $response = $response->setContent(json_encode($content));
     $event->setResponse($response);
+  }
+
+  /**
+   * Get ids of unrelated data to remove from component data request responses.
+   *
+   * @param array $response_content
+   *   The jsonapi response body content.
+   * @param array $requested_components
+   *   An array of agency component abbreviations from the value of the
+   *   `filters[componentFilter]` query param.
+   *
+   * @return array
+   *   An array of ids from the `included` section of the jsonapi response whose
+   *   data is unrelated to the agency components requested, based on the filter
+   *   value.
+   */
+  private function gatherIdsToRemove($response_content, $requested_components) {
+    $agency_components_to_remove = $this->agencyComponentIdsToRemove($response_content, $requested_components);
+    $component_data_to_remove = $this->componentDataIdsToRemove($response_content, $agency_components_to_remove);
+
+    return array_merge($agency_components_to_remove, $component_data_to_remove);
+  }
+
+  /**
+   * Get `included` ids of agency components that don't match filter values.
+   *
+   * @param array $response_content
+   *   The jsonapi response body content.
+   * @param array $requested_components
+   *   An array of agency component abbreviations from the value of the
+   *   `filters[componentFilter]` query param.
+   *
+   * @return array
+   *   An array of agency_component ids from the `included` section of the
+   *   jsonapi response whose data is unrelated to the agency components
+   *   requested, based on the filter value.
+   */
+  private function agencyComponentIdsToRemove($response_content, $requested_components) {
+    // Gather ids for the agency components that have not been requested via the
+    // componentFilter value.  The resulting array will be a list of
+    // agency_component ids from the response's `included` section.
+    // IDs will then be used to check included paragraph entities for whether
+    // or not they should be filtered from the response.
+    $filtered_agency_components = array_filter($response_content['included'], function($include) use ($requested_components) {
+      if ($include['type'] !== 'agency_component') {
+        return false;
+      }
+
+      $abbreviation = $include['attributes']['abbreviation'] ?? FALSE;
+      if (!$abbreviation) {
+        return false;
+      }
+
+      return !in_array(strtolower($abbreviation), array_map('strtolower', $requested_components));
+    });
+
+    return array_column($filtered_agency_components, 'id');
+  }
+
+  /**
+   * Get `included` ids of entities unrelated to the component filter values.
+   *
+   * @param array $response_content
+   *   The jsonapi response body content.
+   * @param array $agency_components_to_remove
+   *   An array of agency component ids (from the jsonapi response's `included`
+   *   section) that are unrelated to the requested components based on the
+   *   componentFilter values. These can be built by the
+   *   agencyComponentIdsToRemove() method.
+   *
+   * @see \Drupal\foia_api\EventSubscriber\FoiaApiResponseSubscriber::agencyComponentIdsToRemove().
+   *
+   * @return array
+   *   An array of relationship data ids from the `included` section of the
+   *   jsonapi response whose data is unrelated to the agency components
+   *   requested, based on the filter value.
+   */
+  private function componentDataIdsToRemove($response_content, $agency_components_to_remove) {
+    // Gather the component data that references any filtered agency component
+    // based on the componentFilter values. The resulting array will be a list of
+    // agency_component ids from the response's `included` section. IDs will
+    // then be used to remove data references that don't relate to the requested
+    // component from a responses `data.[].relationships` fields.
+    $filtered_component_data = array_filter($response_content['included'], function($include) use ($agency_components_to_remove) {
+      if ($include['type'] === 'agency_component' || $include['type'] == 'agency') {
+        return false;
+      }
+
+      $agency_component = $include['relationships']['field_agency_component']['data']['id'] ?? FALSE;
+      if (!$agency_component) {
+        return false;
+      }
+
+      return in_array($agency_component, $agency_components_to_remove);
+    });
+    return array_column($filtered_component_data, 'id');
   }
 
 }
