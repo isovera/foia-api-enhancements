@@ -53,6 +53,7 @@ class FoiaApiFiscalYearController extends ControllerBase  implements ContainerIn
       ->fields('y', ['field_foia_annual_report_yr_value']);
     $query->join('node_field_data', 'n', 'n.nid = y.entity_id');
     $query->condition('n.status', 1);
+    $query->orderBy('y.field_foia_annual_report_yr_value', 'DESC');
     $data = $query->distinct()->execute()->fetchCol();
 
     return JsonResponse::create($data);
