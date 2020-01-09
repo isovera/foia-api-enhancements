@@ -22,16 +22,15 @@ class FoiaApiResponseSubscriber implements EventSubscriberInterface {
    *   The event to process.
    */
   public function onResponse(FilterResponseEvent $event) {
-    // @todo Check that this is a jsonapi request
-    // Check that there is a componentFilter passed to the request.
-    $filters = \Drupal::request()->query->get('filter');
-    $components = $filters['componentFilter']['value'] ?? FALSE;
-    if (!$components) {
+    if (!$this->isAnnualReportComponentDataRequest()) {
       return;
     }
 
     $response = $event->getResponse();
     $content = json_decode($response->getContent(), TRUE);
+
+    $filters = \Drupal::request()->query->get('filter');
+    $components = $filters['componentFilter']['value'] ?? FALSE;
 
     $filtered_data_ids = $this->gatherIdsToRemove($content, $components);
     $content = $this->filterIncludes($content, $filtered_data_ids);
@@ -194,6 +193,36 @@ class FoiaApiResponseSubscriber implements EventSubscriberInterface {
     return array_values(array_filter($data, function($component) use ($filtered_data_ids) {
       return !in_array($component['id'], $filtered_data_ids);
     }));
+  }
+
+  /**
+   * Determines if the request is for annual reports filtered by component.
+   *
+   * @return bool
+   *   TRUE if the request url matches the expected annual report jsonapi url
+   *   and there is a componentFilter.
+   */
+  protected function isAnnualReportComponentDataRequest() {
+    try {
+      $prefix = \Drupal::getContainer()->getParameter('jsonapi.base_path');
+      $annual_report_path = $prefix . '/' . \Drupal::entityTypeManager()
+        ->getStorage('jsonapi_resource_config')
+        ->load('node--annual_foia_report_data')
+        ->path;
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('foia_api')->error($e->getMessage());
+      return FALSE;
+    }
+
+    if ($annual_report_path !== \Drupal::request()->getPathInfo()) {
+      return FALSE;
+    }
+
+    $filters = \Drupal::request()->query->get('filter');
+    $components = $filters['componentFilter']['value'] ?? FALSE;
+
+    return !empty($components);
   }
 
 }
