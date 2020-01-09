@@ -103,6 +103,9 @@
                 "FOIA-32: Exclude Agency/Component from validation for bulk publishing": "./patches/FOIA-32-validator.patch",
                 "Fix type error in jsonapi, see https://www.drupal.org/project/drupal/issues/2996114": "https://www.drupal.org/files/issues/2019-12-03/2996114-99.patch"
             },
+            "drupal/jsonapi_extras": {
+                "Fix enhancer problems after 8.8 upgrade, see drupal.org/project/jsonapi_extras/issues/3103726": "https://www.drupal.org/files/issues/2019-12-30/jsonapi_extras-3103726-3.patch"
+            },
             "drupal/password_policy": {
                 "Config install issues": "https://www.drupal.org/files/issues/password-policy-config-import-field-error-2771129-49-D8.patch",
                 "Fix inconsistent date format issues": "https://www.drupal.org/files/issues/password_policy-inconsistent-datetime-formats-2860671-13-D8.patch"
