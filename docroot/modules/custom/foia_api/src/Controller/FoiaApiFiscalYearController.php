@@ -4,7 +4,7 @@ namespace Drupal\foia_api\Controller;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Drupal\Core\Cache\CacheableJsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 
@@ -14,6 +14,11 @@ use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
  * @package Drupal\foia_api\Controller
  */
 class FoiaApiFiscalYearController extends ControllerBase  implements ContainerInjectionInterface  {
+
+  /**
+   * The number of seconds in a day, for use with the cache max age.
+   */
+  const SECONDS_IN_A_DAY = 60 * 60 * 24;
 
   /**
    * The database connection.
@@ -56,6 +61,6 @@ class FoiaApiFiscalYearController extends ControllerBase  implements ContainerIn
     $query->orderBy('y.field_foia_annual_report_yr_value', 'DESC');
     $data = $query->distinct()->execute()->fetchCol();
 
-    return JsonResponse::create($data);
+    return CacheableJsonResponse::create($data)->setMaxAge(self::SECONDS_IN_A_DAY);
   }
 }
