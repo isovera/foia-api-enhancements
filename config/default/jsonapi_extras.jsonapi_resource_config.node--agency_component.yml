@@ -4,6 +4,19 @@ status: true
 dependencies:
   config:
     - node.type.agency_component
+  module:
+    - jsonapi_defaults
+third_party_settings:
+  jsonapi_defaults:
+    default_include:
+      - agency
+      - field_agency
+      - field_agency_components
+    default_filter:
+      'filter:field_agency_components#condition#path': field_agency.id
+      'filter:field_agency_components#condition#operator': IN
+      'filter:field_agency_components#condition#value#': title
+      'filter:status#value': '1'
 id: node--agency_component
 disabled: false
 path: agency_components
@@ -70,11 +83,11 @@ resourceFields:
     enhancer:
       id: ''
   title:
+    disabled: true
     fieldName: title
     publicName: title
     enhancer:
       id: ''
-    disabled: false
   created:
     disabled: true
     fieldName: created
@@ -117,6 +130,12 @@ resourceFields:
     publicName: revision_translation_affected
     enhancer:
       id: ''
+  moderation_state:
+    fieldName: moderation_state
+    publicName: moderation_state
+    enhancer:
+      id: ''
+    disabled: false
   scheduled_transition_date:
     disabled: true
     fieldName: scheduled_transition_date
@@ -127,18 +146,6 @@ resourceFields:
     disabled: true
     fieldName: scheduled_transition_state
     publicName: scheduled_transition_state
-    enhancer:
-      id: ''
-  scheduled_publication:
-    disabled: true
-    fieldName: scheduled_publication
-    publicName: scheduled_publication
-    enhancer:
-      id: ''
-  scheduled_moderation_state:
-    disabled: true
-    fieldName: scheduled_moderation_state
-    publicName: scheduled_moderation_state
     enhancer:
       id: ''
   metatag:
@@ -276,6 +283,18 @@ resourceFields:
   field_receiver:
     fieldName: field_receiver
     publicName: paper_receiver
+    enhancer:
+      id: ''
+    disabled: false
+  field_rep_exp:
+    fieldName: field_rep_exp
+    publicName: field_rep_exp
+    enhancer:
+      id: ''
+    disabled: false
+  field_rep_start:
+    fieldName: field_rep_start
+    publicName: field_rep_start
     enhancer:
       id: ''
     disabled: false

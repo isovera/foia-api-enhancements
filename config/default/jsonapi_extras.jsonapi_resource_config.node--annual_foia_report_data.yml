@@ -75,8 +75,9 @@ third_party_settings:
       - field_foia_xiie1.field_agency_component
       - field_foia_xiie2
       - field_foia_xiie2.field_agency_component
+      - field_foia_annual_report_yr
     default_filter:
-      'filter:status': '1'
+      'filter:datefilter#condition#path': 'field_foia_annual_report_yr&filter[datefilter][condition][operator]'
 id: node--annual_foia_report_data
 disabled: false
 path: annual_foia_report
@@ -208,18 +209,6 @@ resourceFields:
     publicName: scheduled_transition_state
     enhancer:
       id: ''
-  scheduled_publication:
-    disabled: true
-    fieldName: scheduled_publication
-    publicName: scheduled_publication
-    enhancer:
-      id: ''
-  scheduled_moderation_state:
-    disabled: true
-    fieldName: scheduled_moderation_state
-    publicName: scheduled_moderation_state
-    enhancer:
-      id: ''
   metatag:
     disabled: true
     fieldName: metatag
@@ -317,11 +306,11 @@ resourceFields:
       id: ''
     disabled: false
   field_foia_annual_report_yr:
+    disabled: true
     fieldName: field_foia_annual_report_yr
     publicName: field_foia_annual_report_yr
     enhancer:
       id: ''
-    disabled: false
   field_foia_pers_costs_ix:
     fieldName: field_foia_pers_costs_ix
     publicName: field_foia_pers_costs_ix
@@ -676,15 +665,15 @@ resourceFields:
     enhancer:
       id: ''
     disabled: false
-  field_overall_vb1_not_agency_rec:
-    fieldName: field_overall_vb1_not_agency_rec
-    publicName: field_overall_vb1_not_agency_rec
-    enhancer:
-      id: ''
-    disabled: false
   field_overall_vb1_no_rec:
     fieldName: field_overall_vb1_no_rec
     publicName: field_overall_vb1_no_rec
+    enhancer:
+      id: ''
+    disabled: false
+  field_overall_vb1_not_agency_rec:
+    fieldName: field_overall_vb1_not_agency_rec
+    publicName: field_overall_vb1_not_agency_rec
     enhancer:
       id: ''
     disabled: false
@@ -976,15 +965,15 @@ resourceFields:
     enhancer:
       id: ''
     disabled: false
-  field_overall_vic2_not_agency_re:
-    fieldName: field_overall_vic2_not_agency_re
-    publicName: field_overall_vic2_not_agency_re
-    enhancer:
-      id: ''
-    disabled: false
   field_overall_vic2_no_rec:
     fieldName: field_overall_vic2_no_rec
     publicName: field_overall_vic2_no_rec
+    enhancer:
+      id: ''
+    disabled: false
+  field_overall_vic2_not_agency_re:
+    fieldName: field_overall_vic2_not_agency_re
+    publicName: field_overall_vic2_not_agency_re
     enhancer:
       id: ''
     disabled: false
@@ -1792,6 +1781,18 @@ resourceFields:
     enhancer:
       id: ''
     disabled: false
+  field_overall_x_perc_costs:
+    fieldName: field_overall_x_perc_costs
+    publicName: field_overall_x_perc_costs
+    enhancer:
+      id: ''
+    disabled: false
+  field_overall_x_total_fees:
+    fieldName: field_overall_x_total_fees
+    publicName: field_overall_x_total_fees
+    enhancer:
+      id: ''
+    disabled: false
   field_overall_xia_sub_used:
     fieldName: field_overall_xia_sub_used
     publicName: field_overall_xia_sub_used
@@ -2035,18 +2036,6 @@ resourceFields:
   field_overall_xiie2_back_prev_yr:
     fieldName: field_overall_xiie2_back_prev_yr
     publicName: field_overall_xiie2_back_prev_yr
-    enhancer:
-      id: ''
-    disabled: false
-  field_overall_x_perc_costs:
-    fieldName: field_overall_x_perc_costs
-    publicName: field_overall_x_perc_costs
-    enhancer:
-      id: ''
-    disabled: false
-  field_overall_x_total_fees:
-    fieldName: field_overall_x_total_fees
-    publicName: field_overall_x_total_fees
     enhancer:
       id: ''
     disabled: false
