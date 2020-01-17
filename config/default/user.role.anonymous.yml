@@ -13,6 +13,7 @@ permissions:
   - 'access content'
   - 'access site-wide contact form'
   - 'restful post webform_submission'
+  - 'view any unpublished agency_component content'
   - 'view field_complex_average_days'
   - 'view field_complex_highest_days'
   - 'view field_complex_lowest_days'
