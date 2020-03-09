@@ -5,6 +5,7 @@ namespace Drupal\foia_upload_xml\Commands;
 use Drush\Utils\FsUtils;
 use Drupal\file\Entity\File;
 use Drupal\user\Entity\User;
+use Drupal\file\FileInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\foia_upload_xml\FoiaUploadXmlReportParser;
@@ -67,8 +68,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
    */
   public function bulkProcess($directory) {
     $rows = [];
-    $realpath = FsUtils::realpath($directory);
-    $files = glob("$realpath/*.xml");
+    $files = $this->getXmlFiles($directory);
     foreach ($files as $filepath) {
       $info = pathinfo($filepath);
       if (!is_file($filepath)) {
@@ -94,23 +94,12 @@ class FoiaUploadXmlCommands extends DrushCommands {
       ]);
 
       try {
-        $report_data = $this->reportParser->parse($source);
-        $agency = $report_data['agency'] ?? FALSE;
-        $year = $report_data['report_year'] ?? date('Y');
-
         $this->migrationsProcessor->setSourceFile($source)
           ->setUser(User::load(1))
           ->processAll();
 
-        $status = \Drupal::database()
-          ->select('migrate_map_foia_agency_report', 'm')
-          ->fields('m', ['source_row_status'])
-          ->condition('sourceid1', $year)
-          ->condition('sourceid2', $agency)
-          ->execute()
-          ->fetchField();
-
-        if ((int) $status === MigrateIdMapInterface::STATUS_FAILED) {
+        $status = $this->migrationStatus($source);
+        if ($status === MigrateIdMapInterface::STATUS_FAILED) {
           throw new \Exception(\Drupal::translation()
             ->translate('The file @file was unable to be imported.', [
               '@file' => $filepath,
@@ -134,5 +123,48 @@ class FoiaUploadXmlCommands extends DrushCommands {
     }
 
     return new RowsOfFields($rows);
+  }
+
+  /**
+   * Get the xml files from a given directory.
+   *
+   * @param string $directory
+   *   The directory path where the xml files live.
+   *
+   * @return array|false
+   *   The xml files contained in the given directory, an empty array if none
+   *   are found, or false on error.
+   */
+  protected function getXmlFiles($directory) {
+    $realpath = FsUtils::realpath($directory);
+    return glob("$realpath/*.xml");
+  }
+
+  /**
+   * Check the status of the annual report import by agency and report year.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The report's source xml file.
+   *
+   * @return int
+   *   The value of the source_row_status column in the
+   *   migrate_map_foia_agency_report table for the agency and report year
+   *   of the given source file.
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
+   */
+  protected function migrationStatus(FileInterface $file) {
+    $report_data = $this->reportParser->parse($file);
+    $agency = $report_data['agency'] ?? FALSE;
+    $year = $report_data['report_year'] ?? date('Y');
+
+    $status = \Drupal::database()
+      ->select('migrate_map_foia_agency_report', 'm')
+      ->fields('m', ['source_row_status'])
+      ->condition('sourceid1', $year)
+      ->condition('sourceid2', $agency)
+      ->execute()
+      ->fetchField();
+
+    return (int) $status;
   }
 }
