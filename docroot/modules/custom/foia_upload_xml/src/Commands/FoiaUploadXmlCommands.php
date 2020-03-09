@@ -60,15 +60,15 @@ class FoiaUploadXmlCommands extends DrushCommands {
    *   be an absolute path on the server or a relative path from the site's
    *   docroot.
    *
-   * @usage foia_upload_xml:bulkProcess sites/default/files/report-files
+   * @usage foia-upload-xml:bulk-upload sites/default/files/report-files
    *   Bulk import all report *.xml files that are in the directory
    *   /path/to/docroot/sites/default/files/report-files.
    *
-   * @command foia_upload_xml:bulkProcess
-   * @aliases fuxb
+   * @command foia-upload-xml:bulk-upload
+   * @aliases fuxml
    * @bootstrap full
    */
-  public function bulkProcess($directory) {
+  public function bulkUpload($directory) {
     $rows = [
       [
         'file' => 'File',
