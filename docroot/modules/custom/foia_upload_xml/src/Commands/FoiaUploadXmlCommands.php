@@ -87,6 +87,9 @@ class FoiaUploadXmlCommands extends DrushCommands {
         continue;
       }
 
+      // This file does not need to be saved or moved, as each file will be
+      // processed in place.  It is wrapped in a FileInterface class in order
+      // to be used by the migrations processor.
       $source = File::create([
         'uid' => 1,
         'status' => 0, // temporary
