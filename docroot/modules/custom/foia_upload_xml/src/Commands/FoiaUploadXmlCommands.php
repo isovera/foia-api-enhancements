@@ -9,7 +9,6 @@ use Drupal\file\FileInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\foia_upload_xml\FoiaUploadXmlReportParser;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Drush\Commands\DrushCommands;
