@@ -57,7 +57,8 @@ class FoiaUploadXmlCommands extends DrushCommands {
    *
    * @param $directory
    *   The path to the directory containing the report xml files.  This can
-   *   be an absolute path or a relative path from the site's docroot.
+   *   be an absolute path on the server or a relative path from the site's
+   *   docroot.
    *
    * @usage foia_upload_xml:bulkProcess sites/default/files/report-files
    *   Bulk import all report *.xml files that are in the directory
