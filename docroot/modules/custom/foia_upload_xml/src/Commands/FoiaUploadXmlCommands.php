@@ -2,7 +2,6 @@
 
 namespace Drupal\foia_upload_xml\Commands;
 
-use Drush\Utils\FsUtils;
 use Drupal\file\Entity\File;
 use Drupal\user\Entity\User;
 use Drupal\file\FileInterface;
@@ -164,7 +163,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
    *   are found, or false on error.
    */
   protected function getXmlFiles($directory) {
-    $realpath = FsUtils::realpath($directory);
+    $realpath = realpath($directory) ?: $directory;
     return glob("$realpath/*.xml");
   }
 
