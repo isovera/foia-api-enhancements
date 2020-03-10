@@ -2,12 +2,10 @@
 
 namespace Drupal\foia_upload_xml\Commands;
 
-use Drupal\file\Entity\File;
-use Drupal\user\Entity\User;
 use Drupal\file\FileInterface;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\foia_upload_xml\FoiaUploadXmlReportParser;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor;
@@ -27,18 +25,18 @@ class FoiaUploadXmlCommands extends DrushCommands {
   protected $connection;
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * The logger channel factory.
    *
    * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
   protected $loggerFactory;
-
-  /**
-   * The messenger.
-   *
-   * @var \Drupal\Core\Messenger\MessengerInterface
-   */
-  protected $messenger;
 
   /**
    * The migrations processor.
@@ -55,26 +53,34 @@ class FoiaUploadXmlCommands extends DrushCommands {
   protected $reportParser;
 
   /**
+   * The user to set as the author during import.
+   *
+   * @var \Drupal\Core\Entity\EntityInterface|null
+   */
+  protected $user;
+
+  /**
    * FoiaUploadXmlCommands constructor.
    *
    * @param \Drupal\Core\Database\Connection $database
    *   The database connection.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerChannelFactory
    *   The logger factory.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger.
    * @param \Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor $migrationsProcessor
    *   The migrations processor.
    * @param \Drupal\foia_upload_xml\FoiaUploadXmlReportParser $reportParser
    *   The report parser.
    */
-  public function __construct(Connection $database, LoggerChannelFactoryInterface $loggerChannelFactory, MessengerInterface $messenger, FoiaUploadXmlMigrationsProcessor $migrationsProcessor, FoiaUploadXmlReportParser $reportParser) {
+  public function __construct(Connection $database, EntityTypeManagerInterface $entityTypeManager, LoggerChannelFactoryInterface $loggerChannelFactory, FoiaUploadXmlMigrationsProcessor $migrationsProcessor, FoiaUploadXmlReportParser $reportParser) {
     parent::__construct();
     $this->connection = $database;
+    $this->entityTypeManager = $entityTypeManager;
     $this->loggerFactory = $loggerChannelFactory;
-    $this->messenger = $messenger;
     $this->migrationsProcessor = $migrationsProcessor;
     $this->reportParser = $reportParser;
+    $this->user = $this->entityTypeManager->getStorage('user')->load(1);
   }
 
   /**
@@ -108,9 +114,8 @@ class FoiaUploadXmlCommands extends DrushCommands {
       }
 
       if (!is_readable($filepath)) {
-        $this->messenger->addWarning(t('Skipped @file: File not readable.', [
-          '@file' => $info['basename'],
-        ]));
+        $this->loggerFactory->get('foia_upload_xml')
+          ->warning(dt("Skipped {$info['basename']}: File not readable."));
 
         $rows[] = [
           'file' => $info['basename'],
@@ -122,7 +127,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
       // This file does not need to be saved or moved, as each file will be
       // processed in place.  It is wrapped in a FileInterface class in order
       // to be used by the migrations processor.
-      $source = File::create([
+      $source = $this->entityTypeManager->getStorage('file')->create([
         'uid' => 1,
         'status' => 0,
         'uri' => $filepath,
@@ -130,7 +135,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
 
       try {
         $this->migrationsProcessor->setSourceFile($source)
-          ->setUser(User::load(1))
+          ->setUser($this->user)
           ->processAll();
 
         $status = $this->migrationStatus($source);
