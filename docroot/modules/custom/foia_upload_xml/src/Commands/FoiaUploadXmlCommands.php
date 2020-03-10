@@ -115,7 +115,9 @@ class FoiaUploadXmlCommands extends DrushCommands {
 
       if (!is_readable($filepath)) {
         $this->loggerFactory->get('foia_upload_xml')
-          ->warning(dt("Skipped {$info['basename']}: File not readable."));
+          ->warning(dt("Skipped @file: File not readable.", [
+            '@file' => $info['basename'],
+          ]));
 
         $rows[] = [
           'file' => $info['basename'],
@@ -140,7 +142,9 @@ class FoiaUploadXmlCommands extends DrushCommands {
 
         $status = $this->migrationStatus($source);
         if ($status === MigrateIdMapInterface::STATUS_FAILED) {
-          throw new \Exception(dt("The file $filepath was unable to be imported."));
+          throw new \Exception(dt("The file @file was unable to be imported.", [
+            '@file' => $filepath,
+          ]));
         }
 
         $rows[] = [
@@ -150,7 +154,9 @@ class FoiaUploadXmlCommands extends DrushCommands {
       }
       catch (\Exception $e) {
         $this->loggerFactory->get('foia_upload_xml')
-          ->warning(dt("Foia Upload XML Bulk Upload: Failed to import {$info['basename']}."));
+          ->warning(dt("Foia Upload XML Bulk Upload: Failed to import @file.", [
+            '@file' => $info['basename'],
+          ]));
         $rows[] = [
           'file' => $info['basename'],
           'status' => 'Failed',
