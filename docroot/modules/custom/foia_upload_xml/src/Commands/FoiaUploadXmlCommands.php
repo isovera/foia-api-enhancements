@@ -16,11 +16,6 @@ use Drush\Commands\DrushCommands;
 
 /**
  * A Drush commandfile for the FoiaUploadXmlCommands.
- *
- *
- * See these files for an example of injecting Drupal services:
- *   - http://cgit.drupalcode.org/devel/tree/src/Commands/DevelCommands.php
- *   - http://cgit.drupalcode.org/devel/tree/drush.services.yml
  */
 class FoiaUploadXmlCommands extends DrushCommands {
 
@@ -59,6 +54,20 @@ class FoiaUploadXmlCommands extends DrushCommands {
    */
   protected $reportParser;
 
+  /**
+   * FoiaUploadXmlCommands constructor.
+   *
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database connection.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerChannelFactory
+   *   The logger factory.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger.
+   * @param \Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor $migrationsProcessor
+   *   The migrations processor.
+   * @param \Drupal\foia_upload_xml\FoiaUploadXmlReportParser $reportParser
+   *   The report parser.
+   */
   public function __construct(Connection $database, LoggerChannelFactoryInterface $loggerChannelFactory, MessengerInterface $messenger, FoiaUploadXmlMigrationsProcessor $migrationsProcessor, FoiaUploadXmlReportParser $reportParser) {
     parent::__construct();
     $this->connection = $database;
@@ -68,11 +77,10 @@ class FoiaUploadXmlCommands extends DrushCommands {
     $this->reportParser = $reportParser;
   }
 
-
   /**
    * Bulk import report xml files that are contained in a given directory.
    *
-   * @param $directory
+   * @param string $directory
    *   The path to the directory containing the report xml files.  This can
    *   be an absolute path on the server or a relative path from the site's
    *   docroot.
@@ -89,8 +97,8 @@ class FoiaUploadXmlCommands extends DrushCommands {
     $rows = [
       [
         'file' => 'File',
-        'status' => 'Status'
-      ]
+        'status' => 'Status',
+      ],
     ];
     $files = $this->getXmlFiles($directory);
     foreach ($files as $filepath) {
@@ -116,7 +124,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
       // to be used by the migrations processor.
       $source = File::create([
         'uid' => 1,
-        'status' => 0, // temporary
+        'status' => 0,
         'uri' => $filepath,
       ]);
 
@@ -127,21 +135,17 @@ class FoiaUploadXmlCommands extends DrushCommands {
 
         $status = $this->migrationStatus($source);
         if ($status === MigrateIdMapInterface::STATUS_FAILED) {
-          throw new \Exception(\Drupal::translation()
-            ->translate('The file @file was unable to be imported.', [
-              '@file' => $filepath,
-            ]));
+          throw new \Exception(dt("The file $filepath was unable to be imported."));
         }
 
         $rows[] = [
           'file' => $info['basename'],
           'status' => 'Processed',
         ];
-      } catch (\Exception $e) {
+      }
+      catch (\Exception $e) {
         $this->loggerFactory->get('foia_upload_xml')
-          ->warning(t('Foia Upload XML Bulk Upload: Failed to import @file.', [
-            '@file' => $info['basename'],
-          ]));
+          ->warning(dt("Foia Upload XML Bulk Upload: Failed to import {$info['basename']}."));
         $rows[] = [
           'file' => $info['basename'],
           'status' => 'Failed',
@@ -177,6 +181,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
    *   The value of the source_row_status column in the
    *   migrate_map_foia_agency_report table for the agency and report year
    *   of the given source file.
+   *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function migrationStatus(FileInterface $file) {
@@ -184,8 +189,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
     $agency = $report_data['agency'] ?? FALSE;
     $year = $report_data['report_year'] ?? date('Y');
 
-    $status = $this->connection
-      ->select('migrate_map_foia_agency_report', 'm')
+    $status = $this->connection->select('migrate_map_foia_agency_report', 'm')
       ->fields('m', ['source_row_status'])
       ->condition('sourceid1', $year)
       ->condition('sourceid2', $agency)
@@ -194,4 +198,5 @@ class FoiaUploadXmlCommands extends DrushCommands {
 
     return (int) $status;
   }
+
 }
