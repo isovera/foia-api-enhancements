@@ -6,9 +6,11 @@ use Drush\Utils\FsUtils;
 use Drupal\file\Entity\File;
 use Drupal\user\Entity\User;
 use Drupal\file\FileInterface;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\foia_upload_xml\FoiaUploadXmlReportParser;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Drush\Commands\DrushCommands;
@@ -24,18 +26,25 @@ use Drush\Commands\DrushCommands;
 class FoiaUploadXmlCommands extends DrushCommands {
 
   /**
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $connection;
+
+  /**
+   * The logger channel factory.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
+   */
+  protected $loggerFactory;
+
+  /**
    * The messenger.
    *
    * @var \Drupal\Core\Messenger\MessengerInterface
    */
   protected $messenger;
-
-  /**
-   * The report parser.
-   *
-   * @var \Drupal\foia_upload_xml\FoiaUploadXmlReportParser
-   */
-  protected $reportParser;
 
   /**
    * The migrations processor.
@@ -44,8 +53,17 @@ class FoiaUploadXmlCommands extends DrushCommands {
    */
   protected $migrationsProcessor;
 
-  public function __construct(MessengerInterface $messenger, FoiaUploadXmlMigrationsProcessor $migrationsProcessor, FoiaUploadXmlReportParser $reportParser) {
+  /**
+   * The report parser.
+   *
+   * @var \Drupal\foia_upload_xml\FoiaUploadXmlReportParser
+   */
+  protected $reportParser;
+
+  public function __construct(Connection $database, LoggerChannelFactoryInterface $loggerChannelFactory, MessengerInterface $messenger, FoiaUploadXmlMigrationsProcessor $migrationsProcessor, FoiaUploadXmlReportParser $reportParser) {
     parent::__construct();
+    $this->connection = $database;
+    $this->loggerFactory = $loggerChannelFactory;
     $this->messenger = $messenger;
     $this->migrationsProcessor = $migrationsProcessor;
     $this->reportParser = $reportParser;
@@ -121,7 +139,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
           'status' => 'Processed',
         ];
       } catch (\Exception $e) {
-        \Drupal::logger('foia_upload_xml')
+        $this->loggerFactory->get('foia_upload_xml')
           ->warning(t('Foia Upload XML Bulk Upload: Failed to import @file.', [
             '@file' => $info['basename'],
           ]));
@@ -167,7 +185,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
     $agency = $report_data['agency'] ?? FALSE;
     $year = $report_data['report_year'] ?? date('Y');
 
-    $status = \Drupal::database()
+    $status = $this->connection
       ->select('migrate_map_foia_agency_report', 'm')
       ->fields('m', ['source_row_status'])
       ->condition('sourceid1', $year)
