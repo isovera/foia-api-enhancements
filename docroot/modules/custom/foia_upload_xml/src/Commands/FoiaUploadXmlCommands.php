@@ -32,13 +32,6 @@ class FoiaUploadXmlCommands extends DrushCommands {
   protected $entityTypeManager;
 
   /**
-   * The logger channel factory.
-   *
-   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
-   */
-  protected $loggerFactory;
-
-  /**
    * The migrations processor.
    *
    * @var \Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor
@@ -77,10 +70,10 @@ class FoiaUploadXmlCommands extends DrushCommands {
     parent::__construct();
     $this->connection = $database;
     $this->entityTypeManager = $entityTypeManager;
-    $this->loggerFactory = $loggerChannelFactory;
     $this->migrationsProcessor = $migrationsProcessor;
     $this->reportParser = $reportParser;
     $this->user = $this->entityTypeManager->getStorage('user')->load(1);
+    $this->setLogger($loggerChannelFactory->get('foia_upload_xml'));
   }
 
   /**
@@ -114,10 +107,9 @@ class FoiaUploadXmlCommands extends DrushCommands {
       }
 
       if (!is_readable($filepath)) {
-        $this->loggerFactory->get('foia_upload_xml')
-          ->warning(dt("Skipped @file: File not readable.", [
-            '@file' => $info['basename'],
-          ]));
+        $this->logger()->warning(dt("Skipped @file: File not readable.", [
+          '@file' => $info['basename'],
+        ]));
 
         $rows[] = [
           'file' => $info['basename'],
@@ -153,7 +145,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
         ];
       }
       catch (\Exception $e) {
-        $this->loggerFactory->get('foia_upload_xml')
+        $this->logger()
           ->warning(dt("Foia Upload XML Bulk Upload: Failed to import @file.", [
             '@file' => $info['basename'],
           ]));
