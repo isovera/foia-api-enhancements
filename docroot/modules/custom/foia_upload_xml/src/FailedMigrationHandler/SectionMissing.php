@@ -37,7 +37,7 @@ class SectionMissing extends DefaultHandler implements FailedMigrationHandlerInt
    *
    * @return bool|mixed
    *   An array of data about the field that was being imported when the
-   *   migration failed, or false if it could not be found.
+   *   migration failed, or FALSE if it could not be found.
    *   Example:
    *   [
    *     'name' => 'component_xiic',
